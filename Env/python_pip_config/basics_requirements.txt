@@ -1,0 +1,46 @@
+-i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+
+# 数据处理与分析
+numpy
+pandas
+scipy
+
+# 数据可视化
+matplotlib
+seaborn
+plotly
+
+# 机器学习与深度学习
+scikit-learn
+tensorflow
+torch
+
+# Web 开发
+flask
+django
+requests
+
+# 数据库操作
+sqlalchemy
+pymysql
+psycopg2
+
+# 异步编程
+aiohttp
+
+# 测试与调试
+pytest
+
+# 文件与数据处理
+openpyxl
+pyyaml
+pillow
+
+# 网络与安全
+paramiko
+cryptography
+
+# 其他实用工具
+tqdm
+loguru
+click

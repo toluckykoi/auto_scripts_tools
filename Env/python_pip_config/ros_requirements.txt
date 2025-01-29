@@ -1,0 +1,6 @@
+-i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+
+# Ros
+rospkg
+rospy
+catkin_tools

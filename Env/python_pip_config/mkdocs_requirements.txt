@@ -1,0 +1,16 @@
+-i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+
+# Mkdocs:
+mkdocs
+mkdocs-material
+mkdocs-git-revision-date-localized-plugin
+mkdocs-encryptcontent-plugin-gw
+
+
+# 再安装之后，还想着要定期更新，保持使用最好的模块
+# pip install --upgrade mkdocs-material
+
+# cmd:
+# pip install mkdocs mkdocs-material
+# pip install mkdocs-git-revision-date-localized-plugin
+# pip install mkdocs-encryptcontent-plugin-gw

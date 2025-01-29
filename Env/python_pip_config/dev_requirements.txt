@@ -1,0 +1,37 @@
+-i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+
+# basics
+requests
+
+# opencv
+opencv-python
+opencv-contrib-python
+
+# processing
+jieba
+pandas
+
+# file
+pyyaml
+
+# Pyqt
+pyqt5
+
+# env
+envparse
+python-dotenv
+
+# Others
+pyserial
+psutil
+scipy
+geopy
+netifaces
+matplotlib
+selenium
+bs4
+comtypes
+zhdate
+weditor==0.6.4
+uiautomator2
+

@@ -1,0 +1,4 @@
+-i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+
+# Carla
+carla==0.9.13
