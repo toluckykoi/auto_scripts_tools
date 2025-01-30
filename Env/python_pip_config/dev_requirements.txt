@@ -21,6 +21,10 @@ pyqt5
 envparse
 python-dotenv
 
+# log
+glogcenter
+colorlog
+
 # Others
 pyserial
 psutil
@@ -34,4 +38,3 @@ comtypes
 zhdate
 weditor==0.6.4
 uiautomator2
-

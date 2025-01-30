@@ -51,6 +51,7 @@ Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一�
 #### Python 自动化脚本(Python_Correlation)
 
 - file_renamer.py：批量重命名工具
+- logger.py：封装的 Python logging 库
 - 努力更新中......
 
 
@@ -192,4 +193,4 @@ print("Database restored successfully.")
 
 ## 更新
 
-+ 2025-01-
++ 2025-01-30 Initializing

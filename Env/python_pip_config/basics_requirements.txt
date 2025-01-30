@@ -40,6 +40,9 @@ pillow
 paramiko
 cryptography
 
+# 日志
+colorlog
+
 # 其他实用工具
 tqdm
 loguru
