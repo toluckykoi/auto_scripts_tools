@@ -64,7 +64,7 @@ export LANG=en_US
 ID=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
 VERSION_ID=$(cat /etc/os-release | grep "^VERSION_ID=" | awk -F '=' '{print $2}' | awk -F '"' '{print $2}')
 architecture=$(uname -m)
-DIR_PATH="$( cd "$( dirname "$(pwd)" )" >/dev/null 2>&1 && pwd )"
+DIR_PATH=$( cd "$( dirname "$(dirname "$(pwd)")" )" >/dev/null 2>&1 && pwd )
 
 if command -v apt >/dev/null 2>&1; then
     software_manager=apt

@@ -25,12 +25,12 @@ ls -la /usr/share/fonts/CascadiaCode/
 sudo cp ./fonts_JetBrainsMono/fonts/ttf/*.ttf /usr/share/fonts/JetBrainsMono
 ls -la /usr/share/fonts/JetBrainsMono
 
+sudo rm -rf ../my_Fonts
+
 sudo fc-cache -fv
+if [ $? -eq 0 ]; then echo "安装字体完成！"; else echo "安装失败，系统缺少 fc-cache 命令，执行：sudo apt install fontconfig 或 sudo dnf install fontconfig"; exit 1; fi
 
 # fc-list | grep CascadiaCode
-
-echo "安装字体完成！"
-
 
 # 字体设置：
 # 'Cascadia Code'
