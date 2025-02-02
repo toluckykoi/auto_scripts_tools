@@ -52,6 +52,8 @@ Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一�
 
 - file_renamer.py：批量重命名工具
 - logger.py：封装的 Python logging 库
+- mqtt_client.py：封装的 MQTT 发布和订阅库
+- ups_info.py：UPS 信息获取封装
 - 努力更新中......
 
 
