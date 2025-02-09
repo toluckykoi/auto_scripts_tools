@@ -114,9 +114,9 @@ fi
 # Tabby Terminal config
 export PS1="$PS1\[\e]1337;CurrentDir="'$(pwd)\a\]'
 
-
 source /opt/ros/melodic/setup.bash
 
 export ROSDISTRO_INDEX_URL=https://mirrors.tuna.tsinghua.edu.cn/rosdistro/index-v4.yaml
 
+export DISPLAY=:0
 

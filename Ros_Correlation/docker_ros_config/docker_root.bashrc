@@ -98,6 +98,7 @@ fi
 #    . /etc/bash_completion
 #fi
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/scripts/bin/
+export DISPLAY=:0
 
 # >>> fishros initialize >>>
 source /opt/ros/melodic/setup.bash 
