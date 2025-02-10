@@ -13,6 +13,7 @@ apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct na
 apt -y install gstreamer1.0-tools libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev
 apt -y install bash-completion
 apt -y install gedit
+apt -y install alsa-utils usbutils sox libsox-fmt-all pulseaudio python-sklear*
 
 apt update && apt -y install openssh-server
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
@@ -53,6 +54,12 @@ sudo apt-get -y install ros-melodic-libuvc
 sudo apt-get -y install ros-melodic-mavros
 sudo apt-get -y install ros-melodic-ackermann-msgs
 sudo apt-get -y install ros-melodic-velocity-controllers
+sudo apt install -y ros-melodic-costmap*
+sudo apt install -y ros-melodic-gmapping*
+sudo apt install -y ros-melodic-hector*
+sudo apt install -y ros-melodic-slam-karto*
+sudo apt install -y ros-melodic-ar-track-alvar
+sudo apt install -y ros-melodic-octomap*
 
 # 特殊依赖
 sudo apt -y install libeigen3-dev

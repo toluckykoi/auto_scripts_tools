@@ -27,6 +27,12 @@ sudo apt install -y ros-melodic-uuid-msgs
 sudo apt install -y ros-melodic-libuvc
 sudo apt install -y ros-melodic-mavros
 sudo apt install -y ros-melodic-bfl
+sudo apt install -y ros-melodic-costmap*
+sudo apt install -y ros-melodic-gmapping*
+sudo apt install -y ros-melodic-hector*
+sudo apt install -y ros-melodic-slam-karto*
+sudo apt install -y ros-melodic-ar-track-alvar
+sudo apt install -y ros-melodic-octomap*
 
 # systeam
 sudo apt-get install -y libpcap-dev

@@ -157,9 +157,13 @@ function docker_speed(){
     sudo tee /etc/docker/daemon.json <<-'EOF'
 {
   "registry-mirrors": [
+    "https://docker.xuanyuan.me",
     "https://docker.1ms.run",
-    "https://dockerpull.com",
-    "https://docker.fxxk.dedyn.io"
+    "https://hub.rat.dev",
+    "https://doublezonline.cloud",
+    "https://dislabaiot.xyz",
+    "http://docker-mirror.aigc2d.com",
+    "https://hub.xdark.top/"
     ]
 }
 EOF
