@@ -1,11 +1,13 @@
 #!/bin/bash
-# @Author: 幸运锦鲤
-# @Date: 
-# @description: ROS2 humble 环境依赖
+
+# @Author      ：幸运锦鲤
+# @Time        : 2025-02-13 00:44:44
+# @version     : bash
+# @Update time :
+# @Description : ros2 humble 相关的环境依赖安装脚本
 
 # boost 版本需要：boost_1_75_0
 # 先编译：colcon build --packages-select wheeltec_rrt_msg
-
 
 # ROS
 sudo apt install -y ros-humble-usb-cam
@@ -33,4 +35,3 @@ sudo apt install -y  ros-humble-nav2-*
 
 # systeam
 sudo apt install -y libuvc-dev
-

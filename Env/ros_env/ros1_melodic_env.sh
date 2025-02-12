@@ -1,10 +1,14 @@
 #!/bin/bash
-# @Author: 幸运的锦鲤
-# @Date:   2024-10-30 23:53:06
-# @Last Modified time: 
-# ROS 小车 melodic 版本环境依赖
+
+# @Author      ：幸运锦鲤
+# @Time        : 2025-02-13 00:41:32
+# @version     : bash
+# @Update time :
+# @Description : ros1 melodic 相关的环境依赖安装脚本
+
 
 # ROS
+sudo apt install -y ros-melodic-can-msgs
 sudo apt install -y ros-melodic-tf2-geometry-msgs
 sudo apt install -y ros-melodic-realsense2-camera
 sudo apt install -y ros-melodic-mbf-costmap-core
@@ -40,4 +44,3 @@ sudo apt-get install -y libuvc-dev
 sudo apt-get install -y libudev-dev
 sudo apt-get install -y jstest-gtk
 sudo apt-get install -y libsdl1.2-dev libsdl-image1.2-dev
-
