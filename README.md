@@ -83,10 +83,16 @@ auto_scripts_tools → main$ tree -L 1
 
 ## 使用说明
 
-1. **使用 git clone 进行拉取本仓库：**
+1. **使用 git clone 进行拉取：**
 
    ```shell
-   git clone https://git.toluckykoi.com/luckykoi/auto_scripts_tools.git
+   # 说明：如Github链接无法拉取可以使用Gitee链接进行拉取，两个仓库同步更新
+   # Github
+   git clone https://github.com/toluckykoi/auto_scripts_tools.git
+   
+   # Gitee
+   git clone https://gitee.com/toluckykoi/auto_scripts_tools.git
+   
    ```
 
 2. **环境依赖安装：(只有在运行 Python 写的工具时需要安装)**
