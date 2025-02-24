@@ -56,6 +56,10 @@ Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一�
 - ups_info.py：UPS 信息获取封装
 - 努力更新中......
 
+#### CAN(CAN通信相关)
+
++ vcan_manager.sh：Linux 虚拟 CAN 功能简单封装，集成创建、删除、检查、发送、接受
+
 
 
 ## 目录说明
@@ -64,6 +68,7 @@ Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一�
 auto_scripts_tools → main$ tree -L 1
 .
 ├── Adb_script                           // adb 脚本
+├── CAN                                  // CAN通信相关
 ├── Dingtalk_demo                        // 关于钉钉通知的代码
 ├── Env                                  // 环境依赖相关
 ├── Git_config                           // git 配置文件
