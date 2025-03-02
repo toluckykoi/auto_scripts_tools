@@ -64,7 +64,7 @@ Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一�
 
 ## 目录说明
 
-```json
+```bash
 auto_scripts_tools → main$ tree -L 1
 .
 ├── Adb_script                           // adb 脚本

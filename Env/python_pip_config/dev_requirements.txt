@@ -1,4 +1,4 @@
--i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+-i https://mirrors.huaweicloud.com/repository/pypi/simple
 
 # basics
 requests
@@ -24,6 +24,10 @@ python-dotenv
 # log
 glogcenter
 colorlog
+
+#pycan
+python-can
+cantools
 
 # Others
 pyserial
