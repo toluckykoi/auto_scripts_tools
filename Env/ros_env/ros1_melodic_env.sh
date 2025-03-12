@@ -8,6 +8,8 @@
 
 
 # ROS
+sudo apt install -y ros-melodic-cv-bridge
+sudo apt install -y ros-melodic-usb-cam
 sudo apt install -y ros-melodic-can-msgs
 sudo apt install -y ros-melodic-tf2-geometry-msgs
 sudo apt install -y ros-melodic-realsense2-camera
@@ -39,6 +41,8 @@ sudo apt install -y ros-melodic-ar-track-alvar
 sudo apt install -y ros-melodic-octomap*
 
 # systeam
+sudo apt-get install -y portaudio19-dev
+sudo apt-get install -y libcrypto++-dev
 sudo apt-get install -y libpcap-dev
 sudo apt-get install -y libuvc-dev
 sudo apt-get install -y libudev-dev

@@ -15,7 +15,7 @@ pandas
 pyyaml
 
 # Pyqt
-pyqt5
+#PyQt5
 
 # env
 envparse
@@ -30,6 +30,8 @@ python-can
 cantools
 
 # Others
+mediapipe
+sounddevice
 pyserial
 psutil
 scipy
@@ -42,3 +44,4 @@ comtypes
 zhdate
 weditor==0.6.4
 uiautomator2
+# dlib
