@@ -56,6 +56,3 @@ sudo apt install -y ros-${ROS_DISTRO}-rosserial-arduino
 # other (not ROS)
 sudo apt install -y chrony lpc21isp 
 sudo apt install -y libarmadillo-dev libarmadillo6
-
-
-

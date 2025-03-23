@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import shutil
 from base import BaseTool, CmdTask
 from base import PrintUtils,FileUtils,AptUtils,ChooseTask
 from base import run_tool_file
@@ -109,6 +110,15 @@ class Tool(BaseTool):
         self.thanks = "express one's thanks：鱼香ROS一键安装脚本!"
         self.autor = '锦鲤'
 
+    def nvidia_gpu_check(self):
+        nvidia_smi_path = shutil.which("nvidia-smi")
+        if nvidia_smi_path:
+            print("检测到 NVIDIA GPU，启用 NVIDIA GPU 支持.")
+            return True
+        else:
+            print("没有检测到 NVIDIA GPU.")
+            return False
+
     def get_container_scripts(self, name, rosversion, delete_file):
         delete_command = "sudo rm -rf {}".format(delete_file)
         ros1 = """xhost +local: >> /dev/null
@@ -194,14 +204,26 @@ newgrp docker
         if FileUtils.exists("/dev/snd"):
             use_snd = "--device=/dev/snd"
 
-        if container_name:
-            command_create_x11 = "sudo docker run -dit --name={} --privileged --net=host -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {} -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
-                    container_name,home,home,use_dri,use_snd,home,RosVersions.get_image(name))
-        else:
-            command_create_x11 = "sudo docker run -dit --privileged --net=host  -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {}  -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
-                    home,home,use_dri,use_snd,home,RosVersions.get_image(name))
+        is_installed = self.nvidia_gpu_check()
+        if is_installed:
+            if container_name:
+                command_create_x11 = "sudo docker run -dit --gpus all -e NVIDIA_DRIVER_CAPABILITIES=all --name={} --privileged --net=host -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {} -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
+                        container_name,home,home,use_dri,use_snd,home,RosVersions.get_image(name))
+            else:
+                command_create_x11 = "sudo docker run -dit --gpus all -e NVIDIA_DRIVER_CAPABILITIES=all --privileged --net=host  -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {}  -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
+                        home,home,use_dri,use_snd,home,RosVersions.get_image(name))
 
-        result = CmdTask(command_create_x11,os_command=True).run()
+            result = CmdTask(command_create_x11,os_command=True).run()
+        
+        else:
+            if container_name:
+                command_create_x11 = "sudo docker run -dit --name={} --privileged --net=host -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {} -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
+                        container_name,home,home,use_dri,use_snd,home,RosVersions.get_image(name))
+            else:
+                command_create_x11 = "sudo docker run -dit --privileged --net=host  -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {}  -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
+                        home,home,use_dri,use_snd,home,RosVersions.get_image(name))
+
+            result = CmdTask(command_create_x11,os_command=True).run()
         return container_name
 
 

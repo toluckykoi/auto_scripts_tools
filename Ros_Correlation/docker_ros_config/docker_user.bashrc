@@ -64,7 +64,7 @@ function git_branch {
 }
 
 if [ "$color_prompt" = yes ]; then
-    PS1='\[\033[01;34m\]\u\[\033[00m\]\[\033[01;32m\]@\h:\[\033[01;34m\]\W\[\033[00m\]\[\033[01;32m\]$(git_branch)\[\033[00m\]\$ '
+    PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\[\033[01;32m\]$(git_branch)\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -116,6 +116,7 @@ export PS1="$PS1\[\e]1337;CurrentDir="'$(pwd)\a\]'
 
 source /opt/ros/melodic/setup.bash
 
+export XDG_RUNTIME_DIR=/tmp/runtime-$USER
 export ROSDISTRO_INDEX_URL=https://mirrors.tuna.tsinghua.edu.cn/rosdistro/index-v4.yaml
 
 export DISPLAY=:0

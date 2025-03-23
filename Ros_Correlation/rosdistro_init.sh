@@ -1,8 +1,8 @@
 #!/bin/bash
 # @Author: 蓝陌
 # @Date:   2024-07-10 15:47:06
-# @Last Modified time: 2024-10-08 22:58:06
-# ROS rosdep 换源（不要使用sudo或者root运行）
+# @Last Modified time: 2025-03-23 22:58:06
+# ROS rosdep 换源, 适用 ROS1 和 ROS2（不要使用sudo或者root运行）
 
 # 原：
 # sudo rosdep init
@@ -26,4 +26,3 @@ echo 'export ROSDISTRO_INDEX_URL=https://mirrors.tuna.tsinghua.edu.cn/rosdistro/
 echo '' >> ~/.bashrc
 
 echo "rosdep init done!"
-

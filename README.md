@@ -27,10 +27,11 @@
 
 #### Linux 自动化脚本(Linux_auto_scripts)
 
+nvidia-container-toolkit-install：NVIDIA Container Toolkit 国内镜像源安装
+
 Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一键安装脚本、Linux 常用的 Shell 脚本**
 
 - Linux 系统初始化脚本：用于新服务器初始化，新装系统初始化，安装软件等
-
 - Linux 软件一键安装脚本： 用于 Linux 下常用软件及复杂软件安装等
 - Linux 常用的 Shell 脚本：包含于常用的 Linux 一键配置（系统及软件）
 

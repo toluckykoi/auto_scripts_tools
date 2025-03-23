@@ -9,11 +9,10 @@
 apt update
 apt -y upgrade
 apt -y install ros-melodic-desktop-full
-apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct nano
+apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct gedit
 apt -y install gstreamer1.0-tools libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev
-apt -y install bash-completion
-apt -y install gedit
-apt -y install alsa-utils usbutils sox libsox-fmt-all pulseaudio python-sklear*
+apt -y install bash-completion alsa-utils usbutils sox libsox-fmt-all pulseaudio python-sklear*
+apt -y install libgl1-mesa-glx libgl1-mesa-dri libglu1-mesa mesa-utils openbox
 
 apt update && apt -y install openssh-server
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config

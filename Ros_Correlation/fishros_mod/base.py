@@ -972,7 +972,7 @@ class ChooseTask(Task):
                 choose = str(choose_item['choose'])
                 print("为您从配置文件找到默认选项：",choose_item)
             else:
-                choose = input("请输入[]内的数字以选择:")
+                choose = input("请输入[]内的数字以选择: ")
                 choose_item = None
             # Input From Queue
             if choose.isdecimal() :
