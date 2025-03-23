@@ -1,11 +1,11 @@
 -i https://mirrors.huaweicloud.com/repository/pypi/simple
 
-# basics
+# network
 requests
 
-# opencv
-opencv-python
-opencv-contrib-python
+# env
+envparse
+python-dotenv
 
 # processing
 jieba
@@ -14,24 +14,25 @@ pandas
 # file
 pyyaml
 
-# Pyqt
-#PyQt5
-
-# env
-envparse
-python-dotenv
-
 # log
 glogcenter
 colorlog
+
+# Pyqt
+# PyQt5
+# PyQt5-tools
+# qt5_applications
+# PySide6
+
+# opencv
+opencv-python
+opencv-contrib-python
 
 #pycan
 python-can
 cantools
 
 # Others
-mediapipe
-sounddevice
 pyserial
 psutil
 scipy

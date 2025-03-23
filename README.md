@@ -79,10 +79,11 @@ auto_scripts_tools → main$ tree -L 1
 ├── Mysql                                // MySQL数据库相关
 ├── Python_Correlation                   // Python 相关源码
 ├── README.md
+├── main_root.sh                         // auto_scripts_tools 便捷主入口函数（root权限）
 ├── Ros_Correlation                      // Ros 相关
 └── Server_Patrol_Script                 // 服务器巡检脚本
 
-11 directories, 1 file
+11 directories, 3 file
 ```
 
 
