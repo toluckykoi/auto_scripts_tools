@@ -65,6 +65,7 @@ ID=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
 VERSION_ID=$(cat /etc/os-release | grep "^VERSION_ID=" | awk -F '=' '{print $2}' | awk -F '"' '{print $2}')
 architecture=$(uname -m)
 DIR_PATH=$( cd "$( dirname "$(dirname "$(pwd)")" )" >/dev/null 2>&1 && pwd )
+random_char=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)
 
 if command -v apt >/dev/null 2>&1; then
     software_manager=apt
@@ -355,8 +356,8 @@ function config_system() {
 
     else
         echo "服务器环境，需要进行以下配置："
-        hostnamectl set-hostname LinuxServer
-        echo "127.0.0.1 LinuxServer" >> /etc/hosts
+        hostnamectl set-hostname "${ID}-${random_char}"
+        echo "127.0.0.1 ${ID}-${random_char}" >> /etc/hosts
 
         cloud_file_path="/etc/cloud/cloud.cfg"
         if [ -f "$cloud_file_path" ]; then
