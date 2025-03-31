@@ -70,7 +70,6 @@ else
 fi
 unset color_prompt force_color_prompt
 
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -90,7 +89,6 @@ alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -98,7 +96,6 @@ fi
 # Some more alias to avoid making mistakes:
 alias cp='cp -i'
 alias mv='mv -i'
-
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -110,6 +107,10 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# ROS networking
+# export ROS_MASTER_URI=http://10.168.1.182:11311
+# export ROS_HOSTNAME=10.168.1.180
 
 # Tabby Terminal config
 export PS1="$PS1\[\e]1337;CurrentDir="'$(pwd)\a\]'

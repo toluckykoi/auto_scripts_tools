@@ -1,13 +1,30 @@
 #!/bin/bash
 
+# @Author      ：幸运锦鲤
+# @Time        : 2025-04-01 00:49:00
+# @version     : bash
+# @Update time : 
+# @Description : 安装字体
 
-sudo apt install unzip wget
+
+# 检测包管理器并安装 unzip 和 wget
+if command -v apt &> /dev/null; then
+    sudo apt update
+    sudo apt install -y unzip wget
+elif command -v yum &> /dev/null; then
+    sudo yum install -y unzip wget
+elif command -v dnf &> /dev/null; then
+    sudo dnf install -y unzip wget
+else
+    echo "无法找到支持的包管理器 (apt, yum 或 dnf)"
+    exit 1
+fi
 
 mkdir ./my_Fonts
 cd ./my_Fonts
 
-wget -c http://web.808066.xyz:200/d/%E5%AD%97%E4%BD%93/CascadiaCode-2111.01.zip
-wget -c http://web.808066.xyz:200/d/%E5%AD%97%E4%BD%93/JetBrainsMono-2.304.zip
+wget -c http://web.808066.xyz:200/d/Fonts/CascadiaCode-2111.01.zip
+wget -c http://web.808066.xyz:200/d/Fonts/JetBrainsMono-2.304.zip
 
 mkdir ./fonts_CascadiaCode
 mkdir ./fonts_JetBrainsMono
