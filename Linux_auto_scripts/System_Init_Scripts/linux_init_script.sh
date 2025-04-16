@@ -359,14 +359,14 @@ function config_system() {
         hostnamectl set-hostname "${ID}-${random_char}"
         echo "127.0.0.1 ${ID}-${random_char}" >> /etc/hosts
 
-        cloud_file_path="/etc/cloud/cloud.cfg"
-        if [ -f "$cloud_file_path" ]; then
-            echo "文件 $cloud_file_path 存在，删除对应配置！"
-            sudo rm /etc/cloud/cloud.cfg
-            echo "指定的行已从配置文件中删除。"
-        else
-            echo "文件 $cloud_file_path 不存在不需要配置."
-        fi
+        # cloud_file_path="/etc/cloud/cloud.cfg"
+        # if [ -f "$cloud_file_path" ]; then
+        #     echo "文件 $cloud_file_path 存在，删除对应配置！"
+        #     sudo rm /etc/cloud/cloud.cfg
+        #     echo "指定的行已从配置文件中删除。"
+        # else
+        #     echo "文件 $cloud_file_path 不存在不需要配置."
+        # fi
 
         if [ "$software_manager" == "apt" ]; then
             echo "debian 系特有配置"
