@@ -10,3 +10,12 @@ sudo apt install -y curl
 curl -s https://assets.emqx.com/scripts/install-emqx-deb.sh | sudo bash
 sudo apt-get install emqx
 sudo systemctl start emqx
+
+echo ""
+echo "emqx 安装完成，请在防火墙中放开以下端口："
+echo "
+    TCP端口：1883
+    SSL端口：8883
+    WebSocket端口：8083
+    安全 WebSocket（WSS）端口：8084
+"
