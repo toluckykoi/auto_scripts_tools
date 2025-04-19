@@ -7,6 +7,9 @@
 
 [ $(id -u) -eq 0 ] && echo "请不要使用 sudo 或 root 来执行此脚本！" && exit 1
 
+PIP_INSTALL="python3 -m pip install -i https://mirrors.ustc.edu.cn/pypi/simple"
+SET_PIP_SPEED="pip3 config set global.index-url https://mirrors.huaweicloud.com/repository/pypi/simple"
+
 ID=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
 VERSION_ID=$(cat /etc/os-release | grep "^VERSION_ID=" | awk -F '=' '{print $2}' | awk -F '"' '{print $2}')
 
@@ -21,7 +24,11 @@ fi
 
 
 function install_virtualenv() {
-    pip3 install virtualenvwrapper 
+    pip3 install virtualenvwrapper
+    if [ $? -ne 0 ]; then
+        echo "安装出现异常，请重新执行安装脚本."
+        exit 1
+    fi
     mkdir -p $HOME/.virtualenvs
     echo "" >> ~/.bashrc
     echo "# virtualenv" >> ~/.bashrc
@@ -55,8 +62,8 @@ EOF
 
         echo "virtualenv 环境初始化中..."
         sudo apt install -y virtualenv python3-virtualenv python3-pip
-        python3 -m pip install -i https://mirrors.ustc.edu.cn/pypi/simple --upgrade pip
-        pip3 config set global.index-url https://mirrors.ustc.edu.cn/pypi/simple
+        $PIP_INSTALL --upgrade pip
+        $SET_PIP_SPEED
 
         install_virtualenv
 
@@ -65,8 +72,8 @@ EOF
     elif (( $(echo "$VERSION_ID >= 20.04" | bc -l) )) && [ "$ID" == "ubuntu" ]; then
         sudo apt update
         sudo apt install -y virtualenv python3-virtualenv python3-pip
-        python3 -m pip install -i https://mirrors.ustc.edu.cn/pypi/simple --upgrade pip
-        pip3 config set global.index-url https://mirrors.ustc.edu.cn/pypi/simple
+        $PIP_INSTALL --upgrade pip
+        $SET_PIP_SPEED
 
         install_virtualenv
 
