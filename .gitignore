@@ -35,6 +35,7 @@ install.sh
 .txt
 logs/
 get-docker.sh
+cJSON
 
 
 # Linux
