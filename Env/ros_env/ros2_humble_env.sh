@@ -30,8 +30,9 @@ sudo apt install -y ros-humble-rqt*
 sudo apt install -y ros-humble-rqt-image-view ros-humble-image-transport
 sudo apt install -y ros-humble-magic-enum
 sudo apt install -y ros-humble-bondcpp
-sudo apt install -y  ros-humble-nav2-*
+sudo apt install -y ros-humble-nav2-*
+sudo apt install -y ros-humble-rtcm*
 #sudo apt install -y ros-humble-gazebo-ros-pkgs
 
 # systeam
-sudo apt install -y libuvc-dev
+sudo apt install -y libuvc-dev libasio-dev
