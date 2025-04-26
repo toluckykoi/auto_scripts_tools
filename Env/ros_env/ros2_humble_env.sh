@@ -27,12 +27,16 @@ sudo apt install -y ros-humble-async-web-server-cpp*
 sudo apt install -y ros-humble-filters
 sudo apt install -y ros-humble-diagnostic-updater
 sudo apt install -y ros-humble-rqt*
-sudo apt install -y ros-humble-rqt-image-view ros-humble-image-transport
+sudo apt install -y ros-humble-image-transport
 sudo apt install -y ros-humble-magic-enum
 sudo apt install -y ros-humble-bondcpp
 sudo apt install -y ros-humble-nav2-*
 sudo apt install -y ros-humble-rtcm*
 #sudo apt install -y ros-humble-gazebo-ros-pkgs
+
+# 图像可视化
+sudo apt install -y ros-humble-rqt-image-view*
+sudo apt install -y ros-humble-image-*
 
 # systeam
 sudo apt install -y libuvc-dev libasio-dev

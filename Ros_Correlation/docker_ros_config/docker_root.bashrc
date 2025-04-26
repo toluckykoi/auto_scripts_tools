@@ -109,7 +109,7 @@ source /opt/ros/melodic/setup.bash
 # export ROS_MASTER_URI=http://10.168.1.182:11311
 # export ROS_HOSTNAME=10.168.1.180
 
-/etc/init.d/ssh start
+/etc/init.d/ssh start >> /dev/null
 
 su ros
 

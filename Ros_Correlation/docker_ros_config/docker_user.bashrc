@@ -122,3 +122,12 @@ export ROSDISTRO_INDEX_URL=https://mirrors.tuna.tsinghua.edu.cn/rosdistro/index-
 
 export DISPLAY=:0
 
+IP_ADDRESS=$(hostname -I | awk '{print $1}')
+echo -e "==========================================="
+echo -e "             Docker ROS Info"
+echo -e "==========================================="
+echo -e "UserName: ros"
+echo -e "Password: ros"
+echo -e "ROS Version: $ROS_DISTRO"
+echo -e "IP Address: $IP_ADDRESS"
+echo -e "==========================================="
