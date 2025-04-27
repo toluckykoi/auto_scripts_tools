@@ -192,6 +192,10 @@ newgrp docker
             PrintUtils.print_warn("请为你的{}容器取个名字吧！".format(name))
             container_name = input(">>")
 
+        PrintUtils.print_warn("是否设置Docker ROS容器开机自启动？(y/n)")
+        auto_start = input(">>").lower() == 'y'
+        restart_policy = "--restart=always" if auto_start else ""
+
         # get home
         user =  FileUtils.getusers()[0]
         home = "/home/{}".format(user)
@@ -207,21 +211,21 @@ newgrp docker
         is_installed = self.nvidia_gpu_check()
         if is_installed:
             if container_name:
-                command_create_x11 = "sudo docker run -dit --gpus all -e NVIDIA_DRIVER_CAPABILITIES=all --name={} --privileged --net=host -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {} -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
-                        container_name,home,home,use_dri,use_snd,home,RosVersions.get_image(name))
+                command_create_x11 = "sudo docker run -dit {} --gpus all -e NVIDIA_DRIVER_CAPABILITIES=all --name={} --privileged --net=host -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {} -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
+                        restart_policy,container_name,home,home,use_dri,use_snd,home,RosVersions.get_image(name))
             else:
-                command_create_x11 = "sudo docker run -dit --gpus all -e NVIDIA_DRIVER_CAPABILITIES=all --privileged --net=host  -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {}  -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
-                        home,home,use_dri,use_snd,home,RosVersions.get_image(name))
+                command_create_x11 = "sudo docker run -dit {} --gpus all -e NVIDIA_DRIVER_CAPABILITIES=all --privileged --net=host  -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {}  -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
+                        restart_policy,home,home,use_dri,use_snd,home,RosVersions.get_image(name))
 
             result = CmdTask(command_create_x11,os_command=True).run()
         
         else:
             if container_name:
-                command_create_x11 = "sudo docker run -dit --name={} --privileged --net=host -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {} -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
-                        container_name,home,home,use_dri,use_snd,home,RosVersions.get_image(name))
+                command_create_x11 = "sudo docker run -dit {} --name={} --privileged --net=host -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {} -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
+                        restart_policy,container_name,home,home,use_dri,use_snd,home,RosVersions.get_image(name))
             else:
-                command_create_x11 = "sudo docker run -dit --privileged --net=host  -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {}  -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
-                        home,home,use_dri,use_snd,home,RosVersions.get_image(name))
+                command_create_x11 = "sudo docker run -dit {} --privileged --net=host  -v {}:{} -v /tmp/.X11-unix:/tmp/.X11-unix {}  -v /dev:/dev -v /dev/dri:/dev/dri {} -e DISPLAY=unix$DISPLAY -w {}  {}".format(
+                        restart_policy,home,home,use_dri,use_snd,home,RosVersions.get_image(name))
 
             result = CmdTask(command_create_x11,os_command=True).run()
         return container_name
