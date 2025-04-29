@@ -49,3 +49,4 @@ sudo apt-get install -y libuvc-dev
 sudo apt-get install -y libudev-dev
 sudo apt-get install -y jstest-gtk
 sudo apt-get install -y libsdl1.2-dev libsdl-image1.2-dev
+sudo apt-get install -y v4l-utils
