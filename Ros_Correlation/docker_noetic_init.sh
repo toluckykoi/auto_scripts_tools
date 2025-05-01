@@ -1,8 +1,10 @@
 #!/bin/bash
-# @Author: 蓝陌
-# @Date:   2024-07-10 15:47:06
-# @Last Modified time:
-# 针对于 ros1 docker 的初始化脚本
+
+# @Author      ：幸运锦鲤
+# @Time        : 2025-04-30 11:14:32
+# @version     : bash
+# @Update time :
+# @Description : 针对于 ros1 noetic docker 的初始化脚本
 
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
@@ -11,7 +13,7 @@ PARENT_DIR=$(dirname "$SCRIPT_DIR")
 # root 用户运行：
 apt update
 apt -y upgrade
-apt -y install ros-melodic-desktop-full
+apt -y install ros-noetic-desktop-full
 apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct gedit
 apt -y install gstreamer1.0-tools libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev
 apt -y install bash-completion alsa-utils usbutils sox libsox-fmt-all pulseaudio python-sklear*
@@ -32,8 +34,9 @@ EOF
 
 usermod -aG ubuntu ros
 
-# ros 依赖
-source $PARENT_DIR/Env/ros_env/ros1_melodic_env.sh
+# ros 依赖安装
+source $PARENT_DIR/Env/ros_env/ros1_noetic_env.sh
+
 
 # 特殊依赖
 sudo apt -y install libeigen3-dev
@@ -42,10 +45,10 @@ sudo cp -r /usr/include/eigen3/Eigen /usr/local/include
 bash ./rosdistro_init.sh
 
 # 替换文件
-cp ./docker_ros_config/docker_ros_melodic/docker_root.bashrc /root/.bashrc
-cp ./docker_ros_config/docker_ros_melodic/docker_user.bashrc /home/ros/.bashrc
-cp ./docker_ros_config/docker_ros_melodic/docker_sudo.sudoers /etc/sudoers
-cp ./docker_ros_config/docker_ros_melodic/docker_sshd_config /etc/ssh/sshd_config
+cp ./docker_ros_config/docker_ros_noetic/docker_root.bashrc /root/.bashrc
+cp ./docker_ros_config/docker_ros_noetic/docker_user.bashrc /home/ros/.bashrc
+cp ./docker_ros_config/docker_ros_noetic/docker_sudo.sudoers /etc/sudoers
+cp ./docker_ros_config/docker_ros_noetic/docker_sshd_config /etc/ssh/sshd_config
 
 
 # 关于与宿主机的文件权限问题：
