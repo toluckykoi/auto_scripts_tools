@@ -11,13 +11,18 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PARENT_DIR=$(dirname "$SCRIPT_DIR")
 
 # root 用户运行：
+export DEBIAN_FRONTEND=noninteractive
 apt update
 apt -y upgrade
 apt -y install ros-noetic-desktop-full
 apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct gedit
 apt -y install gstreamer1.0-tools libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev
 apt -y install bash-completion alsa-utils usbutils sox libsox-fmt-all pulseaudio python-sklear*
-apt -y install libgl1-mesa-glx libgl1-mesa-dri libglu1-mesa mesa-utils openbox v4l-utils
+apt -y install libgl1-mesa-glx libgl1-mesa-dri libglu1-mesa mesa-utils openbox v4l-utils libgoogle-glog-dev
+apt -y install python3-venv python3-pip
+
+pip3 config set global.index-url https://mirrors.huaweicloud.com/repository/pypi/simple
+pip3 install testresources
 
 apt update && apt -y install openssh-server
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config

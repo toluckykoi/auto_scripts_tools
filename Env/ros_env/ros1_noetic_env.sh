@@ -42,7 +42,10 @@ sudo apt install -y ros-$ROS_DISTRO-gmapping*
 sudo apt install -y ros-$ROS_DISTRO-hector*
 sudo apt install -y ros-$ROS_DISTRO-slam-karto*
 sudo apt install -y ros-$ROS_DISTRO-octomap*
-
+sudo apt install -y ros-$ROS_DISTRO-cob-map-accessibility-analysis
+sudo apt install -y ros-$ROS_DISTRO-rtcm-msgs
+sudo apt install -y ros-$ROS_DISTRO-nmea-navsat-driver ros-noetic-geographic-info ros-noetic-gps-common
+sudo apt install -y ros-$ROS_DISTRO-catkin-virtualenv ros-noetic-imu-tools
 
 # systeam
 sudo apt-get install -y portaudio19-dev
@@ -53,4 +56,5 @@ sudo apt-get install -y libudev-dev
 sudo apt-get install -y jstest-gtk
 sudo apt-get install -y libsdl1.2-dev libsdl-image1.2-dev
 sudo apt-get install -y v4l-utils
-sudo apt-get install -y liborocos-bfl-dev
+sudo apt-get install -y liborocos-bfl-dev libnetpbm10-dev 
+sudo apt-get install -y libcoinutils-dev coinor-libclp-dev coinor-libosi-dev coinor-libcbc-dev
