@@ -46,6 +46,7 @@ sudo apt install -y ros-$ROS_DISTRO-cob-map-accessibility-analysis
 sudo apt install -y ros-$ROS_DISTRO-rtcm-msgs
 sudo apt install -y ros-$ROS_DISTRO-nmea-navsat-driver ros-noetic-geographic-info ros-noetic-gps-common
 sudo apt install -y ros-$ROS_DISTRO-catkin-virtualenv ros-noetic-imu-tools
+sudo apt install -y ros-$ROS_DISTRO-robot-pose-ekf  
 
 # systeam
 sudo apt-get install -y portaudio19-dev
