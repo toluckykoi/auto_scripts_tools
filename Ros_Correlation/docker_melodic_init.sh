@@ -47,6 +47,8 @@ cp ./docker_ros_config/docker_ros_melodic/docker_user.bashrc /home/ros/.bashrc
 cp ./docker_ros_config/docker_ros_melodic/docker_sudo.sudoers /etc/sudoers
 cp ./docker_ros_config/docker_ros_melodic/docker_sshd_config /etc/ssh/sshd_config
 
+echo "Initialization successful."
+su ros
 
 # 关于与宿主机的文件权限问题：
 # 因为容器与宿主机是隔离的，用户也是，如果想要权限统一，需要将宿主机创建多一个 ros 用户，并将宿主机用户都加入 ros 组中
