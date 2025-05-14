@@ -26,7 +26,8 @@ fi
 
 # linux_init_script.sh
 function linux_init_script(){
-    $ROOT_PPATH/Linux_auto_scripts/System_Init_Scripts/linux_init_script.sh
+    cd $ROOT_PPATH/Linux_auto_scripts/System_Init_Scripts/
+    sudo ./linux_init_script.sh
 }
 
 
