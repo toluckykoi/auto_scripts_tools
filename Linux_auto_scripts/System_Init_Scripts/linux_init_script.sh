@@ -4,6 +4,7 @@
 # @Last Modified time: 2024-07-00 00:00:00
 # 新服务器初始化脚本
 # 需要使用 source 运行此脚本！！！
+
 #####
 # 该脚本功能:
 # 用于初始化云服务或着初始化LINUX系统(暂时仅支持X86_64平台)
@@ -42,13 +43,13 @@ function install_curl() {
     echo "####################安装 curl ####################"
     if [ "$software_manager" == "apt" ]; then
         echo "apt: install base software"
-        apt update
-        apt install -y curl
+        sudo apt update
+        sudo apt install -y curl
         echo "已安装 curl"
     
     elif [ "$software_manager" == "yum" ]; then
         echo "yum: install base software"
-        yum install -y curl
+        sudo yum install -y curl
         echo "已安装 curl"
     else
         echo "版本不支持."
@@ -217,16 +218,16 @@ function cn_yuan(){
         elif [ "$software_manager" == "apt" ] && [ "$ID" == "debian" ]; then
             if [ "$VERSION_ID" == "11" ]; then
                 echo "debian 11"
-                cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                cp $DIR_PATH/Linux_config/debian/Debian-11-sources.list /etc/apt/sources.list
-                apt update
+                sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+                sudo cp $DIR_PATH/Linux_config/debian/Debian-11-sources.list /etc/apt/sources.list
+                sudo apt update
                 echo "已更换镜像源"
 
             elif [ "$VERSION_ID" == "12" ]; then
                 echo "debian 12"
-                cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                cp $DIR_PATH/Linux_config/debian/Debian-12-sources.list /etc/apt/sources.list
-                apt update
+                sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+                sudo cp $DIR_PATH/Linux_config/debian/Debian-12-sources.list /etc/apt/sources.list
+                sudo apt update
                 echo "已更换镜像源"
 
             else
@@ -237,10 +238,10 @@ function cn_yuan(){
         elif [ "$software_manager" == "yum" ] && [ $ID == '"centos"' ]; then
             if [ "$VERSION_ID" == "7" ]; then
                 echo "centos 7"
-                cp -a /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
-                cp $DIR_PATH/Linux_config/centos/huawei-CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
-                yum clean all
-                yum makecache
+                sudo cp -a /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
+                sudo cp $DIR_PATH/Linux_config/centos/huawei-CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+                sudo yum clean all
+                sudo yum makecache
                 echo "已更换镜像源"
 
             else
@@ -262,21 +263,21 @@ function install_base_software() {
     echo "####################安装基础软件####################"
     if [ "$software_manager" == "apt" ]; then
         echo "apt: install base software"
-        apt update
-        apt upgrade -y
+        sudo apt update
+        sudo apt upgrade -y
         sleep 2
-        apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct tar build-essential cmake gdb dos2unix tmux openssh-server gnupg2
-        apt -y install x11-xserver-utils bash-completion
+        sudo apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct tar build-essential cmake gdb dos2unix tmux openssh-server gnupg2
+        sudo apt -y install x11-xserver-utils bash-completion
         echo "已安装基础软件"
     
     elif [ "$software_manager" == "yum" ]; then
         echo "yum: install base software"
-        yum update -y
+        sudo yum update -y
         sleep 2
-        yum -y install net-tools gcc gcc-c++ kernel-devel cmake make curl wget vim git unzip psacct expect epel-release tar dos2unix tmux
-        yum install -y xset
-        yum install -y htop
-        yum install -y bash-completion bash-completion-extras
+        sudo yum -y install net-tools gcc gcc-c++ kernel-devel cmake make curl wget vim git unzip psacct expect epel-release tar dos2unix tmux
+        sudo yum install -y xset
+        sudo yum install -y htop
+        sudo yum install -y bash-completion bash-completion-extras
         echo "已安装基础软件"
     else
         echo "版本不支持"
@@ -370,7 +371,7 @@ function config_system() {
 
         if [ "$software_manager" == "apt" ]; then
             echo "debian 系特有配置"
-            useradd -m $SHELL_USER -s /bin/bash
+            sudo useradd -m $SHELL_USER -s /bin/bash
             echo $SHELL_USER:$SHELL_PASSWD | sudo chpasswd
             if [ $? -eq 0 ]; then
                 echo "密码已成功更新。"
@@ -391,7 +392,7 @@ function config_system() {
 
         elif [ "$software_manager" == "yum" ]; then
             echo "centos 系特有配置"
-            useradd $SHELL_USER
+            sudo useradd $SHELL_USER
             echo $SHELL_USER:$SHELL_PASSWD | sudo chpasswd
             if [ $? -eq 0 ]; then
                 echo "密码已成功更新。"
@@ -483,26 +484,26 @@ function install_docker() {
 
         elif [ "$software_manager" == "yum" ]; then
             echo "centos系docker容器安装"
-            yum install -y yum-utils device-mapper-persistent-data lvm2
-            yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-            sed -i 's+download.docker.com+mirrors.aliyun.com/docker-ce+' /etc/yum.repos.d/docker-ce.repo
-            yum makecache --timer
-            yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-            service docker start
-            systemctl enable docker.service
+            sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+            sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+            sudo sed -i 's+download.docker.com+mirrors.aliyun.com/docker-ce+' /etc/yum.repos.d/docker-ce.repo
+            sudo yum makecache --timer
+            sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+            sudo service docker start
+            sudo systemctl enable docker.service
             
             groupadd docker
             if [ $FLAG_DOCKER == 1 ]; then
-                usermod -aG docker $SHELL_USER
+                sudo usermod -aG docker $SHELL_USER
             else
                 echo "当前执行脚本的用户是：$USER"
                 sleep 0.2
                 read -ep  "需要输入普通用户用于操作 docker 命令的用户名: " docker_user
-                usermod -aG docker $docker_user
+                sudo usermod -aG docker $docker_user
             fi
 
             # newgrp docker
-            yum install -y bash-completion
+            sudo yum install -y bash-completion
 
             docker_speed
             echo "docker 容器安装完成，请重启终端(桌面版系统需要重启系统才能普通用户使用docker命令!)"
@@ -530,7 +531,6 @@ function install_docker() {
         # sudo newgrp docker
         echo "docker容器安装完成"
     fi
-    # fi
 
     # 如果上述安装失败，则尝试离线安装docker容器（待定）
     if [ $? -eq 0 ]; then
@@ -588,11 +588,11 @@ function virtual_memory() {
     else
         echo "Virtual memory (swap) is not enabled."
         echo "####################设置虚拟内存####################"
-        dd if=/dev/zero of=/swapfile bs=256M count=16
+        sudo dd if=/dev/zero of=/swapfile bs=256M count=16
         # count的大小就是增加的swap空间的大小，256M是块大小，所以空间大小是bs*count=1024MB
-        mkswap /swapfile
-        chmod 0600 /swapfile
-        swapon /swapfile
+        sudo mkswap /swapfile
+        sudo chmod 0600 /swapfile
+        sudo swapon /swapfile
         echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
         free -h
         sleep 2
@@ -697,10 +697,10 @@ function python3_install(){
 
 function centos7_yuan(){
     echo "Centos 7 停服手动更换源！"
-    cp -a /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
-    cp $DIR_PATH/Linux_config/centos/huawei-CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
-    yum clean all
-    yum makecache
+    sudo cp -a /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
+    sudo cp $DIR_PATH/Linux_config/centos/huawei-CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+    sudo yum clean all
+    sudo yum makecache
     echo "已更换镜像源"
 }
 
@@ -735,13 +735,13 @@ echo -e "———————————————————————�
 1. ◎ 修改时间将 UTC 时间转换为 CST 时间
 2. ◎ debian sudo 初始化
 3. ◎ docker pull 加速
-4. ◎ 更换为国内镜像源
+4. ◎ 系统镜像源更换为国内镜像源
 5. ◎ 系统基础软件安装
 6. ◎ 替换 bashrc 文件
 7. ◎ 修改系统级配置(服务器专用)
 8. ◎ 安装 docker 
 9. ◎ 安装宝塔面板
-10. ◎ 设置虚拟内存(4G)
+10. ◎ 设置虚拟内存为4G
 11. ◎ neofetch 安装
 12. ◎ 配置防火墙
 13. ◎ Centos 7 停服手动更换源
@@ -860,7 +860,7 @@ echo -e "———————————————————————�
 2. ◎ 只修改系统配置 (服务器专用)
 3. ◎ 安装 Docker
 4. ◎ 安装宝塔面板 (BT面板)
-5. ◎ 分步骤初始化
+5. ◎ 分步骤执行初始化
 6. ◎ 安装 Python3.8.8
 a. ◎ 第三方在线工具箱
 q. ◎ 退出安装"
@@ -884,5 +884,3 @@ Init | tee $RESULTFILE
 echo ""
 source ~/.bashrc
 # sudo chown -R ubuntu:ubuntu $current_script_path
-
-

@@ -6,6 +6,7 @@
 
 clear
 
+export LESSCHARSET=utf-8
 current_script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 current_script_path="$current_script_path/logs"
 [ ! -d "$current_script_path" ] && mkdir -p "$current_script_path"
@@ -132,5 +133,3 @@ All(){
 }
 
 All >${LogFileName};less ${LogFileName}
-echo ""
-
