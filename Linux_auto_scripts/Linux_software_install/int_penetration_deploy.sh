@@ -74,6 +74,55 @@ function Tailscale_Install(){
 # https://github.com/fatedier/frp
 # https://gofrp.org/zh-cn/docs/setup/
 #########################################################
+function Frp_Install_Deploy(){
+case "$1" in
+    1)
+        SERVICE_NAME="frps"
+        UNIT_DESC="frp server"
+        ;;
+    2)
+        SERVICE_NAME="frpc"
+        UNIT_DESC="frp client"
+        ;;
+    *)
+        echo "参数错误."
+        exit 1
+        ;;
+esac
+
+# 写入服务文件
+sudo tee "/etc/systemd/system/${SERVICE_NAME}.service" > /dev/null <<EOF
+[Unit]
+# 服务名称，可自定义
+Description=$UNIT_DESC
+After=network.target syslog.target
+Wants=network.target
+
+[Service]
+Type=simple
+# 启动frps的命令, 需修改为您的frps的安装路径
+ExecStart=/opt/frp/$SERVICE_NAME -c /opt/frp/$SERVICE_NAME.toml
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    sleep 2
+    echo ""
+    read -ep "是否设置Frp开机启动? (y/n): " answer
+    answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+    if [[ $answer == "y" || $answer == "yes" ]]; then
+        echo "Frp 添加开机启动."
+        sudo systemctl enable $SERVICE_NAME.service
+    fi
+
+    echo -e "\n# 启动frp\nsudo systemctl start $SERVICE_NAME.service\n# 停止frp\nsudo systemctl stop $SERVICE_NAME.service\n# 重启frp\nsudo systemctl restart $SERVICE_NAME.service\n# 查看frp状态\nsudo systemctl status $SERVICE_NAME.service\n"
+    echo "Frp 安装路径: /opt/frp/"
+    echo "Frp 配置文件路径: /opt/frp/ "
+    echo "systemd 配置文件路径: /etc/systemd/system/$SERVICE_NAME.service"
+    echo "Frp 部署完成, 具体请手动配置.toml文件, 参考: https://gofrp.org/zh-cn/docs/examples/"
+}
+
 function Frp_Install(){
     FRP_VERSION=0.62.1
     sudo mkdir -p /opt/frp
@@ -85,36 +134,34 @@ function Frp_Install(){
     
     sudo tar -zxvf "frp_${FRP_VERSION}_linux_${TARGET_ARCH}.tar.gz"
     cd "frp_${FRP_VERSION}_linux_${TARGET_ARCH}"
-    
-    sudo touch /etc/systemd/system/frps.service
-    sudo tee /etc/systemd/system/frps.service > /dev/null <<EOF
-[Unit]
-# 服务名称，可自定义
-Description=frp server
-After=network.target syslog.target
-Wants=network.target
+    sudo cp -r ./* /opt/frp/
 
-[Service]
-Type=simple
-# 启动frps的命令, 需修改为您的frps的安装路径
-ExecStart=/path/to/frps -c /path/to/frps.toml
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-    sleep 2
-    echo ""
-    echo "Frp 下载完成, 已简单配置, 具体需要手动配置."
-    echo "Frp 安装路径: /opt/frp/frp_${FRP_VERSION}_linux_${TARGET_ARCH}"
-    echo "systemd 配置文件路径: /etc/systemd/system/frps.service"
+    sudo rm -rf "/opt/frp/frp_${FRP_VERSION}_linux_${TARGET_ARCH}.tar.gz" "/opt/frp/frp_${FRP_VERSION}_linux_${TARGET_ARCH}"
+    read -ep "请选项部署的方式 (1):服务端, (2):客户端: " frp_deploy
+    case $frp_deploy in
+        1)
+            echo "正在安装部署 Frp 服务端..."
+            sudo touch /etc/systemd/system/frps.service
+            Frp_Install_Deploy 1
+            ;;
+        2)
+            echo "正在安装部署 Frp 客户端..."
+            sudo touch /etc/systemd/system/frpc.service
+            Frp_Install_Deploy 2
+            ;;
+        *)
+            echo "无效选项。"
+            exit 1
+            ;;
+    esac
 }
 
 
 echo "内网穿透程序部署，请选择操作："
 echo "1. 部署 ZeroTier"
 echo "2. 部署 Tailscale"
-echo "3. 下载安装 Frp"
+echo "3. 部署 Frp 服务端/客户端"
+echo "4. ZeroTier/Tailscale/Frp卸载操作"
 read -ep "请输入选项: " option
 
 case $option in
@@ -129,6 +176,77 @@ case $option in
     3)
         echo "正在下载安装 Frp..."
         Frp_Install
+        ;;
+    4)
+        echo "请选择要卸载的服务："
+        echo "1. ZeroTier"
+        echo "2. Tailscale"
+        echo "3. Frp"
+        read -ep "请输入选项 (1/2/3): " uninstall_choice
+
+        case $uninstall_choice in
+            1)
+                echo "正在卸载 ZeroTier..."
+                if command -v zerotier-cli &>/dev/null; then
+                    NETWORKS=$(sudo zerotier-cli listnetworks | awk '/^200 listnetworks [a-f0-9]+/ {print $3}')
+                    sudo zerotier-cli leave $NETWORKS
+                    sudo systemctl stop zerotier-one
+                    sudo systemctl disable zerotier-one
+                    if command -v apt &>/dev/null; then
+                        sudo apt purge -y zerotier-one
+                    elif command -v yum &>/dev/null; then
+                        sudo yum remove -y zerotier-one
+                    else
+                        echo "未识别的包管理器，请手动卸载 ZeroTier。"
+                        exit 1
+                    fi
+                    sudo rm -rf /var/lib/zerotier-one/
+                    echo "ZeroTier 卸载完成。"
+                else
+                    echo "未检测到 ZeroTier, 跳过卸载。"
+                fi
+                ;;
+            2)
+                echo "正在卸载 Tailscale..."
+                if command -v tailscale &>/dev/null; then
+                    sudo tailscale down
+                    if command -v apt &>/dev/null; then
+                        sudo apt purge -y tailscale
+                    elif command -v yum &>/dev/null; then
+                        sudo yum remove -y tailscale
+                    else
+                        echo "未识别的包管理器，请手动卸载 Tailscale。"
+                        exit 1
+                    fi
+                    sudo rm -rf /var/lib/tailscale/
+                    echo "Tailscale 卸载完成。"
+                else
+                    echo "未检测到 Tailscale, 跳过卸载。"
+                fi
+                ;;
+            3)
+                echo "正在卸载 Frp..."
+                if [ -d "/opt/frp" ]; then
+                    sudo rm -rf /opt/frp/
+                fi
+                if [ -f "/etc/systemd/system/frps.service" ]; then
+                    sudo systemctl stop frps
+                    sudo systemctl disable frps
+                    sudo rm -f /etc/systemd/system/frps.service
+                fi
+                if [ -f "/etc/systemd/system/frpc.service" ]; then
+                    sudo systemctl stop frpc
+                    sudo systemctl disable frpc
+                    sudo rm -f /etc/systemd/system/frpc.service
+                fi
+                sudo systemctl daemon-reload
+                echo "Frp 卸载完成。"
+                ;;
+            *)
+                echo "无效选项。"
+                exit 1
+                ;;
+        esac
         ;;
     *)
         echo "无效选项。"
