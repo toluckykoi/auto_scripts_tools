@@ -161,6 +161,7 @@ function docker_speed(){
   "registry-mirrors": [
     "https://docker.xuanyuan.me",
     "https://docker.1ms.run",
+    "https://docker.m.daocloud.io",
     "https://hub.rat.dev",
     "https://doublezonline.cloud",
     "https://dislabaiot.xyz",
