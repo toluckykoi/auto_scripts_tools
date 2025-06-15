@@ -267,17 +267,17 @@ function install_base_software() {
         sudo apt update
         sudo apt upgrade -y
         sleep 2
-        sudo apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct tar build-essential cmake gdb dos2unix tmux openssh-server gnupg2
+        sudo apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct tar build-essential cmake gdb dos2unix tmux openssh-server gnupg2 ffmpeg
         sudo apt -y install x11-xserver-utils bash-completion
+        sudo apt -y install portaudio19-dev python3-pyaudio
         echo "已安装基础软件"
     
     elif [ "$software_manager" == "yum" ]; then
         echo "yum: install base software"
         sudo yum update -y
         sleep 2
-        sudo yum -y install net-tools gcc gcc-c++ kernel-devel cmake make curl wget vim git unzip psacct expect epel-release tar dos2unix tmux
+        sudo yum -y install net-tools gcc gcc-c++ kernel-devel cmake make curl wget vim git htop unzip psacct expect epel-release tar dos2unix tmux ffmpeg
         sudo yum install -y xset
-        sudo yum install -y htop
         sudo yum install -y bash-completion bash-completion-extras
         echo "已安装基础软件"
     else

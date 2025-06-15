@@ -3,6 +3,9 @@
 # network
 requests
 
+# videos
+sounddevice
+
 # env
 envparse
 python-dotenv
@@ -45,4 +48,5 @@ comtypes
 zhdate
 weditor==0.6.4
 uiautomator2
+scikit-learn
 # dlib
