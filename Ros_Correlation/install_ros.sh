@@ -204,7 +204,7 @@ function ros_env_create(){
     # 为 rosdep update 换源
     echo "" >> "$sys_user_dir/.bashrc"
     echo "# ROS Distro" >> "$sys_user_dir/.bashrc"
-    echo "export ROSDISTRO_INDEX_URL=https://mirrors.tuna.tsinghua.edu.cn/rosdistro/index-v4.yaml" >> "$sys_user_dir/.bashrc"
+    echo "export ROSDISTRO_INDEX_URL=https://mirrors.ustc.edu.cn/rosdistro/index-v4.yaml" >> "$sys_user_dir/.bashrc"
     echo "" >> "$sys_user_dir/.bashrc"
     echo "" >> "$sys_user_dir/.bashrc"
 

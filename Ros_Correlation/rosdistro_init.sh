@@ -14,7 +14,7 @@ sudo mkdir -p /etc/ros/rosdep/sources.list.d/
 sudo cp ./Ros_Distro/20-default.list /etc/ros/rosdep/sources.list.d/
 
 # 为 rosdep update 换源
-export ROSDISTRO_INDEX_URL=https://mirrors.tuna.tsinghua.edu.cn/rosdistro/index-v4.yaml
+export ROSDISTRO_INDEX_URL=https://mirrors.ustc.edu.cn/rosdistro/index-v4.yaml
 rosdep update
 
 # 每次 rosdep update 之前，均需要增加该环境变量
@@ -22,7 +22,7 @@ rosdep update
 echo '' >> ~/.bashrc
 echo '' >> ~/.bashrc
 echo "# ROS Distro" >> ~/.bashrc
-echo 'export ROSDISTRO_INDEX_URL=https://mirrors.tuna.tsinghua.edu.cn/rosdistro/index-v4.yaml' >> ~/.bashrc
+echo 'export ROSDISTRO_INDEX_URL=https://mirrors.ustc.edu.cn/rosdistro/index-v4.yaml' >> ~/.bashrc
 echo '' >> ~/.bashrc
 
 echo "rosdep init done!"
