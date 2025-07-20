@@ -17,13 +17,9 @@
 
 - 服务器巡检脚本： 用于日常 Linux 服务器定时自动巡检，支持 Centos/Debian/Ubuntu 系统，可邮件通知（需要mail支持）
 
-#### Git 配置文件(Git_config)：
+#### 配置文件统一管理(ConfigFiles)：
 
-- 个性化配置文件： 一些常用的 Git 相关的配置文件保存
-
-#### Linux 配置文件(Linux_config)：
-
-- 个性化配置文件：可以配置个性化的设置，常用设置，包括更换国内镜像源，加快软件下载速度
+- 软件、系统一些个性化配置文件存放，进行统一管理和修改
 
 #### Linux 自动化脚本(Linux_auto_scripts)：
 
@@ -71,19 +67,16 @@ auto_scripts_tools → main$ tree -L 1
 ├── Adb_script                           // adb 脚本
 ├── CAN                                  // CAN通信相关
 ├── Dingtalk_demo                        // 关于钉钉通知的代码
-├── Env                                  // 环境依赖相关
-├── Git_config                           // git 配置文件
+├── Envs_install                         // 环境依赖安装相关
+├── ConfigFiles                          // 统一配置文件管理
 ├── Linux_auto_scripts                   // Linux 自动化脚本
-├── Linux_config                         // Linux 配置文件
 ├── Mail_notice                          // 邮件通知相关代码
 ├── Mysql                                // MySQL数据库相关
 ├── Python_Correlation                   // Python 相关源码
 ├── README.md
-├── main_root.sh                         // auto_scripts_tools 便捷主入口函数（root权限）
+├── main.sh                              // auto_scripts_tools 便捷主入口函数(直接执行即可)
 ├── Ros_Correlation                      // Ros 相关
 └── Server_Patrol_Script                 // 服务器巡检脚本
-
-11 directories, 3 file
 ```
 
 
@@ -105,7 +98,7 @@ auto_scripts_tools → main$ tree -L 1
 2. **环境依赖安装：(只有在运行 Python 写的工具时需要安装)**
 
    ```shell
-   cd Env/python_pip_config/
+   cd Envs_install/python_pip_install/
    pip install -r dev_requirements.txt		# 全部依赖
    ```
 

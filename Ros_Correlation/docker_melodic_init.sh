@@ -8,6 +8,11 @@
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 PARENT_DIR=$(dirname "$SCRIPT_DIR")
 
+rm -rf /etc/apt/sources.list.d/ros-fish.list
+gpg --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+gpg --export C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 | sudo tee /usr/share/keyrings/ros.gpg > /dev/null
+sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/ros.gpg] https://mirrors.ustc.edu.cn/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+
 # root 用户运行：
 apt update
 apt -y upgrade
@@ -33,7 +38,7 @@ EOF
 usermod -aG ubuntu ros
 
 # ros 依赖
-source $PARENT_DIR/Env/ros_env/ros1_melodic_env.sh
+source $PARENT_DIR/Envs_install/ros_env_install/ros1_melodic_env.sh
 
 # 特殊依赖
 sudo apt -y install libeigen3-dev

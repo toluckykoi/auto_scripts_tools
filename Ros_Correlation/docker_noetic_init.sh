@@ -40,7 +40,7 @@ EOF
 usermod -aG ubuntu ros
 
 # ros 依赖安装
-source $PARENT_DIR/Env/ros_env/ros1_noetic_env.sh
+source $PARENT_DIR/Envs_install/ros_env_install/ros1_noetic_env.sh
 
 
 # 特殊依赖

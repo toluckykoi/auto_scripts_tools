@@ -4,7 +4,7 @@
 # @Time        : 2025-03-23 17:40:06
 # @version     : bash
 # @Update time : 
-# @Description : auto scripts tools root 权限执行便捷主入口.
+# @Description : auto scripts tools 便捷主入口文件.
 
 
 # [ $(id -u) -gt 0 ] && echo "请用root用户执行此脚本，普通用户请使用 sudo ./main_root.sh." && exit 1
@@ -41,6 +41,12 @@ function linux_swap_set(){
     sudo ./swap_set.sh
 }
 
+# install_ros_with_docker.py
+function install_ros_with_docker(){
+    cd $ROOT_PPATH/Ros_Correlation/fishros_mod/
+    python3 install_ros_with_docker.py
+}
+
 function Main(){
 clear
 echo -e "——————————————————————————————————————————————————————
@@ -51,6 +57,7 @@ echo -e "———————————————————————�
 1. ◎ 查看当前系统的各类信息
 2. ◎ 执行一键系统初始化脚本
 3. ◎ 执行虚拟内存设置
+4. ◎ 执行docker ros 安装脚本
 q. ◎ 退出安装"
 sleep 0.2
 read -ep  "请输入序号并回车：" num
@@ -58,6 +65,7 @@ case "$num" in
 [1] ) (linux_system_info);;
 [2] ) (linux_init_script);;
 [3] ) (linux_swap_set);;
+[4] ) (install_ros_with_docker);;
 [q] ) (exit);;
 *) (Main);;
 esac

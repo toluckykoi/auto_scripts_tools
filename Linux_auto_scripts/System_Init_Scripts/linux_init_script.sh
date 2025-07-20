@@ -156,22 +156,17 @@ function docker_speed(){
     echo ""; echo ""
     echo "####################docker pull加速设置####################"
     sudo mkdir -p /etc/docker
-    sudo tee /etc/docker/daemon.json <<-'EOF'
-{
-  "registry-mirrors": [
-    "https://docker.xuanyuan.me",
-    "https://docker.1ms.run",
-    "https://docker.m.daocloud.io",
-    "https://hub.rat.dev",
-    "https://doublezonline.cloud",
-    "https://dislabaiot.xyz",
-    "http://docker-mirror.aigc2d.com",
-    "https://hub.xdark.top/"
-    ]
-}
-EOF
+    sudo cp $DIR_PATH/ConfigFiles/docker/daemon.json /etc/docker/
+    echo "加载加速配置文件成功."
+
     sudo systemctl daemon-reload
     sudo systemctl restart docker
+    if [ $? -eq 0 ]; then
+        echo "配置 docker 加速源成功."
+    else
+        echo "异常配置失败."
+        exit
+    fi
 }
 
 # 1、换源
@@ -186,28 +181,28 @@ function cn_yuan(){
             if [ "$VERSION_ID" == "18.04" ]; then
                 echo "ubuntu 18.04"
                 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/Linux_config/ubuntu/Ubuntu-18-sources.list /etc/apt/sources.list
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu-18-sources.list /etc/apt/sources.list
                 sudo apt update
                 echo "已更换镜像源"
 
             elif [ "$VERSION_ID" == "20.04" ]; then
                 echo "ubuntu 20.04"
                 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/Linux_config/ubuntu/Ubuntu-20-sources.list /etc/apt/sources.list
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu-20-sources.list /etc/apt/sources.list
                 sudo apt update
                 echo "已更换镜像源"
 
             elif [ "$VERSION_ID" == "22.04" ]; then
                 echo "ubuntu 22.04"
                 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/Linux_config/ubuntu/Ubuntu-22-sources.list /etc/apt/sources.list
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu-22-sources.list /etc/apt/sources.list
                 sudo apt update
                 echo "已更换镜像源"
 
             elif [ "$VERSION_ID" == "24.04" ]; then
                 echo "ubuntu 24.04"
                 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/Linux_config/ubuntu/Ubuntu-24-sources.list /etc/apt/sources.list
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu-24-sources.list /etc/apt/sources.list
                 sudo apt update
                 echo "已更换镜像源"
 
@@ -220,14 +215,14 @@ function cn_yuan(){
             if [ "$VERSION_ID" == "11" ]; then
                 echo "debian 11"
                 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/Linux_config/debian/Debian-11-sources.list /etc/apt/sources.list
+                sudo cp $DIR_PATH/ConfigFiles/linux/debian/Debian-11-sources.list /etc/apt/sources.list
                 sudo apt update
                 echo "已更换镜像源"
 
             elif [ "$VERSION_ID" == "12" ]; then
                 echo "debian 12"
                 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/Linux_config/debian/Debian-12-sources.list /etc/apt/sources.list
+                sudo cp $DIR_PATH/ConfigFiles/linux/debian/Debian-12-sources.list /etc/apt/sources.list
                 sudo apt update
                 echo "已更换镜像源"
 
@@ -240,7 +235,7 @@ function cn_yuan(){
             if [ "$VERSION_ID" == "7" ]; then
                 echo "centos 7"
                 sudo cp -a /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
-                sudo cp $DIR_PATH/Linux_config/centos/huawei-CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+                sudo cp $DIR_PATH/ConfigFiles/linux/centos/huawei-CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
                 sudo yum clean all
                 sudo yum makecache
                 echo "已更换镜像源"
@@ -292,19 +287,19 @@ function config_bashrc() {
     echo "####################更换 bashrc 配置####################"
     if [ "$software_manager" == "apt" ] && [ "$ID" == "ubuntu" ]; then
         echo "ubuntu cp bashrc"
-        cp $DIR_PATH/Linux_config/ubuntu/Ubuntu_user_.bashrc /home/$SHELL_USER/.bashrc
-        cp $DIR_PATH/Linux_config/ubuntu/Ubuntu_root_.bashrc /root/.bashrc
+        cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu_user_.bashrc /home/$SHELL_USER/.bashrc
+        cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu_root_.bashrc /root/.bashrc
 
     elif [ "$software_manager" == "apt" ] && [ "$ID" == "debian" ]; then
         echo "debian cp bashrc"
-        cp $DIR_PATH/Linux_config/debian/Debian_user_.bashrc /home/$SHELL_USER/.bashrc
-        cp $DIR_PATH/Linux_config/debian/Debian_root_.bashrc /root/.bashrc
+        cp $DIR_PATH/ConfigFiles/linux/debian/Debian_user_.bashrc /home/$SHELL_USER/.bashrc
+        cp $DIR_PATH/ConfigFiles/linux/debian/Debian_root_.bashrc /root/.bashrc
 
     elif [ $software_manager == "yum" ] && [ $ID == '"centos"' ]; then
         if [ "$VERSION_ID" == "7" ]; then
             echo "centos cp bashrc"
-            cp $DIR_PATH/Linux_config/centos/Centos_user_.bashrc /home/$SHELL_USER/.bashrc
-            cp $DIR_PATH/Linux_config/centos/Centos_root_.bashrc /root/.bashrc
+            cp $DIR_PATH/ConfigFiles/linux/centos/Centos_user_.bashrc /home/$SHELL_USER/.bashrc
+            cp $DIR_PATH/ConfigFiles/linux/centos/Centos_root_.bashrc /root/.bashrc
             
         else
             echo "版本不支持"
@@ -323,19 +318,19 @@ function config_bashrc_procedure() {
     echo "####################更换 bashrc 配置####################"
     if [ "$software_manager" == "apt" ] && [ "$ID" == "ubuntu" ]; then
         echo "ubuntu cp bashrc"
-        cp $DIR_PATH/Linux_config/ubuntu/Ubuntu_user_.bashrc /home/$BASHRC_USER/.bashrc
-        cp $DIR_PATH/Linux_config/ubuntu/Ubuntu_root_.bashrc /root/.bashrc
+        cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu_user_.bashrc /home/$BASHRC_USER/.bashrc
+        cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu_root_.bashrc /root/.bashrc
 
     elif [ "$software_manager" == "apt" ] && [ "$ID" == "debian" ]; then
         echo "debian cp bashrc"
-        cp $DIR_PATH/Linux_config/debian/Debian_user_.bashrc /home/$BASHRC_USER/.bashrc
-        cp $DIR_PATH/Linux_config/debian/Debian_root_.bashrc /root/.bashrc
+        cp $DIR_PATH/ConfigFiles/linux/debian/Debian_user_.bashrc /home/$BASHRC_USER/.bashrc
+        cp $DIR_PATH/ConfigFiles/linux/debian/Debian_root_.bashrc /root/.bashrc
 
     elif [ "$software_manager" == "yum" ] && [ $ID == '"centos"' ]; then
         if [ $VERSION_ID == 7 ]; then
             echo "centos cp bashrc"
-            cp $DIR_PATH/Linux_config/centos/Centos_user_.bashrc /home/$BASHRC_USER/.bashrc
-            cp $DIR_PATH/Linux_config/centos/Centos_root_.bashrc /root/.bashrc
+            cp $DIR_PATH/ConfigFiles/linux/centos/Centos_user_.bashrc /home/$BASHRC_USER/.bashrc
+            cp $DIR_PATH/ConfigFiles/linux/centos/Centos_root_.bashrc /root/.bashrc
             
         else
             echo "版本不支持"
@@ -699,7 +694,7 @@ function python3_install(){
 function centos7_yuan(){
     echo "Centos 7 停服手动更换源！"
     sudo cp -a /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
-    sudo cp $DIR_PATH/Linux_config/centos/huawei-CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+    sudo cp $DIR_PATH/ConfigFiles/linux/centos/huawei-CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
     sudo yum clean all
     sudo yum makecache
     echo "已更换镜像源"

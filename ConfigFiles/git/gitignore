@@ -12,15 +12,13 @@
 .github
 .gitlab
 
-# CMake build
-build/
-devel/
-
 # Python
 __pycache__/
 *.pyc
 
 # C++
+*.o
+*.out
 
 # ROS
 build/
@@ -29,6 +27,11 @@ devel/
 src/CMakeLists.txt
 
 # Linux
-.deb
-.rpm
+*.deb
+*.rpm
 
+# Flies
+*.bin
+*.zip
+*.tar
+*.bag
