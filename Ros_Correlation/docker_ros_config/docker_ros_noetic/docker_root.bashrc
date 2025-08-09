@@ -81,6 +81,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias home='cd /home && dirs=($(ls -1 | grep -v "^ros$\|^lost+found$\|^.$\|^..$")) && [ ${#dirs[@]} -eq 1 ] && cd "${dirs[0]}" || echo "Back to home Error"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like

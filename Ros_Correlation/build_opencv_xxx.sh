@@ -3,11 +3,20 @@
 # @Author      ：幸运锦鲤
 # @Time        : 2025-05-06 11:14:32
 # @version     : bash
-# @Update time :
-# @Description : 编译安装 opencv 3.4.5
+# @Update time : 2025-08-09 11:14:32
+# @Description : 编译安装 opencv 默认安装版本为 4.1.1
 
 
-OPENCV_VERSION="3.4.5"
+read -p "请输入需要编译安装 OpenCV 版本 (默认 4.1.1): " input_version
+
+if [ -z "$input_version" ]; then
+    OPENCV_VERSION="4.1.1"
+else
+    OPENCV_VERSION="$input_version"
+fi
+
+echo "使用的 OpenCV 版本: $OPENCV_VERSION"
+sleep 2
 REPO_ZIP_URL="http://github.808066.xyz:38000/https://github.com/opencv/opencv/archive/refs/tags/${OPENCV_VERSION}.zip"
 PROJECT_NAME="opencv-${OPENCV_VERSION}"
 ZIP_NAME="${PROJECT_NAME}.zip"

@@ -88,6 +88,7 @@ fi
 alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
+alias home='cd /home && dirs=($(ls -1 | grep -v "^ros$\|^lost+found$\|^.$\|^..$")) && [ ${#dirs[@]} -eq 1 ] && cd "${dirs[0]}" || echo "Back to home Error"'
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
