@@ -1,0 +1,22 @@
+-i https://mirrors.huaweicloud.com/repository/pypi/simple
+
+# FXB Develop the full Python Pip library.
+# It contains ROS, system, software needed.
+
+# Ros
+rospkg
+rospy
+catkin_tools
+
+# Others Full
+requests
+pyyaml
+pyserial
+python-can
+cantools
+pyyaml
+geopy
+scipy
+pyproj
+pexpect
+paramiko

@@ -7,7 +7,7 @@
 # @Description : 编译安装 opencv 默认安装版本为 4.1.1
 
 
-read -p "请输入需要编译安装 OpenCV 版本 (默认 4.1.1): " input_version
+read -ep "请输入需要编译安装 OpenCV 版本 (默认 4.1.1): " input_version
 
 if [ -z "$input_version" ]; then
     OPENCV_VERSION="4.1.1"

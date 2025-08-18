@@ -12,6 +12,26 @@
 
 [ $(id -u) -eq 0 ] && echo "请不要使用 sudo 或 root 来执行此脚本！" && exit 1
 
+read -ep "PS: 此脚本仅用于对Anaconda3/Miniconda3安装后的环境初始化，主要配置有以下：
+1.禁止自动激活base环境
+2.安装自动补全插件
+3.配置加速下载源
+确认输入'y'继续，输入'n'取消配置：" input
+
+case $input in
+    [Yy]* )
+        echo "开始配置..."
+        ;;
+    [Nn]* )
+        echo "已取消配置"
+        exit 0
+        ;;
+    * )
+        echo "无效输入，请输入 'y' 或 'n'"
+        exit 1
+        ;;
+esac
+
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # /auto_scripts_tools/xxxx
 script_dir="$(dirname "$script_dir")"

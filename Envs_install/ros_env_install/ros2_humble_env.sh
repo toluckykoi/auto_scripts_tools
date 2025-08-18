@@ -32,6 +32,7 @@ sudo apt install -y ros-humble-magic-enum
 sudo apt install -y ros-humble-bondcpp
 sudo apt install -y ros-humble-nav2-*
 sudo apt install -y ros-humble-rtcm*
+sudo apt install -y ros-${ROS_DISTRO}-rviz-visual-tools
 #sudo apt install -y ros-humble-gazebo-ros-pkgs
 
 # 图像可视化
