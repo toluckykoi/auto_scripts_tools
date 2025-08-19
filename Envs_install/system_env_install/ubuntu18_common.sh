@@ -11,7 +11,8 @@ sudo apt update
 
 # Dependency
 sudo apt install -y curl wget vim htop git unzip expect acct tar cmake gdb dos2unix tmux openssh-server gnupg2 net-tools lsb-release
+sudo apt install -y ffmpeg libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-tools
 sudo apt install -y libssl-dev libxcb-xinerama0 libglew-dev libxcb-cursor0 libxcb-cursor-dev ninja-build
-sudo apt install -y build-essential bash-completion x11-xserver-utils ffmpeg
+sudo apt install -y build-essential bash-completion x11-xserver-utils
 sudo apt install -y libqtermwidget5-0 portaudio19-dev python3-pyaudio
 
