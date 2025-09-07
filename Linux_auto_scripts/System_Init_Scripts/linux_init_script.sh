@@ -263,7 +263,7 @@ function install_base_software() {
         sudo apt upgrade -y
         sleep 2
         sudo apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct tar build-essential cmake gdb dos2unix tmux openssh-server gnupg2 ffmpeg
-        sudo apt -y install libssl-dev libxcb-xinerama0 libglew-dev libxcb-cursor0 libxcb-cursor-dev ninja-build
+        sudo apt -y install libssl-dev libxcb-xinerama0 libglew-dev libxcb-cursor0 libxcb-cursor-dev ninja-build network-manager
         sudo apt -y install x11-xserver-utils bash-completion
         sudo apt -y install portaudio19-dev python3-pyaudio
         echo "已安装基础软件"
@@ -880,4 +880,5 @@ esac
 Init | tee $RESULTFILE
 echo ""
 source ~/.bashrc
+echo "初始化脚本执行完毕，建议重启一次系统使配置更好生效！"
 # sudo chown -R ubuntu:ubuntu $current_script_path
