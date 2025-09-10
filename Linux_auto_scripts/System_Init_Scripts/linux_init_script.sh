@@ -113,7 +113,7 @@ current_script_path1="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 current_script_path="$current_script_path/logs"
 [ ! -d "$current_script_path" ] && mkdir -p "$current_script_path"
 RESULTFILE="$current_script_path/Linux_Init_Log-`date +%Y%m%d`.txt"
-
+Linux_auto_scripts_path=$(dirname "$(cd "$(dirname "$0")" && pwd)")
 
 function date_info() {
     echo ""; echo ""
@@ -172,85 +172,7 @@ function docker_speed(){
 # 1、换源
 function cn_yuan(){
     echo ""; echo ""
-    if [ "$server_region" == "china" ]; then
-        echo ""
-        echo "在国内环境，需要更换镜像源！"
-
-        echo "####################更换国内源镜像####################"
-        if [ "$software_manager" == "apt" ] && [ "$ID" == "ubuntu" ]; then
-            if [ "$VERSION_ID" == "18.04" ]; then
-                echo "ubuntu 18.04"
-                sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu-18-sources.list /etc/apt/sources.list
-                sudo apt update
-                echo "已更换镜像源"
-
-            elif [ "$VERSION_ID" == "20.04" ]; then
-                echo "ubuntu 20.04"
-                sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu-20-sources.list /etc/apt/sources.list
-                sudo apt update
-                echo "已更换镜像源"
-
-            elif [ "$VERSION_ID" == "22.04" ]; then
-                echo "ubuntu 22.04"
-                sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu-22-sources.list /etc/apt/sources.list
-                sudo apt update
-                echo "已更换镜像源"
-
-            elif [ "$VERSION_ID" == "24.04" ]; then
-                echo "ubuntu 24.04"
-                sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/Ubuntu-24-sources.list /etc/apt/sources.list
-                sudo apt update
-                echo "已更换镜像源"
-
-            else
-                echo "版本不支持"
-                exit 1
-            fi
-
-        elif [ "$software_manager" == "apt" ] && [ "$ID" == "debian" ]; then
-            if [ "$VERSION_ID" == "11" ]; then
-                echo "debian 11"
-                sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/ConfigFiles/linux/debian/Debian-11-sources.list /etc/apt/sources.list
-                sudo apt update
-                echo "已更换镜像源"
-
-            elif [ "$VERSION_ID" == "12" ]; then
-                echo "debian 12"
-                sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-                sudo cp $DIR_PATH/ConfigFiles/linux/debian/Debian-12-sources.list /etc/apt/sources.list
-                sudo apt update
-                echo "已更换镜像源"
-
-            else
-                echo "版本不支持"
-                exit 1
-            fi
-
-        elif [ "$software_manager" == "yum" ] && [ $ID == '"centos"' ]; then
-            if [ "$VERSION_ID" == "7" ]; then
-                echo "centos 7"
-                sudo cp -a /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
-                sudo cp $DIR_PATH/ConfigFiles/linux/centos/huawei-CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
-                sudo yum clean all
-                sudo yum makecache
-                echo "已更换镜像源"
-
-            else
-                echo "版本不支持"
-                exit 1
-            fi
-        else
-            echo "版本不支持！"
-        fi
-    else
-        echo "国外环境，无需配置镜像源！"
-
-    fi
+    $Linux_auto_scripts_path/Shell_Scripts_Correlation/change_source_mirror.sh "$server_region"
 }
 
 # 2、基础软件安装
@@ -880,5 +802,5 @@ esac
 Init | tee $RESULTFILE
 echo ""
 source ~/.bashrc
-echo "初始化脚本执行完毕，建议重启一次系统使配置更好生效！"
+echo "系统配置完成，如修改过太多配置建议重启一次系统使配置更好生效！"
 # sudo chown -R ubuntu:ubuntu $current_script_path

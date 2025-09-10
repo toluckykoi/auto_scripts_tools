@@ -1,13 +1,19 @@
 {
     "registry-mirrors": [
-        "https://docker.xuanyuan.me",
         "https://docker.1ms.run",
-        "https://docker.tbedu.top",
-        "https://docker.m.daocloud.io",
+        "https://docker.xuanyuan.me",
+        "https://docker.1panel.live",
         "https://hub.rat.dev",
-        "https://doublezonline.cloud",
-        "https://dislabaiot.xyz",
-        "http://docker-mirror.aigc2d.com",
-        "https://hub.xdark.top/"
+        "https://dhub.kubesre.xyz",
+        "https://docker.m.daocloud.io",
+        "https://hub.amingg.com",
+        "https://hub1.nat.tf",
+        "https://docker.amingg.com",
+        "https://docker.sunzishaokao.com",
+        "https://image.cloudlayer.icu",
+        "https://docker-0.unsee.tech",
+        "https://docker.hlmirror.com",
+        "https://docker.kejilion.pro",
+        "https://docker.tbedu.top"
     ]
 }
