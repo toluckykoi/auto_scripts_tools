@@ -20,6 +20,16 @@ else
     exit 1
 fi
 
+ARCH=$(uname -m)
+if [[ $ARCH == "x86_64" ]] || [[ $ARCH == "i386" ]] || [[ $ARCH == "i686" ]]; then
+    SYSTEM_ARCH="x86"
+elif [[ $ARCH == "aarch64" ]] || [[ $ARCH == "arm"* ]]; then
+    SYSTEM_ARCH="ARM"
+else
+    echo "未知架构: $ARCH"
+    exit 1
+fi
+
 ID=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
 VERSION_ID=$(cat /etc/os-release | grep "^VERSION_ID=" | awk -F '=' '{print $2}' | awk -F '"' '{print $2}')
 DIR_PATH=$(dirname "$(dirname "$(cd "$(dirname "$0")" && pwd)")")
@@ -71,7 +81,11 @@ if [ "$server_region" == "china" ]; then
         if [ "$VERSION_ID" == "16.04" ]; then
             echo "ubuntu 16.04"
             sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-            sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu16_sources.list /etc/apt/sources.list
+            if [ "$SYSTEM_ARCH" = "x86" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu16_sources.list /etc/apt/sources.list
+            elif [ "$SYSTEM_ARCH" = "ARM" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu-ports/ubuntu16_sources.list /etc/apt/sources.list
+            fi
             sudo sed -i "/^[^#]/ s|https\?://[^/]*\(/ubuntu[-/][^ ]*\)|$MIRROR_URL\1|g" "/etc/apt/sources.list"
             grep -v "^#" "/etc/apt/sources.list" | grep -E "(ubuntu|security)"
             echo ""
@@ -81,7 +95,11 @@ if [ "$server_region" == "china" ]; then
         elif [ "$VERSION_ID" == "18.04" ]; then
             echo "ubuntu 18.04"
             sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-            sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu18_sources.list /etc/apt/sources.list
+            if [ "$SYSTEM_ARCH" = "x86" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu18_sources.list /etc/apt/sources.list
+            elif [ "$SYSTEM_ARCH" = "ARM" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu-ports/ubuntu18_sources.list /etc/apt/sources.list
+            fi
             sudo sed -i "/^[^#]/ s|https\?://[^/]*\(/ubuntu[-/][^ ]*\)|$MIRROR_URL\1|g" "/etc/apt/sources.list"
             grep -v "^#" "/etc/apt/sources.list" | grep -E "(ubuntu|security)"
             echo ""
@@ -91,7 +109,11 @@ if [ "$server_region" == "china" ]; then
         elif [ "$VERSION_ID" == "20.04" ]; then
             echo "ubuntu 20.04"
             sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-            sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu20_sources.list /etc/apt/sources.list
+            if [ "$SYSTEM_ARCH" = "x86" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu20_sources.list /etc/apt/sources.list
+            elif [ "$SYSTEM_ARCH" = "ARM" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu-ports/ubuntu20_sources.list /etc/apt/sources.list
+            fi
             sudo sed -i "/^[^#]/ s|https\?://[^/]*\(/ubuntu[-/][^ ]*\)|$MIRROR_URL\1|g" "/etc/apt/sources.list"
             grep -v "^#" "/etc/apt/sources.list" | grep -E "(ubuntu|security)"
             echo ""
@@ -101,7 +123,11 @@ if [ "$server_region" == "china" ]; then
         elif [ "$VERSION_ID" == "22.04" ]; then
             echo "ubuntu 22.04"
             sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-            sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu22_sources.list /etc/apt/sources.list
+            if [ "$SYSTEM_ARCH" = "x86" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu22_sources.list /etc/apt/sources.list
+            elif [ "$SYSTEM_ARCH" = "ARM" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu-ports/ubuntu22_sources.list /etc/apt/sources.list
+            fi
             sudo sed -i "/^[^#]/ s|https\?://[^/]*\(/ubuntu[-/][^ ]*\)|$MIRROR_URL\1|g" "/etc/apt/sources.list"
             grep -v "^#" "/etc/apt/sources.list" | grep -E "(ubuntu|security)"
             echo ""
@@ -111,7 +137,11 @@ if [ "$server_region" == "china" ]; then
         elif [ "$VERSION_ID" == "24.04" ]; then
             echo "ubuntu 24.04"
             sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
-            sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu24_sources.list /etc/apt/sources.list
+            if [ "$SYSTEM_ARCH" = "x86" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu/ubuntu24_sources.list /etc/apt/sources.list
+            elif [ "$SYSTEM_ARCH" = "ARM" ]; then
+                sudo cp $DIR_PATH/ConfigFiles/linux/ubuntu-ports/ubuntu24_sources.list /etc/apt/sources.list
+            fi
             sudo sed -i "/^[^#]/ s|https\?://[^/]*\(/ubuntu[-/][^ ]*\)|$MIRROR_URL\1|g" "/etc/apt/sources.list"
             grep -v "^#" "/etc/apt/sources.list" | grep -E "(ubuntu|security)"
             echo ""
