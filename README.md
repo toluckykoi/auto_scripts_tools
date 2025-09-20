@@ -75,6 +75,7 @@ auto_scripts_tools → main$ tree -L 1
 ├── Python_Correlation                   // Python 相关源码
 ├── README.md
 ├── main.sh                              // auto_scripts_tools 便捷主入口函数(直接执行即可)
+├── luckykoi_go.sh                       // 便捷执行脚本
 ├── Ros_Correlation                      // Ros 相关
 └── Server_Patrol_Script                 // 服务器巡检脚本
 ```
@@ -92,9 +93,8 @@ auto_scripts_tools → main$ tree -L 1
    
    # Gitee
    git clone https://gitee.com/toluckykoi/auto_scripts_tools.git
-   
    ```
-
+   
 2. **环境依赖安装：(只有在运行 Python 写的工具时需要安装)**
 
    ```shell
@@ -113,6 +113,20 @@ auto_scripts_tools → main$ tree -L 1
    ```
 
    
+
+## 便捷执行
+
+一键快捷操作命令:
+
+```shell
+# 快速更换系统镜像源:
+
+
+# 快速设置pip加速源:
+
+```
+
+
 
 ## 其他说明
 

@@ -48,7 +48,7 @@ if [ $# == 0 ]; then
 8.华为云镜像站: https://mirrors.huaweicloud.com
 9.网易云镜像站: https://mirrors.163.com
 10.移动云镜像站: https://mirrors.cmecloud.cn"
-    read -ep "即将更新系统软件源，请选择合适的加速源地址：" choice
+    read -ep "即将更新系统软件源，请选择合适的加速源地址(1~10)：" choice
     case $choice in
         1) MIRROR_URL="https://mirrors.tuna.tsinghua.edu.cn";;
         2) MIRROR_URL="https://mirrors.ustc.edu.cn";;
