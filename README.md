@@ -120,10 +120,14 @@ auto_scripts_tools → main$ tree -L 1
 
 ```shell
 # 快速更换系统镜像源:
-
+curl -fsSL https://gitee.com/toluckykoi/auto_scripts_tools/raw/main/luckykoi_go.sh -o luckykoi_go.sh && chmod +x luckykoi_go.sh && ./luckykoi_go.sh source
+# 或
+wget -qO luckykoi_go.sh https://gitee.com/toluckykoi/auto_scripts_tools/raw/main/luckykoi_go.sh && chmod +x luckykoi_go.sh && ./luckykoi_go.sh source
 
 # 快速设置pip加速源:
-
+curl -fsSL https://gitee.com/toluckykoi/auto_scripts_tools/raw/main/luckykoi_go.sh | bash -s pip
+# 或
+wget -qO- https://gitee.com/toluckykoi/auto_scripts_tools/raw/main/luckykoi_go.sh | bash -s pip
 ```
 
 
