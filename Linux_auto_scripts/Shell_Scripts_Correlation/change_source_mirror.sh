@@ -11,57 +11,60 @@
 # echo "子脚本第二个参数: $2"
 # echo "子脚本所有参数: $*"
 
+ID=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
+VERSION_ID=$(cat /etc/os-release | grep "^VERSION_ID=" | awk -F '=' '{print $2}' | awk -F '"' '{print $2}')
+DIR_PATH=$(dirname "$(dirname "$(cd "$(dirname "$0")" && pwd)")")
+
+case "$ID" in
+    ubuntu|debian|fedora|centos)
+        echo "当前系统 ($ID) 受支持。"
+        ;;
+    *)
+        echo "错误：暂不支持的系统类型 '$ID'。仅支持 Ubuntu、Debian、Fedora 或 CentOS。"
+        exit 1
+        ;;
+esac
+
 if command -v apt >/dev/null 2>&1; then
     software_manager=apt
 elif command -v yum >/dev/null 2>&1; then
     software_manager=yum
 else
-    echo "未检测到apt、yum或dnf，请手动安装依赖"
+    echo "未检测到apt, yum或dnf软件包安装工具"
     exit 1
 fi
-
-ARCH=$(uname -m)
-if [[ $ARCH == "x86_64" ]] || [[ $ARCH == "i386" ]] || [[ $ARCH == "i686" ]]; then
-    SYSTEM_ARCH="x86"
-elif [[ $ARCH == "aarch64" ]] || [[ $ARCH == "arm"* ]]; then
-    SYSTEM_ARCH="ARM"
-else
-    echo "未知架构: $ARCH"
-    exit 1
-fi
-
-ID=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
-VERSION_ID=$(cat /etc/os-release | grep "^VERSION_ID=" | awk -F '=' '{print $2}' | awk -F '"' '{print $2}')
-DIR_PATH=$(dirname "$(dirname "$(cd "$(dirname "$0")" && pwd)")")
 
 if [ $# == 0 ]; then
     server_region="china"
-    echo "大学软件镜像站: 
-1.清华大学镜像站: https://mirrors.tuna.tsinghua.edu.cn
-2.中科大学镜像站: https://mirrors.ustc.edu.cn
-3.南京大学镜像站: https://mirror.nju.edu.cn
-4.北京大学镜像站: https://mirrors.pku.edu.cn
-5.上海大学镜像站: https://mirrors.sjtug.sjtu.edu.cn"
-    echo -e "\n企业软件镜像站: 
-6.阿里云镜像站: https://mirrors.aliyun.com
-7.腾讯云镜像站: https://mirrors.tencent.com
-8.华为云镜像站: https://mirrors.huaweicloud.com
-9.网易云镜像站: https://mirrors.163.com
-10.移动云镜像站: https://mirrors.cmecloud.cn"
-    read -ep "即将更新系统软件源，请选择合适的加速源地址(1~10)：" choice
+    printf "%-65s %s\n" \
+    "大学软件镜像站:" "企业软件镜像站:" \
+    "1.清华大学镜像站: https://mirrors.tuna.tsinghua.edu.cn" "6.阿里云镜像站: https://mirrors.aliyun.com" \
+    "2.中科大学镜像站: https://mirrors.ustc.edu.cn" "7.腾讯云镜像站: https://mirrors.tencent.com" \
+    "3.南京大学镜像站: https://mirror.nju.edu.cn" "8.华为云镜像站: https://mirrors.huaweicloud.com" \
+    "4.北京大学镜像站: https://mirrors.pku.edu.cn" "9.网易云镜像站: https://mirrors.163.com" \
+    "5.浙江大学镜像站: https://mirrors.zju.edu.cn"  "10.移动云镜像站: https://mirrors.cmecloud.cn" \
+    "系统官方镜像站:" \  \
+    "a.Ubuntu官方: http://archive.ubuntu.com" \  \
+    "b.Debian官方: http://deb.debian.org" \  \
+    "c.Fedora官方: https://mirrors.fedoraproject.org"
+
+    read -ep "即将更新系统软件源，请选择合适的加速源地址：" choice
     case $choice in
         1) MIRROR_URL="https://mirrors.tuna.tsinghua.edu.cn";;
         2) MIRROR_URL="https://mirrors.ustc.edu.cn";;
         3) MIRROR_URL="https://mirror.nju.edu.cn";;
         4) MIRROR_URL="https://mirrors.pku.edu.cn";;
-        5) MIRROR_URL="https://mirrors.sjtug.sjtu.edu.cn";;
+        5) MIRROR_URL="https://mirrors.zju.edu.cn";;
         6) MIRROR_URL="https://mirrors.aliyun.com";;
         7) MIRROR_URL="https://mirrors.tencent.com";;
         8) MIRROR_URL="https://mirrors.huaweicloud.com";;
         9) MIRROR_URL="https://mirrors.163.com";;
         10) MIRROR_URL="https://mirrors.cmecloud.cn";;
+        a) MIRROR_URL="http://archive.ubuntu.com";;
+        b) MIRROR_URL="http://deb.debian.org";;
+        c) MIRROR_URL="https://mirrors.fedoraproject.org";;
         *)
-        echo -e "无效选择，请输入 1 到 10 之间的数字."
+        echo -e "无效选择."
         ;;
     esac
 
