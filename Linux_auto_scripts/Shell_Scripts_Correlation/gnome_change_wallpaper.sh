@@ -4,7 +4,7 @@
 # @Time        : 2025-09-20 22:55:16
 # @version     : bash
 # @Update time :
-# @Description : gnome 桌面壁纸自动切换
+# @Description : gnome 桌面壁纸自动切换(可随机切换和顺序切换，要保证/home/xxx/Pictures/wallpapers/路径下有壁纸图片)
 
 
 WALLPAPER_DIR="$HOME/Pictures/wallpapers/"
@@ -23,9 +23,20 @@ if [ ! -d "$WALLPAPER_DIR" ]; then
     fi
 fi
 
+image_count=$(find "$WALLPAPER_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.bmp" -o -iname "*.webp" \) | wc -l)
+if [ "$image_count" -gt 0 ]; then
+    echo "目录中存在 $image_count 个图片文件"
+else
+    echo "错误: 目录 $WALLPAPER_DIR 中没有找到图片文件"
+    exit 1
+fi
+
 if [[ "$1" == "--sequential" || "$1" == "-s" ]]; then
     MODE="sequential"
 elif [[ "$1" == "--random" || "$1" == "-r" ]]; then
+    MODE="random"
+else
+    echo "未传入模式参数，使用默认模式: 随机模式"
     MODE="random"
 fi
 

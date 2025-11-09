@@ -57,6 +57,7 @@ sudo apt-get -y install \
     libavcodec-dev libavformat-dev libswscale-dev libgtk-3-dev \
     libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev pkg-config \
     || { echo "依赖安装失败"; exit 1; }
+sudo cp -r /usr/local/include/eigen3/* /usr/include/
 
 cd $HOME || { echo "无法进入 \$HOME"; exit 1; }
 

@@ -25,6 +25,16 @@ case "$ID" in
         ;;
 esac
 
+ARCH=$(uname -m)
+if [[ $ARCH == "x86_64" ]] || [[ $ARCH == "i386" ]] || [[ $ARCH == "i686" ]]; then
+    SYSTEM_ARCH="x86"
+elif [[ $ARCH == "aarch64" ]] || [[ $ARCH == "arm"* ]]; then
+    SYSTEM_ARCH="ARM"
+else
+    echo "未知架构: $ARCH"
+    exit 1
+fi
+
 if command -v apt >/dev/null 2>&1; then
     software_manager=apt
 elif command -v yum >/dev/null 2>&1; then
