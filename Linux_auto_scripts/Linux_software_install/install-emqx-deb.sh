@@ -14,6 +14,7 @@ sudo systemctl start emqx
 echo ""
 echo "emqx 安装完成，请在防火墙中放开以下端口："
 echo "
+    EMQX后台管理端口: 18083
     TCP端口：1883
     SSL端口：8883
     WebSocket端口：8083
