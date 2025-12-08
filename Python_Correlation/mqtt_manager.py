@@ -37,10 +37,10 @@ class EnhancedMQTTClient:
     def __init__(
         self,
         host: str,
-        port: int = None,
-        username: str = None,
-        password: str = None,
-        client_id: str = None,
+        port: Optional[int] = None,
+        username: Optional[str] = None,
+        password: Optional[str] = None,
+        client_id: Optional[str] = None,
         websocket_path: str = "/mqtt",
         auto_reconnect: bool = True,
         reconnect_attempts: int = 5,
@@ -144,11 +144,11 @@ class EnhancedMQTTClient:
 
     def enable_tls(
         self,
-        ca_certs: str = None,
-        certfile: str = None,
-        keyfile: str = None,
+        ca_certs: Optional[str] = None,
+        certfile: Optional[str] = None,
+        keyfile: Optional[str] = None,
         tls_version: int = ssl.PROTOCOL_TLS,
-        ciphers: str = None
+        ciphers: Optional[str] = None
     ):
         """启用TLS加密"""
         if self.scheme in ["mqtts", "wss"]:
@@ -353,60 +353,3 @@ class EnhancedMQTTClient:
     def is_connected(self) -> bool:
         """连接状态"""
         return self._connect_event.is_set()
-
-
-# 示例
-if __name__ == "__main__":
-    def temperature_handler(topic: str, data: dict):
-        print(f"温度数据更新: {data['value']}℃")
-
-    def status_handler(topic: str, message: str):
-        print(f"系统状态: {message}")
-    
-    def device_handler(topic: str, message: str):
-        print(f"设备状态: {message}")
-
-    # 初始化客户端
-    client = EnhancedMQTTClient(
-        host="broker.emqx.io",
-        port=8083,
-        scheme="ws",
-        # username="admin",
-        # password="admin",
-        auto_reconnect=True,
-        reconnect_attempts=3
-    )
-
-    # 先注册处理器（此时未连接，不会立即订阅，不推荐此方法）
-    # client.add_handler("sensors/temperature", temperature_handler, qos=1)
-    
-    try:
-        # 启用TLS
-        # client.enable_tls(ca_certs="broker.emqx.io-ca.crt")
-
-        # 建立连接（连接成功后会自动订阅已注册的主题）
-        client.connect()
-        print(f"[INFO] MQTT连接状态: {client._connect_status.get()}")
-
-        # 订阅消息
-        client.add_handler("device/status", device_handler, qos=0)
-        client.add_handler("sensors/temperature", temperature_handler, qos=1)
-        client.add_handler("system/status", status_handler, qos=0)
-        
-        # 模拟程序耗时
-        time.sleep(2)
-
-        # 发布测试消息
-        client.publish("sensors/temperature", {"value": 25.6, "unit": "℃"})
-        client.publish("system/status", "operational")
-        client.publish("device/status", "online")
-        
-        # 保持连接并处理消息
-        while True:
-            time.sleep(1)
-            
-    except KeyboardInterrupt:
-        client.disconnect()
-    except Exception as e:
-        print(f"[ERROR] 发生错误: {str(e)}")
-        client.disconnect()
