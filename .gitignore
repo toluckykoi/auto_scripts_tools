@@ -42,3 +42,6 @@ cJSON
 .deb
 .rpm
 
+# project
+Python_Correlation/test.py
+

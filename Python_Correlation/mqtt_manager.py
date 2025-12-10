@@ -37,7 +37,7 @@ class EnhancedMQTTClient:
     def __init__(
         self,
         host: str,
-        port: Optional[int] = None,
+        port: int,
         username: Optional[str] = None,
         password: Optional[str] = None,
         client_id: Optional[str] = None,
@@ -100,6 +100,7 @@ class EnhancedMQTTClient:
         self._connection_error = None
         self._stop_event = threading.Event()
         self._connect_status = queue.Queue()
+        self._topic_last_active = {}
         
         # 初始化客户端
         if self.scheme == "mqtt":
@@ -117,10 +118,7 @@ class EnhancedMQTTClient:
         else:
             raise ValueError("不支持的协议模式，请选择'mqtt', 'mqtts', 'ws', 或 'wss'")
 
-        self.client = mqtt.Client(
-            client_id=self.client_id,
-            transport=transport
-        )
+        self.client = mqtt.Client(client_id=self.client_id, transport=transport)
         self._configure_client()
 
     def _configure_client(self):
@@ -202,6 +200,7 @@ class EnhancedMQTTClient:
         try:
             # 解码消息
             payload = self._decode_payload(msg.payload)
+            self._topic_last_active[msg.topic] = time.time()
             
             # 路由消息
             for pattern, (_, handler) in self.topic_handlers.items():
@@ -212,6 +211,21 @@ class EnhancedMQTTClient:
                 print(f"[WARNING] 未注册的话题: {msg.topic}")
         except Exception as e:
             print(f"[ERROR] 消息处理失败: {str(e)}")
+
+    def is_topic_active(self, topic: str, timeout: int = 60) -> bool:
+        """
+        检查指定主题是否在最近 timeout 秒内收到过消息。
+        注意：必须是已经订阅的主题（或其子主题），且已收到至少一条消息。
+        
+        :param topic: 要检查的主题（精确匹配）
+        :param timeout: 超时时间（秒）
+        :return: True 表示活跃，False 表示不活跃或从未收到消息
+        """
+        last_time = self._topic_last_active.get(topic)
+        if last_time is None:
+            return False
+        
+        return (time.time() - last_time) <= timeout
 
     def _decode_payload(self, payload):
         """解码消息内容"""
@@ -243,11 +257,7 @@ class EnhancedMQTTClient:
         try:
             self._stop_event.clear()
             self._manual_disconnect = False
-            self.client.connect(
-                self._host,
-                self._port,
-                keepalive=self.keepalive
-            )
+            self.client.connect(self._host, self._port, keepalive=self.keepalive)
             self.client.loop_start()
             
             if not self._connect_event.wait(timeout):
@@ -302,13 +312,13 @@ class EnhancedMQTTClient:
         else:
             print(f"[INFO] 注册话题预处理，将在连接成功后订阅: {topic}")
 
-    def publish(self, topic: str, payload: Any, qos: int = 0, retain: bool = False) -> mqtt.MQTTMessageInfo:
+    def publish(self, topic: str, payload: Any, qos: int = 0, retain: bool = False) -> Optional[mqtt.MQTTMessageInfo]:
         """发布消息"""
         if not self.is_connected:
             if self.auto_reconnect:
                 self.offline_queue.put((topic, payload))
                 print("[WARNING] 当前未连接，消息已加入离线队列")
-                return
+                return None
             raise PublishFailedError("未连接到MQTT服务器")
 
         # JSON序列化
