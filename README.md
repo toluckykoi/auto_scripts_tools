@@ -247,8 +247,8 @@ print("Database restored successfully.")
 #### Linux 相关：
 
 + 服务器巡检脚本实现
-+ 各类软件安装：emqx、内网穿透、jupyter、nodejs、nvm、virtualenv、nvidia-container-toolkit
-+ 实现的一键脚本：修改linux主机名、conda初始化、crontab定时任务、py虚拟环境部署、虚拟内存管理、系统信息查看、虚拟串口创建
++ 各类软件安装：emqx、内网穿透、jupyter、nodejs、nvm、virtualenv、nvidia-container-toolkit、RustDesk
++ 实现的一键脚本：修改linux主机名、conda初始化、crontab定时任务、py虚拟环境部署、虚拟内存管理、系统信息查看、虚拟串口创建、网络优先级设置
 + Linux 一键初始化脚本实现
 + 一键更换Linux系统镜像源，加速软件安装
 

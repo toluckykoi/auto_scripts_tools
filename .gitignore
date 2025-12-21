@@ -39,8 +39,8 @@ cJSON
 
 
 # Linux
-.deb
-.rpm
+*.deb
+*.rpm
 
 # project
 Python_Correlation/test.py

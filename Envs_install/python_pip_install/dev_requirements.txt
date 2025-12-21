@@ -27,7 +27,7 @@ pyyaml
 glogcenter
 colorlog
 
-UI
+# UI
 PySide2
 PySide6
 
