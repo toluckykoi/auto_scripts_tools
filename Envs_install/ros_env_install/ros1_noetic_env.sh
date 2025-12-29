@@ -47,6 +47,7 @@ sudo apt install -y ros-$ROS_DISTRO-rtcm-msgs
 sudo apt install -y ros-$ROS_DISTRO-nmea-navsat-driver ros-noetic-geographic-info ros-noetic-gps-common
 sudo apt install -y ros-$ROS_DISTRO-catkin-virtualenv ros-noetic-imu-tools
 sudo apt install -y ros-$ROS_DISTRO-robot-pose-ekf
+sudo apt install -y ros-${ROS_DISTRO}-image-view2
 sudo apt install -y ros-${ROS_DISTRO}-rviz-visual-tools
 sudo apt install -y ros-${ROS_DISTRO}-jsk-rviz-plugins
 
