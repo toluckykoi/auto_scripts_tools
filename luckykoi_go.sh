@@ -21,6 +21,20 @@ if [ -d "$WORKSPACE_DIR" ]; then
     fi
 fi
 
+if ! command -v git &> /dev/null; then
+    echo "Git 未安装，正在尝试安装..."
+    if command -v apt &> /dev/null; then
+        sudo apt update && sudo apt install -y git
+    elif command -v yum &> /dev/null; then
+        sudo yum install -y git
+    elif command -v dnf &> /dev/null; then
+        sudo dnf install -y git
+    else
+        echo "无法找到支持的包管理器，请手动安装 Git 后重试。"
+        exit 1
+    fi
+fi
+
 cd /tmp
 attempt=1
 while [ $attempt -le $MAX_RETRIES ]; do
