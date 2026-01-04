@@ -40,6 +40,7 @@ sudo apt install -y ros-melodic-slam-karto*
 sudo apt install -y ros-melodic-ar-track-alvar
 sudo apt install -y ros-melodic-octomap*
 sudo apt install -y ros-melodic-rgbd-launch
+sudo apt install -y ros-${ROS_DISTRO}-image-view2
 sudo apt install -y ros-${ROS_DISTRO}-rviz-visual-tools
 sudo apt install -y ros-${ROS_DISTRO}-jsk-rviz-plugins
 
