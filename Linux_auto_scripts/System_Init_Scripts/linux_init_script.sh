@@ -108,7 +108,7 @@ echo $ID $VERSION_ID $architecture
 current_script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 current_script_path1="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 current_script_path="$current_script_path/logs"
-[ ! -d "$current_script_path" ] && mkdir -p "$current_script_path"
+[ ! -d "$current_script_path" ] && sudo -u "$(logname)" mkdir -p "$current_script_path"
 RESULTFILE="$current_script_path/Linux_Init_Log-`date +%Y%m%d`.txt"
 Linux_auto_scripts_path=$(dirname "$(cd "$(dirname "$0")" && pwd)")
 
@@ -664,12 +664,12 @@ function user_dirs_update() {
 
     if [ ! -f "$CONFIG_FILE" ]; then
         echo "$CONFIG_FILE 不存在，正在生成默认配置..."
-        xdg-user-dirs-update
+        sudo -u "$(logname)" xdg-user-dirs-update
     fi
 
     if [[ "$HOME/下载" == *"/下载"* ]] || [[ "$HOME/文档" == *"/文档"* ]]; then
         echo "用户目录存在中文路径，将修改为英文路径！"
-        xdg-user-dirs-gtk-update
+        sudo -u "$(logname)" xdg-user-dirs-gtk-update
         echo "用户目录更新完成."
     fi
 }
@@ -856,7 +856,7 @@ esac
 }
 
 
-Init | tee $RESULTFILE
+Init | sudo -u "$(logname)" tee $RESULTFILE
 echo ""
 source ~/.bashrc
 echo "系统配置完成，如修改过太多配置建议重启一次系统使配置更好生效！"
