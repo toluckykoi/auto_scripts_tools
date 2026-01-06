@@ -14,10 +14,10 @@ init_script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 init_script_dir="$(dirname "$init_script_dir")"
 echo "The Init Script Dir is: $init_script_dir"
 
+cd $init_script_dir/Linux_auto_scripts/System_Init_Scripts
 source "$init_script_dir/Linux_auto_scripts/System_Init_Scripts/linux_init_script.sh" > /dev/null <<EOF
 q
 EOF
-init_script_start
 cn_yuan
 install_base_software
 if [ $? -eq 0 ];then
