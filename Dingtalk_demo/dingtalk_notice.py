@@ -1,3 +1,16 @@
+#!/usr/bin/env python
+# -*-coding:utf-8 -*-
+
+'''
+# @Author      ：幸运锦鲤
+# @Time        : 2026-02-01 23:56:39
+# @version     : python3
+# @Update time :
+# @Description : 钉钉通知 Lib
+# @Function    : 
+'''
+
+
 import requests
 import time
 import urllib

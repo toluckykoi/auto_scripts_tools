@@ -7,7 +7,7 @@
 # @Description : cJSON 编译安装
 
 
-REPO_URL="https://git.toluckykoi.com/library/cJSON.git"
+REPO_URL="https://gitee.com/inacceleration/cJSON.git"
 PROJECT_NAME="cJSON"
 CLEAN_BUILD=false
 RECLONE=false
