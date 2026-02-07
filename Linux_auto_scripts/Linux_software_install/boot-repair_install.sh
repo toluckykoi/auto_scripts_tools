@@ -12,8 +12,8 @@ wget -c http://web.808066.xyz:200/d/Linux_software/system_dependency/boot-repair
 unzip boot-repair.zip
 
 sudo apt install -y mokutil
-sudo apt install -y ./glade2script_3.2.4~ppa27_all.deb
 sudo apt install -y ./glade2script-python2_3.2.4~ppa27_all.deb
 sudo apt install -y ./glade2script-python3_3.2.4~ppa27_all.deb
+sudo apt install -y ./glade2script_3.2.4~ppa27_all.deb
 sudo apt install -y ./boot-sav_4ppa2081_all.deb
 sudo apt install -y ./boot-repair_4ppa2081_all.deb
