@@ -7,6 +7,7 @@
 # @Description : 自动挂载磁盘
 
 
+[ $(id -u) -gt 0 ] && echo "权限不足,请用root用户执行此脚本,不是root用户请使用 sudo xxx.sh 执行" && exit 1
 set -euo pipefail
 
 # 必须用 sudo 运行，但记录原始用户
@@ -162,14 +163,14 @@ if [[ "$fstype" == "vfat" ]] || [[ "$fstype" == "ntfs" ]] || [[ "$fstype" == "" 
 else
     # ext4/xfs/btrfs 等原生文件系统
     echo "ext4/xfs/btrfs"
-    mount_opts="uid=$ORIGINAL_UID,gid=$ORIGINAL_GID"
+    mount_opts=""
 fi
 
 echo $fstype
 echo "以 $ORIGINAL_USER 权限挂载 $target_partition 到 $mount_point..."
 mount -t "$fstype" -o "$mount_opts" "$target_partition" "$mount_point"
 
-echo "挂载成功！普通用户 $ORIGINAL_USER 可读写."
+echo "挂载成功！后续为普通用户 $ORIGINAL_USER 设置可读写."
 
 # === 第七步：fstab（谨慎）===
 echo -e "\n是否加入 /etc/fstab（开机自动挂载）？(y/N)"
@@ -200,6 +201,9 @@ if [[ "$add_fstab" =~ ^[Yy]$ ]]; then
         echo "条目已存在."
     fi
 fi
+
+# === 第八步：权限（为了普通用户读写） ===
+sudo chown $ORIGINAL_USER:$ORIGINAL_USER $mount_point -R
 
 echo -e "\n完成！验证权限："
 echo "挂载点: $mount_point"
