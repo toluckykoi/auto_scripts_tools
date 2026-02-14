@@ -490,32 +490,77 @@ function install_bt() {
     BT_PARAM=1
     echo ""; echo ""
     echo "####################安装宝塔面板####################"
-    # 宝塔降级?
-    #  mkdir -p /root/server_init/bt && cd /root/server_init/bt
-    #  wget http://download.bt.cn/install/update/LinuxPanel-7.7.0.zip
-    #  unzip LinuxPanel-7.7.0.zip
-    if [ "$software_manager" == "apt" ]; then
-        echo "Debian系列宝塔安装脚本执行中..."
-        wget -O install.sh https://download.bt.cn/install/install_lts.sh && sudo bash install.sh ed8484bec <<EOF
-y
-EOF
-        if [ $? -eq 0 ]; then echo "宝塔安装成功"; else echo "宝塔安装失败"; fi
+    echo ""
 
-    elif [ "$software_manager" == "yum" ]; then
-        echo "CentOS系列宝塔安装脚本执行中..."
-        yum install -y wget && wget -O install.sh https://download.bt.cn/install/install_lts.sh && bash install.sh ed8484bec <<EOF
-y
-EOF
-        if [ $? -eq 0 ]; then echo "宝塔安装成功"; else echo "宝塔安装失败"; fi
+    while true; do
+        # 版本选择菜单
+        echo "========================================"
+        echo "         宝塔面板版本选择菜单"
+        echo "========================================"
+        echo "1) 正式版：11.5.0"
+        echo "2) 稳定版：10.0.0"
+        echo "--- 历史版本 ---"
+        echo "3) 9.6.0（正式版）"
+        echo "4) 9.5.0（正式版）"
+        echo "5) 9.0.0（稳定版）"
+        echo "0) 退出"
+        echo "========================================"
+        echo -n "请选择版本 [0-5]: "
+        read -r choice
 
-    else
-        echo "万能安装脚本执行中..."
-        url=https://download.bt.cn/install/install_lts.sh;if [ -f /usr/bin/curl ];then curl -sSO $url;else wget -O install_lts.sh $url;fi;bash install_lts.sh ed8484bec <<EOF
+        # 根据选择执行对应命令
+        case "$choice" in
+            1)
+                version="11.5.0"
+                echo ">>> 正在安装正式版 ${version} ..."
+                if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_panel.sh;else wget -O install_panel.sh https://download.bt.cn/install/install_panel.sh;fi;bash install_panel.sh ed8484bec <<EOF
 y
 EOF
-        if [ $? -eq 0 ]; then echo "宝塔安装成功"; else echo "宝塔安装失败"; fi
-        
-    fi
+                break
+                ;;
+            2)
+                version="10.0.0"
+                echo ">>> 正在安装稳定版 ${version} ..."
+                url=https://download.bt.cn/install/installStable.sh;if [ -f /usr/bin/curl ];then curl -sSO $url;else wget -O installStable.sh $url;fi;bash installStable.sh ed8484bec <<EOF
+y
+EOF
+                break
+                ;;
+            3)
+                version="9.6.0"
+                echo ">>> 正在安装正式版 ${version} ..."
+                if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_nearest.sh;else wget -O install_nearest.sh https://download.bt.cn/install/install_nearest.sh;fi;bash install_nearest.sh latest960 <<EOF
+y
+EOF
+                break
+                ;;
+            4)
+                version="9.5.0"
+                echo ">>> 正在安装正式版 ${version} ..."
+                if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_second_nearest.sh;else wget -O install_second_nearest.sh https://download.bt.cn/install/install_second_nearest.sh;fi;bash install_second_nearest.sh latest950 <<EOF
+y
+EOF
+                break
+                ;;
+            5)
+                version="9.0.0"
+                echo ">>> 正在安装稳定版 ${version} ..."
+                if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_second_nearest.sh;else wget -O install_second_nearest.sh https://download.bt.cn/install/install_second_nearest.sh;fi;bash install_second_nearest.sh latest950 <<EOF
+y
+EOF
+                break
+                ;;
+            0)
+                echo "已退出"
+                exit 0
+                ;;
+            *)
+                echo "错误：无效选择，请输入 0-5 之间的数字"
+                echo ""
+                ;;
+        esac
+    done
+
 }
 
 # 5、虚拟内存设置
