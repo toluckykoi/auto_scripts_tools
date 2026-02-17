@@ -763,170 +763,326 @@ function desktop_software_install() {
 
 
 function procedure() {
-clear
-echo -e "————————————————————————————————————————————————————
-  \033[1m       Linux_Init_Script\033[0m
-  \033[32m 分步骤初始化进行中，请选择需要初始化的选项......\033[0m
-————————————————————————————————————————————————————
-1. ◎ 修改时间将 UTC 时间转换为 CST 时间
-2. ◎ debian sudo 初始化
-3. ◎ docker pull 加速
-4. ◎ 系统镜像源更换为国内镜像源
-5. ◎ 系统基础软件安装
-6. ◎ 替换 bashrc 文件
-7. ◎ 修改系统级配置(服务器专用)
-8. ◎ 安装 docker 
-9. ◎ 安装宝塔面板
-10. ◎ 设置虚拟内存为4G
-11. ◎ neofetch 安装
-12. ◎ 配置防火墙
-13. ◎ Centos 7 停服手动更换源
-14. ◎ 服务器设置禁 ping
-q. ◎ 退出安装"
-sleep 0.2
-read -ep  "请输入序号并回车：" num
-case $num in
-1 ) (date_info);;
-2 ) (debian_sudo);;
-3 ) (docker_speed);;
-4 ) (cn_yuan);;
-5 ) (install_base_software);;
-6 ) (config_bashrc_procedure);;
-7 ) (config_system);;
-8 ) (install_docker);;
-9 ) (install_bt);;
-10 ) (virtual_memory);;
-11 ) (neofetch_install);;
-12 ) (firewall_install);;
-13 ) (centos7_yuan);;
-14 ) (enjoin_ping);;
-q ) (exit);;
-*) (procedure);;
-esac
+    while true; do
+        clear
+        echo -e "————————————————————————————————————————————————————"
+        echo -e "  \033[1m       Linux_Init_Script\033[0m"
+        echo -e "  \033[32m 分步骤初始化进行中，请选择需要初始化的选项......\033[0m"
+        echo -e "————————————————————————————————————————————————————"
+        echo " 1. ◎ 修改时间：UTC → CST"
+        echo " 2. ◎ Debian sudo 初始化"
+        echo " 3. ◎ Docker pull 加速配置"
+        echo " 4. ◎ 更换系统镜像源（国内/国外自动判断）"
+        echo " 5. ◎ 安装基础软件包"
+        echo " 6. ◎ 替换指定用户的 .bashrc 配置"
+        echo " 7. ◎ 修改系统级配置（仅服务器）"
+        echo " 8. ◎ 安装 Docker 容器"
+        echo " 9. ◎ 安装宝塔面板（BT）"
+        echo "10. ◎ 设置 4GB 虚拟内存（swap）"
+        echo "11. ◎ 安装 neofetch（系统信息展示）"
+        echo "12. ◎ 配置防火墙（开放 32200 端口）"
+        echo "13. ◎ CentOS 7 停服后手动换源"
+        echo "14. ◎ 服务器启用禁 ping"
+        echo " q. ◎ 返回主菜单 / 退出"
+        echo -e "————————————————————————————————————————————————————"
+        
+        sleep 0.5
+        read -ep "请选择操作编号 [1-14 或 q]: " num
+
+        case "$num" in
+            1)  date_info ;;
+            2)  debian_sudo ;;
+            3)  docker_speed ;;
+            4)  cn_yuan ;;
+            5)  install_base_software ;;
+            6)  config_bashrc_procedure ;;
+            7)  config_system ;;
+            8)  install_docker ;;
+            9)  install_bt ;;
+            10) virtual_memory ;;
+            11) neofetch_install ;;
+            12) firewall_install ;;
+            13) centos7_yuan ;;
+            14) enjoin_ping ;;
+            q|Q) 
+                echo "已退出分步初始化模式。"
+                return 0
+                ;;
+            *)
+                echo "无效选项：'$num'，请重新选择。"
+                sleep 1
+                ;;
+        esac
+
+        break
+    done
 }
 
 function init_all() {
-clear
-echo -e "————————————————————————————————————————————————————
-  \033[1m       Linux_Init_Script\033[0m
-  \033[32m   初始化程序正在运行中......\033[0m
-————————————————————————————————————————————————————"
-date_info
-debian_sudo
-cn_yuan
-install_base_software
-config_system
-config_bashrc
-virtual_memory
-sleep 0.2
-read -ep  "是否进行安装宝塔面板？(如果安装了宝塔将不会自动安装 docker，会有冲突！) (yes/no): " letter
-if [ "$letter" == "yes" ]; then
-    install_bt
-else
+    clear
+    echo -e "————————————————————————————————————————————————————"
+    echo -e "  \033[1m       Linux_Init_Script\033[0m"
+    echo -e "  \033[32m   完整初始化（服务器专用）即将执行以下操作：\033[0m"
+    echo -e "————————————————————————————————————————————————————"
+    echo "  1. 将系统时间设为 CST（如需）"
+    echo "  2. 初始化 Debian 系统的 sudo 配置（如适用）"
+    echo "  3. 更换软件源为国内镜像（根据 IP 自动判断）"
+    echo "  4. 安装基础软件包（vim/git/tmux/openssh-server 等）"
+    echo "  5. 创建新用户并配置 SSH（禁用 root 登录，改用 32200 端口）"
+    echo "  6. 替换 .bashrc 配置文件"
+    echo "  7. 设置 4GB 虚拟内存（若未启用 swap）"
+    echo "  8. 询问是否安装宝塔面板或 Docker"
+    echo "  9. 配置防火墙（安装了宝塔不自动配置）"
+    echo " 10. 启用禁 ping（提升安全性）"
+    echo " 11. 安装 neofetch 展示系统信息"
+    echo -e "————————————————————————————————————————————————————"
+
+    sleep 0.5
+    while true; do
+        echo -n "是否确认执行完整服务器初始化？(yes/no): "
+        read confirm
+        case "${confirm,,}" in
+            yes|y)
+                break
+                ;;
+            no|n)
+                echo "已取消完整初始化。"
+                return 0
+                ;;
+            "")
+                echo "输入不能为空，请输入 yes 或 no。"
+                ;;
+            *)
+                echo "无效输入，请输入 yes 或 no。"
+                ;;
+        esac
+    done
+
+    # ========== 正式开始执行 ==========
+    date_info
+    debian_sudo
+    cn_yuan
+    install_base_software
+    config_system
+    config_bashrc
+    virtual_memory
+
     sleep 0.2
-    read -ep  "是否进行安装 Docker？(yes/no): " letter2
-    if [ "$letter2" == "yes" ]; then
-        FLAG_DOCKER=1
-        install_docker
+    read -ep "是否进行安装宝塔面板？(如果安装了宝塔将不会自动安装 docker，会有冲突！) (yes/no): " letter
+    if [ "$letter" == "yes" ]; then
+        install_bt
     else
-        echo "跳过安装 Docker！"
+        sleep 0.2
+        read -ep "是否进行安装 Docker？(yes/no): " letter2
+        if [ "$letter2" == "yes" ]; then
+            FLAG_DOCKER=1
+            install_docker
+        else
+            echo "跳过安装 Docker！"
+        fi
     fi
-fi
-firewall_install
-enjoin_ping
-neofetch_install
+
+    firewall_install
+    enjoin_ping
+    neofetch_install
 }
 
 function desktop_init(){
-clear
-echo -e "————————————————————————————————————————————————————
-  \033[1m       Linux_Init_Script\033[0m
-  \033[32m   桌面初始化程序正在运行中......\033[0m
-————————————————————————————————————————————————————"
-export LANG=en_US
-user_dirs_update
-cn_yuan
-install_base_software
-config_bashrc_procedure
-desktop_software_install
-neofetch_install
+    clear
+    echo -e "————————————————————————————————————————————————————"
+    echo -e "  \033[1m       Linux_Init_Script\033[0m"
+    echo -e "  \033[32m   桌面初始化程序即将执行以下操作：\033[0m"
+    echo -e "————————————————————————————————————————————————————"
+    echo "  1. 更新用户目录（如将“下载”改为“Downloads”等）"
+    echo "  2. 更换系统软件源为国内镜像（自动判断是否需要进行更换）"
+    echo "  3. 安装基础软件包（如 vim\git\unzip\wget 等）"
+    echo "  4. 更新 .bashrc 配置（需手动输入目标用户名）"
+    echo "  5. 安装常用桌面软件（如 gedit\vscode 等）"
+    echo "  6. 安装 neofetch（系统信息最后展示）"
+    echo -e "————————————————————————————————————————————————————"
+
+    sleep 0.5
+    while true; do
+        echo -n "是否确认执行以上桌面初始化操作？(yes/no): "
+        read confirm
+        case "${confirm,,}" in
+            yes|y)
+                break
+                ;;
+            no|n)
+                echo "已取消桌面初始化。"
+                return 0
+                ;;
+            "")
+                echo "输入不能为空，请输入 yes 或 no。"
+                ;;
+            *)
+                echo "无效输入，请输入 yes 或 no。"
+                ;;
+        esac
+    done
+
+    export LANG=en_US
+    user_dirs_update
+    cn_yuan
+    install_base_software
+    config_bashrc_procedure
+    desktop_software_install
+    neofetch_install
 }
 
 function system_config() {
-clear
-echo -e "————————————————————————————————————————————————————
-  \033[1m       Linux_Init_Script\033[0m
-  \033[32m   初始化程序正在运行中......\033[0m
-————————————————————————————————————————————————————"
-date_info
-debian_sudo
-cn_yuan
-install_base_software
-config_system
-config_bashrc
-virtual_memory
-firewall_install
-enjoin_ping
-neofetch_install
+    clear
+    echo -e "————————————————————————————————————————————————————"
+    echo -e "  \033[1m       Linux_Init_Script\033[0m"
+    echo -e "  \033[32m   仅系统配置（服务器专用）即将执行以下操作：\033[0m"
+    echo -e "————————————————————————————————————————————————————"
+    echo "  1. 设置系统时区为 CST（如需）"
+    echo "  2. 初始化 Debian 的 sudo 配置（如适用）"
+    echo "  3. 更换软件源为国内镜像"
+    echo "  4. 安装基础软件包"
+    echo "  5. 创建新用户并加固 SSH（禁用 root 登录，端口改为 32200）"
+    echo "  6. 替换 .bashrc 配置"
+    echo "  7. 设置 4GB 虚拟内存（若未启用 swap）"
+    echo "  8. 配置防火墙（开放 32200 端口）"
+    echo "  9. 启用禁 ping"
+    echo " 10. 安装 neofetch"
+    echo -e "————————————————————————————————————————————————————"
+
+    sleep 0.5
+    while true; do
+        echo -n "是否确认执行上述系统配置？(yes/no): "
+        read confirm
+        case "${confirm,,}" in
+            yes|y)
+                break
+                ;;
+            no|n)
+                echo "已取消系统配置。"
+                return 0
+                ;;
+            "")
+                echo "输入不能为空，请输入 yes 或 no。"
+                ;;
+            *)
+                echo "无效输入，请输入 yes 或 no。"
+                ;;
+        esac
+    done
+
+    # ========== 正式执行 ==========
+    date_info
+    debian_sudo
+    cn_yuan
+    install_base_software
+    config_system
+    config_bashrc
+    virtual_memory
+    firewall_install
+    enjoin_ping
+    neofetch_install
 }
 
-function third_party(){
-clear
-echo -e "————————————————————————————————————————————————————
-  \033[1m       Linux_Init_Script\033[0m
-  \033[32m   第三方工具箱使用中......\033[0m
-————————————————————————————————————————————————————
-1. ◎ 007idc Linux 工具箱
-2. ◎ 鱼香 Ros 一键脚本
-q. ◎ 退出安装"
-sleep 0.2
-read -ep  "请输入序号并回车：" num
-case "$num" in
-[1] ) (curl -O http://linux.007idc.cn/linux.sh && chmod +x linux.sh && ./linux.sh);;
-[2] ) (wget http://fishros.com/install -O fishros && . fishros);;
-[q] ) (exit);;
-*) (third_party);;
-esac
+function third_party() {
+    while true; do
+        clear
+        echo -e "————————————————————————————————————————————————————"
+        echo -e "  \033[1m       Linux_Init_Script\033[0m"
+        echo -e "  \033[32m         第三方工具箱\033[0m"
+        echo -e "————————————————————————————————————————————————————"
+        echo " 1. ◎ 007idc Linux 工具箱"
+        echo " 2. ◎ 鱼香 ROS 一键安装脚本"
+        echo " q. ◎ 返回主菜单"
+        echo -e "————————————————————————————————————————————————————"
+
+        sleep 0.5
+        read -ep "请选择工具编号 [1-2 或 q]: " num
+        case "$num" in
+            1)
+                echo "正在下载并运行 007idc Linux 工具箱..."
+                if curl -O http://linux.007idc.cn/linux.sh && chmod +x linux.sh; then
+                    ./linux.sh
+                else
+                    echo "❌ 下载 007idc 工具箱失败，请检查网络或 URL。"
+                fi
+                ;;
+            2)
+                echo "正在下载并运行 鱼香 ROS 一键脚本..."
+                if wget -q -O fishros http://fishros.com/install; then
+                    chmod +x fishros
+                    . ./fishros
+                else
+                    echo "❌ 下载 鱼香 ROS 脚本失败，请检查网络或 URL。"
+                fi
+                ;;
+            q|Q)
+                echo "已退出第三方工具箱。"
+                return 0
+                ;;
+            *)
+                echo "无效选项：'$num'，请重新选择。"
+                sleep 1
+                continue
+                ;;
+        esac
+
+        break
+    done
 }
 
 
-function Init(){
-clear
-export LANG=en_US
-if [ "$display" == 'true' ]; then
-    env="桌面环境；请谨慎使用一键脚本！"
-else
-    env="服务器环境！"
-fi
-echo -e "————————————————————————————————————————————————————
-	\033[1m        Linux_Init_Script\033[0m
-	\033[32mLinux 一键初始化脚本 ——主菜单-version:test_0.0.5\033[0m
-	说明：请使用 root 权限运行此脚本！！！
-    检测到当前环境为：$env
-————————————————————————————————————————————————————
-1. ◎ 完整初始化 Linux (服务器专用)
-2. ◎ 只修改系统配置 (服务器专用)
-3. ◎ 初始化Linux桌面版(带桌面Linux专用)
-4. ◎ 安装 Docker
-5. ◎ 安装宝塔面板 (BT面板)
-6. ◎ 分步骤执行初始化
-7. ◎ 安装 Python3.8.8
-a. ◎ 第三方在线工具箱
-q. ◎ 退出安装"
-sleep 0.2
-read -ep  "请输入序号并回车：" num
-case "$num" in
-[1] ) (init_all);;
-[2] ) (system_config);;
-[3] ) (desktop_init);;
-[4] ) (install_docker);;
-[5] ) (install_bt);;
-[6] ) (procedure);;
-[7] ) (python3_install);;
-[a] ) (third_party);;
-[q] ) (exit);;
-*) (Init);;
-esac
+function Init() {
+    while true; do
+        clear
+        export LANG=en_US
+
+        if [ "$display" == 'true' ]; then
+            env="桌面环境；请谨慎使用一键脚本！"
+        else
+            env="服务器环境！"
+        fi
+
+        echo -e "————————————————————————————————————————————————————"
+        echo -e "        \033[1mLinux_Init_Script\033[0m"
+        echo -e "  \033[32mLinux 一键初始化脚本 —— 主菜单 (v0.0.5)\033[0m"
+        echo -e "  说明：请使用 root 权限运行此脚本！！！"
+        echo -e "  检测到当前环境为：$env"
+        echo -e "————————————————————————————————————————————————————"
+        echo " 1. ◎ 完整初始化 Linux（服务器专用）"
+        echo " 2. ◎ 仅修改系统配置（服务器专用）"
+        echo " 3. ◎ 初始化 Linux 桌面版（带 GUI 系统）"
+        echo " 4. ◎ 安装 Docker 容器"
+        echo " 5. ◎ 安装宝塔面板（BT）"
+        echo " 6. ◎ 分步骤执行初始化"
+        echo " 7. ◎ 安装 Python 3.8.8（编译安装）"
+        echo " a. ◎ 第三方在线工具箱"
+        echo " q. ◎ 退出脚本"
+        echo -e "————————————————————————————————————————————————————"
+
+        sleep 0.5
+        read -ep "请选择操作编号 [1-7, a 或 q]: " num
+
+        case "$num" in
+            1) init_all; break ;; 
+            2) system_config; break ;;
+            3) desktop_init; break ;;
+            4) install_docker; break ;;
+            5) install_bt; break ;;
+            6) procedure; break ;;
+            7) python3_install; break ;;
+            a|A) third_party; break ;;
+            q|Q)
+                echo "感谢使用 Linux 一键初始化脚本，再见！"
+                exit 0
+                ;;
+            *)
+                echo "无效选项：'$num'，请重新选择。"
+                sleep 1
+                ;;
+        esac
+
+        echo ""
+    done
 }
 
 
