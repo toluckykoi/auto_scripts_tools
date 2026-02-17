@@ -65,6 +65,9 @@ architecture=$(uname -m)
 DIR_PATH=$( cd "$( dirname "$(dirname "$(pwd)")" )" >/dev/null 2>&1 && pwd )
 random_char=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)
 
+ORIGINAL_USER=$(logname 2>/dev/null || echo "$SUDO_USER")
+USER_HOME_DIR=$(eval echo "~$ORIGINAL_USER")
+
 # 检查架构
 case "$(uname -m)" in
     x86_64)
@@ -838,6 +841,45 @@ function desktop_software_install() {
         sudo -u "$original_user" HOME="$home_dir" ./conda.sh -b -p "$home_dir/miniconda3"
         rm -f ./conda.sh
 
+        # conda 配置
+        echo "正在配置 conda..."
+        BASHRC="$USER_HOME_DIR/.bashrc"
+        CONDA_PATH="${USER_HOME_DIR}/miniconda3"
+
+        if grep -q "conda initialize" "$BASHRC"; then
+            echo "✓ .bashrc 已包含 conda initialize"
+        
+        else
+            echo "✗ .bashrc 未检测到 conda initialize，正在添加..."
+
+            CONDA_INIT_CODE=$(cat <<'EOF'
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('$CONDA_PATH/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$CONDA_PATH/etc/profile.d/conda.sh" ]; then
+        . "$CONDA_PATH/etc/profile.d/conda.sh"
+    else
+        export PATH="$CONDA_PATH/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+EOF
+)
+            CONDA_INIT_CODE="${CONDA_INIT_CODE//\$CONDA_PATH/$CONDA_PATH}"
+
+            # 添加到.bashrc末尾
+            echo "" >> "$BASHRC"
+            echo "$CONDA_INIT_CODE" >> "$BASHRC"
+            echo "" >> "$BASHRC"
+            echo "" >> "$BASHRC"
+
+            echo "✓ conda initialize 已添加到 $BASHRC"
+        fi
+
     elif [ "$software_manager" == "yum" ]; then
         echo "使用 yum 安装桌面软件（架构: $ARCH）..."
 
@@ -901,8 +943,48 @@ function desktop_software_install() {
         echo "正在下载 conda..."
         wget -q -O conda.sh "$CONDA_URL"
         echo "conda 下载成功，正在安装..."
-        chmod +x ./conda.sh && ./conda.sh
+        chmod +x ./conda.sh
+        sudo -u "$original_user" HOME="$home_dir" ./conda.sh -b -p "$home_dir/miniconda3"
         rm -f ./conda.sh
+
+        # conda 配置
+        echo "正在配置 conda..."
+        BASHRC="$USER_HOME_DIR/.bashrc"
+        CONDA_PATH="${USER_HOME_DIR}/miniconda3"
+
+        if grep -q "conda initialize" "$BASHRC"; then
+            echo "✓ .bashrc 已包含 conda initialize"
+        
+        else
+            echo "✗ .bashrc 未检测到 conda initialize，正在添加..."
+
+            CONDA_INIT_CODE=$(cat <<'EOF'
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('$CONDA_PATH/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$CONDA_PATH/etc/profile.d/conda.sh" ]; then
+        . "$CONDA_PATH/etc/profile.d/conda.sh"
+    else
+        export PATH="$CONDA_PATH/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+EOF
+)
+            CONDA_INIT_CODE="${CONDA_INIT_CODE//\$CONDA_PATH/$CONDA_PATH}"
+
+            # 添加到.bashrc末尾
+            echo "" >> "$BASHRC"
+            echo "$CONDA_INIT_CODE" >> "$BASHRC"
+            echo "" >> "$BASHRC"
+            echo "" >> "$BASHRC"
+
+            echo "✓ conda initialize 已添加到 $BASHRC"
+        fi
 
         echo "桌面端软件安装完成."
 
