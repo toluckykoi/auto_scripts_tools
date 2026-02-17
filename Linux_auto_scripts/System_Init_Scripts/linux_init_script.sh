@@ -65,6 +65,21 @@ architecture=$(uname -m)
 DIR_PATH=$( cd "$( dirname "$(dirname "$(pwd)")" )" >/dev/null 2>&1 && pwd )
 random_char=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)
 
+# 检查架构
+case "$(uname -m)" in
+    x86_64)
+        ARCH="amd64"
+        ;;
+    aarch64|arm64)
+        ARCH="arm64"
+        ;;
+    *)
+        echo "暂时不支持的 CPU 架构: $(uname -m)"
+        echo "仅支持 x86_64 (AMD64) 和 aarch64 (ARM64)"
+        return 1
+        ;;
+esac
+
 if command -v apt >/dev/null 2>&1; then
     software_manager=apt
 elif command -v yum >/dev/null 2>&1; then
@@ -733,18 +748,22 @@ function user_dirs_update() {
         fi        
     fi
     
-    CONFIG_FILE="$HOME/.config/user-dirs.dirs"
-    # echo $HOME
+    original_user=$(logname 2>/dev/null || echo "$SUDO_USER")
+    home_dir=$(eval echo "~$original_user")
+
+    CONFIG_FILE="$home_dir/.config/user-dirs.dirs"
 
     if [ ! -f "$CONFIG_FILE" ]; then
         echo "$CONFIG_FILE 不存在，正在生成默认配置..."
-        sudo -u "$(logname)" xdg-user-dirs-update
+        sudo -u "$original_user" HOME="$home_dir" xdg-user-dirs-update
     fi
 
-    if [[ "$HOME/下载" == *"/下载"* ]] || [[ "$HOME/文档" == *"/文档"* ]]; then
+    if [ -d "$home_dir/下载" ] || [ -d "$home_dir/文档" ]; then
         echo "用户目录存在中文路径，将修改为英文路径！"
-        sudo -u "$(logname)" xdg-user-dirs-gtk-update
+        sudo -u "$original_user" HOME="$home_dir" xdg-user-dirs-gtk-update
         echo "用户目录更新完成."
+    else
+        echo "用户目录不存在中文路径，无需修改."
     fi
 }
 
@@ -753,11 +772,142 @@ function desktop_software_install() {
     echo "####################桌面软件安装####################"
     cd /tmp
     if [ "$software_manager" == "apt" ]; then
-        echo "apt 软件包管理器执行中..."
+        echo "使用 apt 包管理器安装桌面软件（架构: $ARCH）..."
+
+        # apt 方式安装
+        sudo apt update
+        sudo apt install -y gedit
+
+        # deb 包方式安装（vscode/conda）
+        if [ "$ARCH" == "amd64" ]; then
+            VSCODE_URL="http://web.808066.xyz:200/d/Linux_software/%E7%BC%96%E7%A8%8B_%E5%BC%80%E5%8F%91%E8%BD%AF%E4%BB%B6/code_1.109.4-1771257466_amd64.deb"
+            CONDA_URL="http://web.808066.xyz:200/d/Linux_software/%E7%BC%96%E7%A8%8B_%E5%BC%80%E5%8F%91%E8%BD%AF%E4%BB%B6/Miniconda3-latest-Linux-x86_64.sh"
+        elif [ "$ARCH" == "arm64" ]; then
+            VSCODE_URL="http://web.808066.xyz:200/d/Linux_software/%E7%BC%96%E7%A8%8B_%E5%BC%80%E5%8F%91%E8%BD%AF%E4%BB%B6/code_1.109.4-1771257672_arm64.deb"
+            CONDA_URL="http://web.808066.xyz:200/d/Linux_software/%E7%BC%96%E7%A8%8B_%E5%BC%80%E5%8F%91%E8%BD%AF%E4%BB%B6/Miniconda3-latest-Linux-aarch64.sh"
+        fi
+
+        echo "正在下载 VSCode ($ARCH)..."
+        if wget -q -O vscode.deb "$VSCODE_URL"; then
+            echo "VSCode 下载成功，正在安装..."
+            sudo DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends ./vscode.deb
+            rm -f ./vscode.deb
+            echo "VSCode 安装完成！"
+
+            sleep 2
+            echo "正在安装 VSCode 常用插件..."
+
+            # 获取原始用户
+            original_user=$(logname 2>/dev/null || echo "$SUDO_USER")
+            home_dir=$(eval echo "~$original_user")
+            USER_DATA_DIR="$home_dir/.vscode"
+
+            # 插件列表
+            extensions=(
+                "MS-CEINTL.vscode-language-pack-zh-hans"
+                "ms-python.python"
+                "ms-python.vscode-pylance"
+                "ms-python.debugpy"
+                "ms-python.vscode-python-envs"
+                "ms-vscode.cpptools"
+                "franneck94.c-cpp-runner"
+                "twxs.cmake"
+                "ms-vscode.cmake-tools"
+                "Alibaba-Cloud.tongyi-lingma"
+                "mhutchie.git-graph"
+                "techer.open-in-browser"
+                "redhat.vscode-xml"
+                "redhat.vscode-yaml"
+                "formulahendry.code-runner"
+            )
+
+            for ext in "${extensions[@]}"; do
+                echo "→ 安装插件: $ext"
+                sudo -u "$original_user" HOME="$home_dir" \
+                    XDG_CONFIG_HOME="$home_dir/.config" \
+                    code --user-data-dir="$USER_DATA_DIR" --install-extension "$ext" --force
+            done
+        else
+            echo "VSCode 下载失败，请检查网络或 URL。"
+        fi
+
+        echo "正在下载 conda..."
+        wget -q -O conda.sh "$CONDA_URL"
+        echo "conda 下载成功，正在安装..."
+        chmod +x ./conda.sh
+        sudo -u "$original_user" HOME="$home_dir" ./conda.sh -b -p "$home_dir/miniconda3"
+        rm -f ./conda.sh
+
     elif [ "$software_manager" == "yum" ]; then
-        echo "yum 软件包管理器执行中..."
+        echo "使用 yum 安装桌面软件（架构: $ARCH）..."
+
+        # yum 方式安装
+        sudo yum update
+        sudo yum install -y gedit
+
+        # rpm 包方式安装
+         if [ "$ARCH" == "amd64" ]; then
+            VSCODE_URL="http://web.808066.xyz:200/d/Linux_software/%E7%BC%96%E7%A8%8B_%E5%BC%80%E5%8F%91%E8%BD%AF%E4%BB%B6/code-1.109.4-1771257509.el8.x86_64.rpm"
+            CONDA_URL="http://web.808066.xyz:200/d/Linux_software/%E7%BC%96%E7%A8%8B_%E5%BC%80%E5%8F%91%E8%BD%AF%E4%BB%B6/Miniconda3-latest-Linux-x86_64.sh"
+        elif [ "$ARCH" == "arm64" ]; then
+            VSCODE_URL="http://web.808066.xyz:200/d/Linux_software/%E7%BC%96%E7%A8%8B_%E5%BC%80%E5%8F%91%E8%BD%AF%E4%BB%B6/code-1.109.4-1771257718.el8.aarch64.rpm"
+            CONDA_URL="http://web.808066.xyz:200/d/Linux_software/%E7%BC%96%E7%A8%8B_%E5%BC%80%E5%8F%91%E8%BD%AF%E4%BB%B6/Miniconda3-latest-Linux-aarch64.sh"
+        fi
+
+        echo "正在下载 VSCode ($ARCH)..."
+        if wget -q -O vscode.rpm "$VSCODE_URL"; then
+            echo "VSCode 下载成功，正在安装..."
+            sudo yum localinstall -y ./vscode.rpm
+            rm -f ./vscode.rpm
+            echo "VSCode 安装完成！"
+
+            sleep 2
+            echo "正在安装 VSCode 常用插件..."
+
+            # 获取原始用户
+            original_user=$(logname 2>/dev/null || echo "$SUDO_USER")
+            home_dir=$(eval echo "~$original_user")
+            USER_DATA_DIR="$home_dir/.vscode"
+
+            # 插件列表
+            extensions=(
+                "MS-CEINTL.vscode-language-pack-zh-hans"
+                "ms-python.python"
+                "ms-python.vscode-pylance"
+                "ms-python.debugpy"
+                "ms-python.vscode-python-envs"
+                "ms-vscode.cpptools"
+                "franneck94.c-cpp-runner"
+                "twxs.cmake"
+                "ms-vscode.cmake-tools"
+                "Alibaba-Cloud.tongyi-lingma"
+                "mhutchie.git-graph"
+                "techer.open-in-browser"
+                "redhat.vscode-xml"
+                "redhat.vscode-yaml"
+                "formulahendry.code-runner"
+            )
+
+            for ext in "${extensions[@]}"; do
+                echo "→ 安装插件: $ext"
+                sudo -u "$original_user" HOME="$home_dir" \
+                    XDG_CONFIG_HOME="$home_dir/.config" \
+                    code --user-data-dir="$USER_DATA_DIR" --install-extension "$ext" --force
+            done
+        else
+            echo "VSCode 下载失败，请检查网络或 URL。"
+        fi
+
+        echo "正在下载 conda..."
+        wget -q -O conda.sh "$CONDA_URL"
+        echo "conda 下载成功，正在安装..."
+        chmod +x ./conda.sh && ./conda.sh
+        rm -f ./conda.sh
+
+        echo "桌面端软件安装完成."
+
     else
-        echo "适配中..."
+        echo "该 Linux 系统软件安装方式适配中..."
     fi
 }
 
@@ -897,7 +1047,7 @@ function desktop_init(){
     echo "  2. 更换系统软件源为国内镜像（自动判断是否需要进行更换）"
     echo "  3. 安装基础软件包（如 vim\git\unzip\wget 等）"
     echo "  4. 更新 .bashrc 配置（需手动输入目标用户名）"
-    echo "  5. 安装常用桌面软件（如 gedit\vscode 等）"
+    echo "  5. 安装常用桌面软件（如 gedit\vscode\conda 等）"
     echo "  6. 安装 neofetch（系统信息最后展示）"
     echo -e "————————————————————————————————————————————————————"
 
