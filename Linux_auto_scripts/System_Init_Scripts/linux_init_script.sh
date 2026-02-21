@@ -226,7 +226,7 @@ function install_base_software() {
     if [ "$software_manager" == "apt" ]; then
         echo "apt: install base software"
         sudo apt update
-        sudo apt upgrade -y
+        sudo DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade -y
         sleep 2
         sudo apt -y install lsb-release net-tools curl wget vim htop git unzip expect acct tar build-essential cmake gdb dos2unix tmux openssh-server gnupg2 ffmpeg
         sudo apt -y install libssl-dev libxcb-xinerama0 libglew-dev libxcb-cursor0 libxcb-cursor-dev ninja-build network-manager
