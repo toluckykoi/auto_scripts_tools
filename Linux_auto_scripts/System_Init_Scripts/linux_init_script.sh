@@ -494,13 +494,12 @@ function install_docker() {
         echo "docker容器安装完成"
     fi
 
-    # 如果上述安装失败，则尝试离线安装docker容器（待定）
-    if [ $? -eq 0 ]; then
-      echo "docker容器在线安装完成，无需下载离线安装包进行安装"
-    else
-      echo "在线docker容器安装失败，将尝试离线安装docker容器"
-    fi
-
+    # 安装 docker-compose:
+    echo "Docker-compose 现在开始安装！"
+    sudo curl -L "http://github.808066.xyz:38000/https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    echo "docker-compose 安装完成."
 }
 
 # 5、宝塔面板安装
