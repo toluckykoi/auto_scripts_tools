@@ -212,7 +212,7 @@ if [ "$server_region" == "china" ]; then
             exit 1
         fi
 
-    elif [ "$software_manager" == "yum" ] && [ $ID == '"centos"' ]; then
+    elif [ "$software_manager" == "yum" ] && [ $ID == "centos" ]; then
         if [ "$VERSION_ID" == "7" ]; then
             echo "centos 7"
             sudo cp -a /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
@@ -226,7 +226,7 @@ if [ "$server_region" == "china" ]; then
             exit 1
         fi
 
-    elif [ "$software_manager" == "yum" ] && [ $ID == '"fedora"' ]; then
+    elif [ "$software_manager" == "yum" ] && [ $ID == "fedora" ]; then
         echo "fedora"
         sudo cp -a /etc/yum.repos.d/fedora-updates.repo /etc/yum.repos.d/fedora-updates.repo.bak
         sudo cp -a /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora.repo.bak
@@ -244,7 +244,8 @@ if [ "$server_region" == "china" ]; then
         echo "已更换镜像源"
 
     else
-        echo "版本不支持！"
+        echo "版本不支持！！！"
+        echo "当前系统: $ID $VERSION_ID $software_manager"
     fi
 else
     echo "国外环境，无需配置镜像源！"
