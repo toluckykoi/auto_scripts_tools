@@ -293,6 +293,60 @@ Updated ~/.openclaw/openclaw.json
 
 最后使用"openclaw gateway restart"来重启就可以了。
 
+注意：可能设置不生效，需要修改`openclaw.json`文件来生效，修改如下：
+
+```json
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "lan",
+    "controlUi": {
+      "allowedOrigins": [
+        "http://localhost:18789",
+        "http://127.0.0.1:18789",
+        "http://192.168.120.147:18789"                      # 根据自己电脑IP地址添加
+      ],
+      "dangerouslyAllowHostHeaderOriginFallback": true,     # 需要添加
+      "allowInsecureAuth": true,                            # 需要添加
+      "dangerouslyDisableDeviceAuth": true                  # 需要添加
+    },
+```
+
+
+
+
+
+## 龙虾权限设置
+
+1. 找到一个你已经安装好的 Skill，例如：
+   - 天气查询；
+   - 知识库问答；
+   - Skills 安装教程里提到的任意一个工具；
+2. 通过对话发起一个需要调用工具的请求，例如：
+   - “帮我查一下北京明天的天气”；
+   - “帮我搜索一下最近的 OpenClaw 多 Agent 教程”；
+3. 观察机器人的行为：
+   - 如果此前它会回答“我没有权限执行此操作”，出现这个就是权限收窄的；
+   - 如果仍然出现权限相关的提示，则可以继续设置；
+
+
+
+在终端执行命令设置权限（如果出错就修改配置文件来生效）：
+
+```shell
+openclaw config set tools.profile full
+```
+
+修改`openclaw.json`文件来生效，修改如下（修改后重启）：
+
+```json
+  "tools": {
+    "profile": "full"      # 这里修改为 full
+  },
+```
+
+
+
 
 
 ## openclaw 常用命令
