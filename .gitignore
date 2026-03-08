@@ -43,6 +43,7 @@ cJSON
 *.rpm
 
 # project
+test.sh
 Python_Correlation/test.py
 Linux_auto_scripts/System_Init_Scripts/install_panel.sh
 Linux_auto_scripts/System_Init_Scripts/installStable.sh
