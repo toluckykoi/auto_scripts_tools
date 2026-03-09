@@ -76,7 +76,7 @@ function ros1_install(){
     echo "ROS1安装中..."
     gpg --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
     gpg --export C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 | sudo tee /usr/share/keyrings/ros.gpg > /dev/null
-    sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/ros.gpg] https://mirrors.ustc.edu.cn/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+    sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/ros.gpg] https://mirror.nju.edu.cn/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 
     sudo apt update
     if [ ! -d "/opt/ros/$rosversion" ]; then
@@ -108,7 +108,7 @@ function ros2_install(){
         echo "添加 ROS 2 GPG 密钥失败，更换密钥文件！"
         sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
     fi
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://mirrors.ustc.edu.cn/ros2/ubuntu $sys_codename main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] https://mirror.nju.edu.cn/ros2/ubuntu $sys_codename main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
     sudo apt update
     if [ $? -eq 0 ]; then echo "sudo apt update."; else echo "添加 ROS 2 GPG 密钥失败，请手动检查！！！" && exit 1; fi
     if [ ! -d "/opt/ros/$ros2version" ]; then
