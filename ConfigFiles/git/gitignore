@@ -1,0 +1,37 @@
+### These files should get ignored no matter where they appear.
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Git repository
+.gitee
+.github
+.gitlab
+
+# Python
+__pycache__/
+*.pyc
+
+# C++
+*.o
+*.out
+
+# ROS
+build/
+devel/
+.catkin_workspace
+src/CMakeLists.txt
+
+# Linux
+*.deb
+*.rpm
+
+# Flies
+*.bin
+*.zip
+*.tar
+*.bag

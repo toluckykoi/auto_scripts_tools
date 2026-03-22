@@ -1,0 +1,53 @@
+### These files should get ignored no matter where they appear.
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Git repository
+.gitee
+.github
+.gitlab
+
+# CMake build
+build/
+devel/
+
+# Python
+__pycache__/
+*.pyc
+
+# C++
+
+# ROS
+.catkin_workspace/
+
+# SHELL
+my_Fonts/
+
+
+# other
+fishros
+install.sh
+.txt
+logs/
+get-docker.sh
+cJSON
+
+
+# Linux
+*.deb
+*.rpm
+
+# project
+test.sh
+Python_Correlation/test.py
+Linux_auto_scripts/System_Init_Scripts/install_panel.sh
+Linux_auto_scripts/System_Init_Scripts/installStable.sh
+Linux_auto_scripts/System_Init_Scripts/installStable.sh
+Linux_auto_scripts/System_Init_Scripts/install_nearest.sh
+Linux_auto_scripts/System_Init_Scripts/install_second_nearest.sh
+

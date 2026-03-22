@@ -1,0 +1,56 @@
+-i https://mirrors.huaweicloud.com/repository/pypi/simple
+
+# UI Correlation (PyQt5特殊原因需要手动安装，需要按照这个循序安装)
+# pip install PyQt5-sip==12.15.0
+# pip install PyQt5==5.15.11
+# pip install PyQt5-tools==5.15.4.3.2
+# pip install qt5_applications
+
+# network
+requests
+
+# videos
+sounddevice
+
+# env
+envparse
+python-dotenv
+
+# processing
+jieba
+pandas
+
+# file
+pyyaml
+
+# log
+glogcenter
+colorlog
+
+# UI
+PySide2
+PySide6
+
+# opencv
+opencv-python
+opencv-contrib-python
+
+#pycan
+python-can
+cantools
+
+# Others
+pyserial
+psutil
+scipy
+geopy
+netifaces
+matplotlib
+selenium
+bs4
+comtypes
+zhdate
+weditor==0.6.4
+uiautomator2
+scikit-learn
+# dlib

@@ -1,0 +1,6 @@
+-i https://mirrors.huaweicloud.com/repository/pypi/simple
+
+# Ros
+rospkg
+rospy
+catkin_tools

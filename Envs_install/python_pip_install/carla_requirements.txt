@@ -1,0 +1,4 @@
+-i https://mirrors.huaweicloud.com/repository/pypi/simple
+
+# Carla
+carla==0.9.13
