@@ -62,3 +62,4 @@ sudo apt-get install -y libsdl1.2-dev libsdl-image1.2-dev
 sudo apt-get install -y v4l-utils
 sudo apt-get install -y liborocos-bfl-dev libnetpbm10-dev 
 sudo apt-get install -y libcoinutils-dev coinor-libclp-dev coinor-libosi-dev coinor-libcbc-dev
+sudo apt-get install -y libgoogle-glog-dev libgflags-dev libeigen3-dev
