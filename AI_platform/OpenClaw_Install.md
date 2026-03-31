@@ -364,3 +364,18 @@ openclaw doctor --fix
 openclaw logs --follow
 
 openclaw models list
+
+
+
+
+
+## 插件
+
+```markdown
+# 钉钉通知插件
+openclaw plugins update dingtalk
+
+# 微信机器人插件
+npx -y @tencent-weixin/openclaw-weixin-cli@latest install
+```
+
