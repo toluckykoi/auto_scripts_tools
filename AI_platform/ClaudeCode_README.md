@@ -104,6 +104,22 @@ claude --version
 
 ## settings.json 配置
 
+**使用cc-switch软件方式：**
+
+[cc-switch](https://github.com/farion1231/cc-switch) 是一个便捷的工具，可以快速切换 Claude Code 的 API 配置。
+
+安装  **cc-switch** ：前往 [cc-switch GitHub Releases](https://github.com/farion1231/cc-switch/releases) 页面下载最新版本的安装包。
+
+
+
+**手动编辑配置文件方式：**
+
+MiniMAX接入示例：
+
+参考官网链接：https://platform.minimaxi.com/docs/token-plan/claude-code
+
+
+
 七牛云 AI 大模型示例：
 
 ```json
@@ -148,3 +164,12 @@ claude --version
 
   公告：
   - 显示 "您正在使用七牛云 AI 大模型推理服务 🚀"
+
+
+
+
+
+## Tokens 问题
+
+免费 Token 获取（免费的是最贵的）：https://mp.weixin.qq.com/s/ndviq6SCMab2zlJAvcO7tg
+
