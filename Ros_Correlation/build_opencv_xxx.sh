@@ -17,12 +17,22 @@ fi
 
 echo "使用的 OpenCV 版本: $OPENCV_VERSION"
 sleep 2
-REPO_ZIP_URL="http://github.808066.xyz:38000/https://github.com/opencv/opencv/archive/refs/tags/${OPENCV_VERSION}.zip"
 PROJECT_NAME="opencv-${OPENCV_VERSION}"
 ZIP_NAME="${PROJECT_NAME}.zip"
 CLEAN_BUILD=false
 REDOWNLOAD=false
 JOBS=$(nproc)
+
+echo "请选择 OpenCV 源码获取方式:"
+echo "  1) 在线下载 (默认)"
+echo "  2) 使用本地文件"
+read -ep "请选择 [1/2] (默认 1): " source_choice
+
+if [ "$source_choice" = "2" ]; then
+    USE_LOCAL=true
+else
+    USE_LOCAL=false
+fi
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
@@ -68,11 +78,27 @@ if [ "$REDOWNLOAD" = true ]; then
     exit 1
 fi
 
-if [ ! -f "$ZIP_NAME" ]; then
-    echo "正在下载 OpenCV $OPENCV_VERSION 源码..."
-    wget -O "$ZIP_NAME" "$REPO_ZIP_URL" || { echo "下载失败"; exit 1; }
+if [ "$USE_LOCAL" = true ]; then
+    echo "请输入本地 OpenCV 源码压缩包路径 (zip):"
+    read -ep "本地文件路径: " local_file
+    if [ -z "$local_file" ]; then
+        echo "未输入文件路径，退出"
+        exit 1
+    fi
+    if [ ! -f "$local_file" ]; then
+        echo "本地文件不存在: $local_file"
+        exit 1
+    fi
+    echo "使用本地文件: $local_file"
+    cp "$local_file" "$ZIP_NAME"
 else
-    echo "OpenCV 压缩包已存在：$ZIP_NAME"
+    REPO_ZIP_URL="http://github.808066.xyz:38000/https://github.com/opencv/opencv/archive/refs/tags/${OPENCV_VERSION}.zip"
+    if [ ! -f "$ZIP_NAME" ]; then
+        echo "正在下载 OpenCV $OPENCV_VERSION 源码..."
+        wget -O "$ZIP_NAME" "$REPO_ZIP_URL" || { echo "下载失败"; exit 1; }
+    else
+        echo "OpenCV 压缩包已存在：$ZIP_NAME"
+    fi
 fi
 
 if [ -d "$PROJECT_NAME" ]; then
@@ -93,7 +119,9 @@ if [ "$CLEAN_BUILD" = true ]; then
 fi
 
 echo "运行 CMake 配置..."
-cmake .. || { echo "CMake 配置失败"; exit 1; }
+cmake .. \
+    -D WITH_GTK=ON \
+    || { echo "CMake 配置失败"; exit 1; }
 
 echo "使用 $JOBS 个线程进行编译..."
 make -j${JOBS} || { echo "编译失败"; exit 1; }
