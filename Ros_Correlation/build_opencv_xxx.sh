@@ -110,17 +110,20 @@ fi
 
 cd "$PROJECT_NAME" || { echo "无法进入 $PROJECT_NAME"; exit 1; }
 
-cd build || mkdir build && cd build || { echo "无法创建 build 目录"; exit 1; }
+if [ ! -d "build" ]; then
+    mkdir build || { echo "错误：无法创建 build 目录"; exit 1; }
+fi
+cd build || { echo "错误：无法进入 build 目录"; exit 1; }
 
 if [ "$CLEAN_BUILD" = true ]; then
     echo "清理 build 目录..."
-    rm -rf *
-    exit 1
+    rm -rf ./*
+    exit 0
 fi
 
 echo "运行 CMake 配置..."
 cmake .. \
-    -D WITH_GTK=ON \
+    -DWITH_GTK=ON \
     || { echo "CMake 配置失败"; exit 1; }
 
 echo "使用 $JOBS 个线程进行编译..."
