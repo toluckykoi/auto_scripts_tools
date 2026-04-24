@@ -8,6 +8,9 @@ rospkg
 rospy
 catkin_tools
 
+# ProtoBuf
+protobuf==5.27.3
+
 # Others Full
 requests
 pyyaml
