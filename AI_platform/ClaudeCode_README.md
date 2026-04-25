@@ -171,6 +171,10 @@ MiniMAX接入示例：
 
 ## Claude Code 玩法说明
 
+### Claude Code 教程
+
+链接： https://www.runoob.com/claude-code/claude-code-tutorial.html
+
 ### 斜杠命令
 
 /help
