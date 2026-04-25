@@ -60,6 +60,8 @@ Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一�
 #### 9、Windows_platform(Windows一键脚本)
 
 + Powershell_Test.ps1：测试脚本
++ System_Info.ps1：系统详细信息查看
++ MinGW-w64-Builds.ps1：安装 MinGW-w64 工具
 
 
 
