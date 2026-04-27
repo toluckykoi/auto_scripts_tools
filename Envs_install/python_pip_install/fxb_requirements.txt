@@ -4,9 +4,7 @@
 # It contains ROS, system, software needed.
 
 # Ros
-rospkg
-rospy
-catkin_tools
+# Windows Nonsupport
 
 # ProtoBuf
 protobuf==5.27.3
