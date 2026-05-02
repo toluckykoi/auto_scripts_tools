@@ -74,7 +74,9 @@ if [ $# == 0 ]; then
         b) MIRROR_URL="http://deb.debian.org";;
         c) MIRROR_URL="https://mirrors.fedoraproject.org";;
         *)
-        echo -e "无效选择."
+        
+        echo -e "未选择有效的软件源，默认更换为华为源."
+        MIRROR_URL="https://mirrors.huaweicloud.com"
         ;;
     esac
 
