@@ -88,7 +88,7 @@ install_dependencies() {
 
 # 下载并检查文件
 download_protobuf() {
-    local url="https://github.com/protocolbuffers/protobuf/releases/download/v21.11/protobuf-all-21.11.zip"
+    local url="http://github.808066.xyz:38000/https://github.com/protocolbuffers/protobuf/releases/download/v21.11/protobuf-all-21.11.zip"
     local filename="protobuf-all-21.11.zip"
     local target_dir="~"
 
