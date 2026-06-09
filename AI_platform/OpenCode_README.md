@@ -23,6 +23,12 @@ curl -fsSL https://opencode.ai/install | bash
 npm install -g opencode-ai
 ```
 
+更新命令：
+
+```shell
+npm update -g opencode-ai
+```
+
 **在 macOS 和 Linux 上使用 Homebrew**
 
 ```shell

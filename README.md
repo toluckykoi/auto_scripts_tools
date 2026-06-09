@@ -63,6 +63,11 @@ Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一�
 + System_Info.ps1：系统详细信息查看
 + MinGW-w64-Builds.ps1：安装 MinGW-w64 工具
 
+#### 10、Docker_Correlation(Docker相关的脚本)
+
++ create_dockerfile.sh：创建 dockerfile 示例
++ docker_compose_install.sh：安装 docker-compose 程序
+
 
 
 ## 支持系统
@@ -81,8 +86,10 @@ Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一�
 auto_scripts_tools → main$ tree -L 1
 .
 ├── Adb_script                           // adb 脚本
+├── AI_platform                          // AI 相关
 ├── CAN                                  // CAN通信相关
 ├── Dingtalk_demo                        // 关于钉钉通知的代码
+├── Docker_Correlation                   // docker 相关
 ├── Envs_install                         // 环境依赖安装相关
 ├── ConfigFiles                          // 统一配置文件管理
 ├── Linux_auto_scripts                   // Linux 自动化脚本
@@ -93,7 +100,8 @@ auto_scripts_tools → main$ tree -L 1
 ├── main.sh                              // auto_scripts_tools 便捷主入口函数(直接执行即可)
 ├── luckykoi_go.sh                       // 便捷执行脚本
 ├── Ros_Correlation                      // Ros 相关
-└── Server_Patrol_Script                 // 服务器巡检脚本
+├── Server_Patrol_Script                 // 服务器巡检脚本
+└── Windows_platform                     // Windows 相关
 ```
 
 
@@ -274,7 +282,8 @@ print("Database restored successfully.")
 
 #### Windows 相关：
 
-+ 更新中......
++ 实现查看系统配置信息
++ 一键安装开发所需要的环境：MinGW
 
 
 

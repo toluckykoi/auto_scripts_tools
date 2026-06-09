@@ -28,6 +28,12 @@ irm https://claude.ai/install.ps1 | iex
 npm install -g @anthropic-ai/claude-code
 ```
 
+更新命令：
+
+```shell
+npm update -g @anthropic-ai/claude-code
+```
+
 查看版本信息：
 
 ```shell
