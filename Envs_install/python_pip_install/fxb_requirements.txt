@@ -24,3 +24,9 @@ paramiko
 colorlog
 paho-mqtt
 psutil
+
+# project
+fastapi 
+uvicorn 
+pyjwt 
+pysqlite3
