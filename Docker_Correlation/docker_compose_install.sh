@@ -39,6 +39,7 @@ check_docker_compose() {
     if command -v docker-compose &> /dev/null; then
         local version=$(docker-compose --version 2>/dev/null)
         echo -e "${GREEN}[检查] docker-compose 已安装: ${version}${NC}"
+        sleep 1
         read -p "是否重新安装？ [y/N]: " confirm
         if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
             echo "取消安装"

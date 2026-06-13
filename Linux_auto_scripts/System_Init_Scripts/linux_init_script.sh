@@ -129,6 +129,7 @@ current_script_path="$current_script_path/logs"
 [ ! -d "$current_script_path" ] && sudo -u "$(logname)" mkdir -p "$current_script_path"
 RESULTFILE="$current_script_path/Linux_Init_Log-`date +%Y%m%d`.txt"
 Linux_auto_scripts_path=$(dirname "$(cd "$(dirname "$0")" && pwd)")
+auto_scripts_tools=$(dirname "$Linux_auto_scripts_path")
 
 function date_info() {
     echo ""; echo ""
@@ -396,110 +397,7 @@ function config_system() {
 # 4、docker安装
 function install_docker() {
     echo ""; echo ""
-    # 因国内限制了docker，国内安装docker的曲线救国方法，国外直接一键安装
-    echo "####################安装docker容器####################"    
-    # if command -v docker &> /dev/null; then
-    #     echo "Docker 已安装，无需再安装！"
-    # else
-    #     echo "Docker 未安装，现在开始安装！"
-    
-    if [ "$server_region" = "china" ]; then
-        echo "国内安装docker容器"
-        if [ "$software_manager" == "apt" ]; then
-            echo "debian系docker容器安装"
-            sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common gnupg
-            sudo install -m 0755 -d /etc/apt/keyrings
-            if [ "$ID" == "ubuntu" ]; then
-                curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-                sudo chmod a+r /etc/apt/keyrings/docker.gpg
-                echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
-                "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-                sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-            elif [ "$ID" == "debian" ]; then
-                curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-                sudo chmod a+r /etc/apt/keyrings/docker.gpg
-                echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.aliyun.com/docker-ce/linux/debian \
-                "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-                sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-            fi
-            sudo apt-get -y update
-            sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-            sudo service docker start
-            sudo systemctl enable docker.service
-            
-            groupadd docker
-            if [ $FLAG_DOCKER == 1 ]; then
-                usermod -aG docker $SHELL_USER
-            else
-                echo "当前执行脚本的用户是：$USER"
-                sleep 0.2
-                read -ep  "需要输入普通用户用于操作 docker 命令的用户名: " docker_user
-                sudo usermod -aG docker $docker_user
-            fi
-            
-            # newgrp docker
-            sudo apt install -y bash-completion
-
-            docker_speed
-            echo "docker 容器安装完成，请重启终端(桌面版系统需要重启系统才能普通用户使用docker命令!)"
-
-        elif [ "$software_manager" == "yum" ]; then
-            echo "centos系docker容器安装"
-            sudo yum install -y yum-utils device-mapper-persistent-data lvm2
-            sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-            sudo sed -i 's+download.docker.com+mirrors.aliyun.com/docker-ce+' /etc/yum.repos.d/docker-ce.repo
-            sudo yum makecache --timer
-            sudo yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-            sudo service docker start
-            sudo systemctl enable docker.service
-            
-            groupadd docker
-            if [ $FLAG_DOCKER == 1 ]; then
-                sudo usermod -aG docker $SHELL_USER
-            else
-                echo "当前执行脚本的用户是：$USER"
-                sleep 0.2
-                read -ep  "需要输入普通用户用于操作 docker 命令的用户名: " docker_user
-                sudo usermod -aG docker $docker_user
-            fi
-
-            # newgrp docker
-            sudo yum install -y bash-completion
-
-            docker_speed
-            echo "docker 容器安装完成，请重启终端(桌面版系统需要重启系统才能普通用户使用docker命令!)"
-
-        else
-            echo "版本不支持"
-            exit 1
-        fi
-
-    elif [ "$server_region" = "foreign" ]; then
-        echo "一键安装docker容器"
-        curl -fsSL https://get.docker.com -o get-docker.sh && bash get-docker.sh
-        sudo service docker start
-        sudo systemctl enable docker.service
-
-        groupadd docker
-        if [ $FLAG_DOCKER == 1 ]; then
-            usermod -aG docker $SHELL_USER
-        else
-            echo "当前执行脚本的用户是：$USER"
-            sleep 0.2
-            read -ep  "需要输入普通用户用于操作 docker 命令的用户名: " docker_user
-            usermod -aG docker $docker_user
-        fi
-        # sudo newgrp docker
-        echo "docker容器安装完成"
-    fi
-
-    # 安装 docker-compose:
-    echo "Docker-compose 现在开始安装！"
-    sudo curl -L "http://github.808066.xyz:38000/https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-    echo "docker-compose 安装完成."
+    $auto_scripts_tools/Docker_Correlation/docker_install.sh "$server_region" "$FLAG_DOCKER" "$SHELL_USER"
 }
 
 # 5、宝塔面板安装
