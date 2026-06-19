@@ -163,7 +163,7 @@ function debian_sudo(){
             echo "sudo 安装完成."
         fi
 
-        if [ "$display" == 'true' ]; then
+        if [ "$ID" == "debian" ]; then
             NORMAL_USER=$(awk -F: '$3 >= 1000 && $1 != "nobody" && $3 < 65534 {print $1; exit}' /etc/passwd)
             if [ -z "$NORMAL_USER" ]; then
                 echo "未找到普通用户, 无需配置 sudo."
@@ -426,7 +426,7 @@ function install_bt() {
         # 根据选择执行对应命令
         case "$choice" in
             1)
-                version="11.5.0"
+                version="11.8.0"
                 echo ">>> 正在安装正式版 ${version} ..."
                 if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_panel.sh;else wget -O install_panel.sh https://download.bt.cn/install/install_panel.sh;fi;bash install_panel.sh ed8484bec <<EOF
 y
