@@ -23,11 +23,17 @@ ARCH=$(uname -m)
 if [[ "$ARCH" == "x86_64" ]]; then
     DEB_URL1="http://web.808066.xyz:200/d/Linux_software/%E8%BF%9C%E7%A8%8B%E8%BD%AF%E4%BB%B6/rustdesk-1.2.7-x86_64.deb"
     DEB_URL2="https://pan.toluckykoi.com/f/3ysE/rustdesk-1.2.7-x86_64.deb"
+    RPM_URL1="http://web.808066.xyz:200/d/Linux_software/%E8%BF%9C%E7%A8%8B%E8%BD%AF%E4%BB%B6/rustdesk-1.4.7-0.x86_64.rpm"
+    RPM_URL2="https://pan.toluckykoi.com/f/YOUR_ID/rustdesk-1.4.7-0.x86_64.rpm"
     PKG_FILE="rustdesk-1.2.7-x86_64.deb"
+    RPM_FILE="rustdesk-1.4.7-0.x86_64.rpm"
 elif [[ "$ARCH" == "aarch64" ]]; then
     DEB_URL1="http://web.808066.xyz:200/d/Linux_software/%E8%BF%9C%E7%A8%8B%E8%BD%AF%E4%BB%B6/rustdesk-1.2.6-aarch64.deb"
     DEB_URL2="https://pan.toluckykoi.com/f/7at3/rustdesk-1.2.6-aarch64.deb"
+    RPM_URL1="http://web.808066.xyz:200/d/Linux_software/%E8%BF%9C%E7%A8%8B%E8%BD%AF%E4%BB%B6/rustdesk-1.4.7-0.aarch64.rpm"
+    RPM_URL2="https://pan.toluckykoi.com/f/YOUR_ID/rustdesk-1.4.7-0.aarch64.rpm"
     PKG_FILE="rustdesk-1.2.6-aarch64.deb"
+    RPM_FILE="rustdesk-1.4.7-0.aarch64.rpm"
 else
     echo -e "${RED}不支持的架构: $ARCH${NC}"
     exit 1
@@ -135,16 +141,14 @@ install_by_distro() {
             
         centos|rhel|almalinux|rocky)
             if [[ $(echo "${VERSION_ID:-0} >= 7" | bc 2>/dev/null) -eq 1 ]]; then
-                echo -e "${YELLOW}警告：仅提供 .deb 包。将尝试转换为 RPM（需 alien）...${NC}"
-                if ! command -v alien >/dev/null; then
-                    echo "安装 alien..."
-                    sudo yum install -y alien
-                fi
-                download_with_progress "$DEB_URL1" "$DEB_URL2" "rustdesk.deb"
-                echo "转换 .deb 为 .rpm..."
-                sudo alien -r -c rustdesk.deb 2>/dev/null
+                download_with_progress "$RPM_URL1" "$RPM_URL2" "$RPM_FILE"
                 confirm_install
-                sudo yum localinstall -y rustdesk-*.rpm
+                echo -e "${GREEN}正在安装 RustDesk...${NC}"
+                if command -v dnf >/dev/null 2>&1; then
+                    sudo dnf install -y ./"$RPM_FILE"
+                else
+                    sudo yum localinstall -y ./"$RPM_FILE"
+                fi
             else
                 echo -e "${RED}系统版本过低，不支持安装${NC}"
                 exit 1
@@ -152,16 +156,10 @@ install_by_distro() {
             ;;
             
         fedora)
-            echo -e "${YELLOW}警告：仅提供 .deb 包。将尝试转换为 RPM（需 alien）...${NC}"
-            if ! command -v alien >/dev/null; then
-                echo "安装 alien..."
-                sudo dnf install -y alien
-            fi
-            download_with_progress "$DEB_URL1" "$DEB_URL2" "rustdesk.deb"
-            echo "转换 .deb 为 .rpm..."
-            sudo alien -r -c rustdesk.deb 2>/dev/null
+            download_with_progress "$RPM_URL1" "$RPM_URL2" "$RPM_FILE"
             confirm_install
-            sudo dnf install -y rustdesk-*.rpm
+            echo -e "${GREEN}正在安装 RustDesk...${NC}"
+            sudo dnf install -y ./"$RPM_FILE"
             ;;
 
         arch|manjaro)
