@@ -56,11 +56,6 @@ else
     echo "当前生效的默认上网网卡: $best_dev (metric=$best_metric)"
 fi
 
-echo ""
-
-# 获取 NetworkManager 连接列表
-echo "检测到的网络连接: "
-nmcli -t -f NAME,TYPE,DEVICE connection show
 
 # 提取有线(ethernet)和无线(wifi)连接
 wired_connections=($(nmcli -t -f NAME,TYPE connection show | awk -F: '$2=="802-3-ethernet" {print $1}'))
@@ -85,15 +80,14 @@ if [ "$REPLY" == "1" ]; then
         exit 1
     fi
     
-    echo -e "\n配置有线网络优先级为高."
     # 让用户选择有线连接
-    echo -e "请选择要用于本地通信的有线连接: "
+    echo -e "\n将配置有线网络优先级为高,请选择要用于本地通信的有线连接: "
     select wired in "${wired_connections[@]}"; do
         if [[ -n "$wired" ]]; then
             echo "已选择有线连接: $wired"
             echo -e "\n正在配置路由优先级..."
             while true; do
-                read -p "请输入有线连接 '$wired' 的路由优先级(metric推荐 100-800, 数值越小优先级越高): " wired_metric
+                read -p "请输入有线连接 '$wired' 的路由优先级数值(范围100-3500, 数值越小优先级越高): " wired_metric
                 if [[ "$wired_metric" =~ ^[0-9]+$ ]] && [ "$wired_metric" -ge 0 ] && [ "$wired_metric" -le 9999 ]; then
                     break
                 else
@@ -120,15 +114,14 @@ if [ "$REPLY" == "2" ]; then
         exit 1
     fi
     
-    echo -e "\n配置无线网络优先级为高."
     # 让用户选择无线连接
-    echo -e "请选择要用于访问外网的无线连接: "
+    echo -e "\n配置无线网络优先级为高,请选择要用于访问外网的无线连接: "
     select wifi in "${wifi_connections[@]}"; do
         if [[ -n "$wifi" ]]; then
             echo "已选择无线连接: $wifi"
             echo -e "\n正在配置路由优先级..."
             while true; do
-                read -p "请输入无线连接 '$wifi' 的路由优先级(metric推荐 100-800, 数值越小优先级越高): " wifi_metric
+                read -p "请输入无线连接 '$wifi' 的路由优先级数值(范围100-3500, 数值越小优先级越高): " wifi_metric
                 if [[ "$wifi_metric" =~ ^[0-9]+$ ]] && [ "$wifi_metric" -ge 0 ] && [ "$wifi_metric" -le 9999 ]; then
                     break
                 else
