@@ -1,10 +1,10 @@
 ## 📁 项目介绍
 
-> auto_scripts_tools 为一键应用脚本，我在这里分享很多常用关于 Linux、Python 等一键脚本，对于经常繁琐的搭建和重复配置可以直接使用这里的脚本来完成！
+> auto_scripts_tools 是一款应用脚本，在这有很多关于 Linux、Python 等常用的一键脚本，对于经常繁琐的搭建和重复配置可以直接使用这里的脚本来完成！
 
 
 
-### 仓库内容
+## 📦 仓库内容
 
 本仓库包含以下几类实用脚本：
 
@@ -70,75 +70,45 @@ Linux_auto_scripts 中包含： **Linux 系统初始化脚本、Linux 软件一�
 
 
 
-## 支持系统
+## 💻 支持系统
 
-+ Ubuntu16.04，18.04，20.04，22.04，24.04（X86\Arm）
-+ Debian10，11，12，13（X86\Arm）
-+ Fedora
-+ Centos7
-+ Windows 11
++ **Ubuntu16.04，18.04，20.04，22.04，24.04（X86\Arm）**
++ **Debian10，11，12，13（X86\Arm）**
++ **Fedora**
++ **Centos7**
++ **Windows 10(需要有PowerShell v7)，Windows 11**
 
 
 
-## 目录说明
+## 🖼️ 效果图预览
 
-```bash
-auto_scripts_tools → main$ tree -L 1
-.
-├── Adb_script                           // adb 脚本
-├── AI_platform                          // AI 相关
-├── CAN                                  // CAN通信相关
-├── Dingtalk_demo                        // 关于钉钉通知的代码
-├── Docker_Correlation                   // docker 相关
-├── Envs_install                         // 环境依赖安装相关
-├── ConfigFiles                          // 统一配置文件管理
-├── Linux_auto_scripts                   // Linux 自动化脚本
-├── Mail_notice                          // 邮件通知相关代码
-├── Mysql                                // MySQL数据库相关
-├── Python_Correlation                   // Python 相关源码
-├── README.md
-├── main.sh                              // auto_scripts_tools 便捷主入口函数(直接执行即可)
-├── luckykoi_go.sh                       // 便捷执行脚本
-├── Ros_Correlation                      // Ros 相关
-├── Server_Patrol_Script                 // 服务器巡检脚本
-└── Windows_platform                     // Windows 相关
+<img src="./ConfigFiles/assets/main.png" alt="image-20260726191800668" style="zoom: 50%;" />
+
+
+
+## 📖 使用说明
+
+**1、使用 git clone 进行拉取：**
+
+```shell
+# 说明：如 Github 链接无法拉取可以使用 Gitee 链接进行拉取，两个仓库同步更新
+# Github
+git clone https://github.com/toluckykoi/auto_scripts_tools.git
+
+# Gitee
+git clone https://gitee.com/toluckykoi/auto_scripts_tools.git
+```
+
+**2、运行 main.sh：**
+
+```shell
+cd auto_scripts_tools
+./main.sh
 ```
 
 
 
-## 使用说明
-
-1. **使用 git clone 进行拉取：**
-
-   ```shell
-   # 说明：如Github链接无法拉取可以使用Gitee链接进行拉取，两个仓库同步更新
-   # Github
-   git clone https://github.com/toluckykoi/auto_scripts_tools.git
-   
-   # Gitee
-   git clone https://gitee.com/toluckykoi/auto_scripts_tools.git
-   ```
-
-2. **环境依赖安装：(只有在运行 Python 写的工具时需要安装)**
-
-   ```shell
-   cd Envs_install/python_pip_install/
-   pip install -r dev_requirements.txt		# 全部依赖
-   ```
-
-3. **进入对应的功能目录下，然后运行对应脚本即可：**
-
-   例如运行服务器巡检脚本：
-
-   ```shell
-   cd Server_Patrol_Script/
-   chmod +x server_patrol.sh
-   sudo ./server_patrol.sh
-   ```
-
-   
-
-## 便捷执行
+## 🚀 便捷执行
 
 一键快捷执行功能操作命令:
 
@@ -161,9 +131,11 @@ wget -qO- https://gitee.com/toluckykoi/auto_scripts_tools/raw/main/luckykoi_go.s
 
 
 
-## 其他说明
+## ℹ️ 其他说明
 
-> 该仓库内的所有工具都是一次性的运行，如果需要一直循环运行需要将脚本加入系统的定时任务中即可，使用“宝塔面板”或其他管理面板的自行在面板中找计划任务功能去添加！（后续应该会支持一键添加定时任务）
+> 该仓库内的所有工具都是一次性的运行，如果需要一直循环运行需要将脚本加入系统的定时任务中即可，使用“宝塔面板”或其他管理面板的自行在面板中找计划任务功能去添加！（后续应该会支持一键添加定时任务）。
+>
+> 如果不使用 main.sh 的方式运行需自行查看相关脚本目录下的文件有哪些，使用 cd 进入到该目录后赋予可执行权限后再执行脚本。
 
 
 
@@ -246,7 +218,7 @@ print("Database restored successfully.")
 
 
 
-## 功能清单
+## 📋 功能清单
 
 本项目目前已实现以下功能模块：
 
@@ -287,7 +259,8 @@ print("Database restored successfully.")
 
 
 
-## 更新
+## 🔄 更新
 
 + 2025-01-30 Initializing
++ 2026-07-26 增加入口脚本交互执行
 
