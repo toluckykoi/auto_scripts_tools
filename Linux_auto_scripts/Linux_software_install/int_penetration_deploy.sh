@@ -124,7 +124,17 @@ EOF
 }
 
 function Frp_Install(){
-    FRP_VERSION=0.62.1
+    # 获取 frp 最新版本号 (优先直连 GitHub API, 失败则走加速代理)
+    FRP_VERSION=$(curl -fsSL --connect-timeout 10 "https://api.github.com/repos/fatedier/frp/releases/latest" 2>/dev/null | sed -n 's/.*"tag_name": *"v\{0,1\}\([^"]*\)".*/\1/p' | head -n 1)
+    if [ -z "$FRP_VERSION" ]; then
+        FRP_VERSION=$(curl -fsSL --connect-timeout 10 "http://github.808066.xyz:38000/https://api.github.com/repos/fatedier/frp/releases/latest" 2>/dev/null | sed -n 's/.*"tag_name": *"v\{0,1\}\([^"]*\)".*/\1/p' | head -n 1)
+    fi
+    if [ -z "$FRP_VERSION" ]; then
+        echo "获取 Frp 最新版本失败, 使用默认版本 0.70.0"
+        FRP_VERSION="0.70.0"
+    fi
+    echo "当前 Frp 最新版本: v${FRP_VERSION}"
+
     sudo mkdir -p /opt/frp
     cd /opt/frp/
     FRP_URL="http://github.808066.xyz:38000/https://github.com/fatedier/frp/releases/download/v${FRP_VERSION}/frp_${FRP_VERSION}_linux_${TARGET_ARCH}.tar.gz"

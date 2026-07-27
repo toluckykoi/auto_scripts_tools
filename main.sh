@@ -300,7 +300,7 @@ menu_basic_tools() {
         print_sub_menu_item "7"  "Protobuf 源码编译安装"
         print_sub_menu_item "8"  "Nginx + Nginx UI 面板安装"
         print_sub_menu_item "9"  "Boot-Repair 启动修复工具"
-        print_sub_menu_item "10" "内网穿透工具部署 (ZeroTier + Tailscale)"
+        print_sub_menu_item "10" "内网穿透工具部署 (ZeroTier / Tailscale / Frp)"
         print_sub_menu_item "11" "NPS 内网穿透服务端安装"
         print_sub_menu_item "12" "编程字体安装 (CascadiaCode / JetBrainsMono)"
         print_sub_menu_item "13" "Windows 兼容字体安装"
