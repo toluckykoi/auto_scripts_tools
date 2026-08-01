@@ -426,31 +426,33 @@ menu_app_store() {
     while true; do
         draw_section_header "[7] 应用市场"
         print_sub_menu_item "1"  "Claude Code CLI 安装"
-        print_sub_menu_item "2"  "OpenClaw AI 编程工具安装"
-        print_sub_menu_item "3"  "Google Chrome 浏览器安装"
-        print_sub_menu_item "4"  "Microsoft Edge 浏览器安装"
-        print_sub_menu_item "5"  "RustDesk 远程桌面安装"
-        print_sub_menu_item "6"  "X-UI (Xray 面板) 安装"
-        print_sub_menu_item "7"  "Kangle Web 服务器面板"
-        print_sub_menu_item "8"  "云锁安全 Agent 安装"
-        print_sub_menu_item "9"  "Synology ABB Agent 安装"
-        print_sub_menu_item "10" "EMQX MQTT Broker 安装 (Debian)"
-        print_sub_menu_item "11" "mkfile_manager -- 创建/管理脚本文件模板"
+        print_sub_menu_item "2"  "OpenClaw AI 安装"
+        print_sub_menu_item "3"  "CoPAW (阿里龙虾) 安装"
+        print_sub_menu_item "4"  "Google Chrome 浏览器安装"
+        print_sub_menu_item "5"  "Microsoft Edge 浏览器安装"
+        print_sub_menu_item "6"  "RustDesk 远程软件安装"
+        print_sub_menu_item "7"  "X-UI (Xray 面板) 安装"
+        print_sub_menu_item "8"  "Kangle Web 服务器面板"
+        print_sub_menu_item "9"  "云锁安全 Agent 安装"
+        print_sub_menu_item "10" "Synology ABB Agent 安装"
+        print_sub_menu_item "11" "EMQX MQTT Broker 安装 (Debian)"
+        print_sub_menu_item "12" "mkfile_manager -- 创建/管理脚本文件模板"
         draw_footer
 
         read -ep "请输入序号: " choice
         case "$choice" in
             1)  run_script "AI_platform" "claude_code_install.sh" "sh" ;;
             2)  run_script "AI_platform" "openclaw_install.sh" "sh" ;;
-            3)  run_script "Linux_auto_scripts/Linux_software_install" "install-chrome.sh" "sh" ;;
-            4)  run_script "Linux_auto_scripts/Linux_software_install" "install-edge.sh" "sh" ;;
-            5)  run_script "Linux_auto_scripts/Linux_software_install" "rustdesk_install.sh" "sh" ;;
-            6)  run_script "Linux_auto_scripts/Linux_software_install" "x-ui_install.sh" "sh" ;;
-            7)  run_script "Linux_auto_scripts/Linux_software_install" "Kangle_install.sh" "sh" ;;
-            8)  run_script "Linux_auto_scripts/Linux_software_install" "yunsuo_install.sh" "sh" ;;
-            9)  run_script "Linux_auto_scripts/Linux_software_install" "synology_abb_install.sh" "sh" ;;
-            10) run_script "Linux_auto_scripts/Linux_software_install" "install-emqx-deb.sh" "sh" ;;
-            11) run_script "Linux_auto_scripts" "mkfile_manager.sh" "sh" ;;
+            3)  run_script "AI_platform" "copaw_install.sh" "sh" ;;
+            4)  run_script "Linux_auto_scripts/Linux_software_install" "install-chrome.sh" "sh" ;;
+            5)  run_script "Linux_auto_scripts/Linux_software_install" "install-edge.sh" "sh" ;;
+            6)  run_script "Linux_auto_scripts/Linux_software_install" "rustdesk_install.sh" "sh" ;;
+            7)  run_script "Linux_auto_scripts/Linux_software_install" "x-ui_install.sh" "sh" ;;
+            8)  run_script "Linux_auto_scripts/Linux_software_install" "Kangle_install.sh" "sh" ;;
+            9)  run_script "Linux_auto_scripts/Linux_software_install" "yunsuo_install.sh" "sh" ;;
+            10) run_script "Linux_auto_scripts/Linux_software_install" "synology_abb_install.sh" "sh" ;;
+            11) run_script "Linux_auto_scripts/Linux_software_install" "install-emqx-deb.sh" "sh" ;;
+            12) run_script "Linux_auto_scripts" "mkfile_manager.sh" "sh" ;;
             [bB]|0) return ;;
             [qQ]) safe_exit ;;
             *) ;;
