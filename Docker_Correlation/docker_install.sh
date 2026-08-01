@@ -39,11 +39,28 @@ else
     exit 1
 fi
 
-if [ $# == 0 ]; then
-    server_region="china"
+if [ $# -eq 0 ]; then
+    echo "正在检测网络区域..."
+    server_ip=$(curl -s --connect-timeout 5 https://ipinfo.io/ip)
+    if [ -n "$server_ip" ]; then
+        server_country=$(curl -s --connect-timeout 5 "https://ipinfo.io/$server_ip/country")
+        if [ "$server_country" = "CN" ]; then
+            server_region="china"
+            echo "检测到国内 IP ($server_ip)，将使用阿里云镜像加速。"
+        else
+            server_region="foreign"
+            echo "检测到海外 IP ($server_ip)，将使用 Docker 官方源。"
+        fi
+    else
+        echo "警告: 无法检测 IP 归属（网络不通），默认使用国内镜像。"
+        server_region="china"
+    fi
 else
     server_region=$1
 fi
+
+auto_user="${2:-0}"
+docker_username="${3:-}"
 
 function docker_speed(){
     echo ""; echo ""
@@ -91,15 +108,15 @@ if [ "$server_region" = "china" ]; then
         sudo systemctl enable docker.service
         
         groupadd docker
-        if [[ "$2" == "1" ]]; then
-            usermod -aG docker $3
+        if [[ "$auto_user" == "1" ]]; then
+            sudo usermod -aG docker "$docker_username"
         else
             echo "当前执行脚本的用户是：$USER"
             sleep 0.2
             read -ep  "需要输入普通用户用于操作 docker 命令的用户名: " docker_user
-            sudo usermod -aG docker $docker_user
+            sudo usermod -aG docker "$docker_user"
         fi
-        
+
         # newgrp docker
         sudo apt install -y bash-completion
 
@@ -117,13 +134,13 @@ if [ "$server_region" = "china" ]; then
         sudo systemctl enable docker.service
         
         groupadd docker
-        if [[ "$2" == "1" ]]; then
-            sudo usermod -aG docker $3
+        if [[ "$auto_user" == "1" ]]; then
+            sudo usermod -aG docker "$docker_username"
         else
             echo "当前执行脚本的用户是：$USER"
             sleep 0.2
             read -ep  "需要输入普通用户用于操作 docker 命令的用户名: " docker_user
-            sudo usermod -aG docker $docker_user
+            sudo usermod -aG docker "$docker_user"
         fi
 
         # newgrp docker
@@ -144,13 +161,13 @@ elif [ "$server_region" = "foreign" ]; then
     sudo systemctl enable docker.service
 
     groupadd docker
-    if [[ "$2" == "1" ]]; then
-        usermod -aG docker $3
+    if [[ "$auto_user" == "1" ]]; then
+        sudo usermod -aG docker "$docker_username"
     else
         echo "当前执行脚本的用户是：$USER"
         sleep 0.2
         read -ep  "需要输入普通用户用于操作 docker 命令的用户名: " docker_user
-        usermod -aG docker $docker_user
+        sudo usermod -aG docker "$docker_user"
     fi
     # sudo newgrp docker
     echo "docker容器安装完成"
