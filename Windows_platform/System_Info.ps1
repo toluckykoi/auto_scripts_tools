@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     电脑详细信息收集脚本
 .DESCRIPTION
@@ -26,6 +26,10 @@
 
 # 检查管理员权限
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+# 在最开始启动转录，确保所有输出都被捕获到报告中
+$outputPath = "$env:TEMP\SystemInfo_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+$null = Start-Transcript -Path $outputPath -Append
 
 # 颜色输出函数
 function Write-Color {
@@ -157,8 +161,6 @@ Write-Host "序列号：$($bios.SerialNumber)"
 
 # 12. 导出报告
 Write-Color "`n【12】导出报告" "Magenta"
-$outputPath = "$env:TEMP\SystemInfo_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
-$null = Start-Transcript -Path $outputPath -Append
 Write-Host "报告已保存至：$outputPath" -ForegroundColor Green
 Stop-Transcript
 

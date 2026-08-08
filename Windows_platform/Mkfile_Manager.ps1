@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env pwsh
+#!/usr/bin/env pwsh
 # @Author      ：幸运锦鲤
 # @Time        : 2026-03-28 20:47:01
 # @version     : powershell
@@ -225,6 +225,7 @@ if ($h -or ($PSBoundParameters.Count -eq 0)) {
 
 if ($c) {
     New-ScriptFile -FilePath $c -Desc $d
+    Write-Host "提示：Windows 下请留意文件换行符（CRLF/LF）与编码格式。" -ForegroundColor Yellow
 }
 elseif ($u) {
     Update-FileTime -FilePath $u
@@ -233,6 +234,3 @@ else {
     Write-Host "请指定操作：-c（创建）或 -u（更新）"
     Show-Usage
 }
-
-
-Write-Host "Windows 下需要注意文件保持格式和CRLF和LF的问题"
