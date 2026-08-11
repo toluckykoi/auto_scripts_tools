@@ -109,19 +109,41 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Tabby Terminal config
+export PS1="$PS1\[\e]1337;CurrentDir="'$(pwd)\a\]'
+
+# === Auto-detect X11 Display for Docker GUI ===
+if [ -d "/tmp/.X11-unix" ]; then
+    if [ -n "$DISPLAY" ] && [ ! -S "/tmp/.X11-unix/X${DISPLAY#:}" ]; then
+        _found_display=""
+        for _sock in /tmp/.X11-unix/X*; do
+            if [ -S "$_sock" ]; then
+                _found_display=":${_sock##*X}"
+                break
+            fi
+        done
+        if [ -n "$_found_display" ]; then
+            export DISPLAY="$_found_display"
+        fi
+        unset _found_display _sock
+    fi
+fi
+
+# === Fix XDG_RUNTIME_DIR ===
+if [ -z "$XDG_RUNTIME_DIR" ] || [ ! -d "$XDG_RUNTIME_DIR" ]; then
+    export XDG_RUNTIME_DIR="/tmp/runtime-$(id -un)"
+    mkdir -p "$XDG_RUNTIME_DIR"
+    chmod 0700 "$XDG_RUNTIME_DIR"
+fi
+
 # ROS networking
 # export ROS_MASTER_URI=http://10.168.1.182:11311
 # export ROS_HOSTNAME=10.168.1.180
-
-# Tabby Terminal config
-export PS1="$PS1\[\e]1337;CurrentDir="'$(pwd)\a\]'
 
 source /opt/ros/melodic/setup.bash
 
 export XDG_RUNTIME_DIR=/tmp/runtime-$USER
 export ROSDISTRO_INDEX_URL=https://mirrors.tuna.tsinghua.edu.cn/rosdistro/index-v4.yaml
-
-export DISPLAY=:0
 
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 echo -e "==========================================="
