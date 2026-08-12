@@ -41,6 +41,7 @@ python-can
 cantools
 
 # Others
+paho-mqtt
 pyserial
 psutil
 scipy
