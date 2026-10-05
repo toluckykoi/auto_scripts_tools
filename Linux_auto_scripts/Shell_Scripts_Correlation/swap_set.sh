@@ -1,14 +1,14 @@
 #!/bin/bash
 # @Author: 幸运的锦鲤
 # @Date:   2025-02-23 20:31:06
-# @Last Modified time: 
+# @Last Modified time:
 # linux 虚拟内存设置脚本
 
 
 # 函数：检查当前虚拟内存状态
 check_virtual_memory() {
-    swap_info=$(free -m | egrep "Swap:|交换：")
-    total_swap=$(echo "$swap_info" | awk '{print $2}')
+    local swap_info=$(free -m | egrep "Swap:|交换：")
+    local total_swap=$(echo "$swap_info" | awk '{print $2}')
     if [ "$total_swap" -gt 0 ]; then
         echo "当前虚拟内存 (swap) 已启用，总大小: $total_swap MB"
         swapon -s
@@ -19,53 +19,51 @@ check_virtual_memory() {
     fi
 }
 
-# 函数：获取当前虚拟内存路径
-get_swap_paths() {
-    swapon --show=NAME --noheadings
+# 函数：完全清理所有虚拟内存（活跃的 + 残留文件）
+cleanup_all_swap() {
+    echo "正在清理所有虚拟内存..."
+
+    # 关闭所有活动的 swap
+    swapoff -a 2>/dev/null
+
+    # 从 fstab 中精确移除 swap 挂载行（挂载点列含 "swap swap"）
+    sed -i '/[[:space:]]swap[[:space:]][[:space:]]*swap[[:space:]]/d' /etc/fstab
+
+    # 删除所有残留的 swap 文件（/swapfile、/swapfile16G、/swapfile32G 等）
+    rm -f /swapfile /swapfile* 2>/dev/null
+
+    sleep 1
+
+    # 验证清理结果
+    if [ -n "$(swapon --show=NAME --noheadings 2>/dev/null)" ]; then
+        echo "警告：仍有活跃的 swap，请手动检查。"
+        swapon -s
+        return 1
+    fi
+
+    echo "虚拟内存清理完成。"
+    free -h
+    return 0
 }
 
 # 函数：创建虚拟内存
 create_virtual_memory() {
     local size=$1
-    local swapfile="/swapfile$size"G
+    local swapfile="/swapfile"
 
-    echo "正在创建 $size GB 的虚拟内存..."
-    dd if=/dev/zero of=$swapfile bs=256M count=$((size * 4))
-    mkswap $swapfile
-    chmod 0600 $swapfile
-    swapon $swapfile
-    echo "$swapfile swap swap defaults 0 0" >> /etc/fstab
-    echo "虚拟内存创建成功。"
-    free -h
-}
-
-# 函数：删除虚拟内存
-delete_virtual_memory() {
-    local swap_paths=$(get_swap_paths)
-
-    if [ -z "$swap_paths" ]; then
-        echo "未找到虚拟内存路径，无需删除。"
-        return
+    # 验证输入
+    if ! [[ "$size" =~ ^[0-9]+$ ]] || [ "$size" -le 0 ]; then
+        echo "错误：大小必须是正整数（GB）。"
+        return 1
     fi
 
-    for path in $swap_paths; do
-        if [[ $path == /dev/* ]]; then
-            echo "检测到交换分区: $path"
-            echo "正在从 /etc/fstab 中移除交换分区配置..."
-            sed -i '/\/swapfile/d' /etc/fstab
-            swapoff $path
-            echo "交换分区配置已移除。"
-        else
-            echo "检测到交换文件: $path"
-            echo "正在删除交换文件: $path"
-            swapoff $path
-            rm -f $path
-            sed -i "\|^$path |d" /etc/fstab
-            sed -i '/swap/d' /etc/fstab
-            echo "交换文件已删除。"
-        fi
-    done
-    echo "虚拟内存删除成功。"
+    echo "正在创建 $size GB 的虚拟内存..."
+    dd if=/dev/zero of="$swapfile" bs=1M count=$((size * 1024)) status=progress
+    chmod 0600 "$swapfile"
+    mkswap "$swapfile"
+    swapon "$swapfile"
+    echo "$swapfile swap swap defaults 0 0" >> /etc/fstab
+    echo "虚拟内存创建成功。"
     free -h
 }
 
@@ -81,7 +79,8 @@ disable_virtual_memory_temporarily() {
 disable_virtual_memory_permanently() {
     echo "正在永久关闭虚拟内存..."
     swapoff -a
-    sed -i '/swap/d' /etc/fstab
+    sed -i '/[[:space:]]swap[[:space:]][[:space:]]*swap[[:space:]]/d' /etc/fstab
+    rm -f /swapfile /swapfile* 2>/dev/null
     echo "虚拟内存已永久关闭。"
     free -h
 }
@@ -98,13 +97,13 @@ case $option in
         if check_virtual_memory; then
             read -ep "当前已启用虚拟内存，是否删除并重新创建？(y/n): " answer
             if [ "$answer" = "y" ]; then
-                delete_virtual_memory
-                create_virtual_memory $size
+                cleanup_all_swap || { echo "清理失败，中止。"; exit 1; }
+                create_virtual_memory "$size"
             else
                 echo "操作取消。"
             fi
         else
-            create_virtual_memory $size
+            create_virtual_memory "$size"
         fi
         ;;
     2)
