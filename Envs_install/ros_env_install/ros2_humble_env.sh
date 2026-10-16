@@ -41,4 +41,4 @@ sudo apt install -y ros-humble-rqt-image-view*
 sudo apt install -y ros-humble-image-*
 
 # systeam
-sudo apt install -y libuvc-dev libasio-dev
+sudo apt install -y libuvc-dev libasio-dev python3-serial
