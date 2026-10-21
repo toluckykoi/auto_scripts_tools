@@ -35,10 +35,11 @@ sudo apt install -y ros-humble-rtcm*
 sudo apt install -y ros-${ROS_DISTRO}-rviz-visual-tools
 sudo apt install -y ros-${ROS_DISTRO}-tf-transformations
 sudo apt install -y ros-${ROS_DISTRO}-can-msgs
+sudo apt install -y ros-${ROS_DISTRO}-gtsam
 
 # 图像可视化
 sudo apt install -y ros-humble-rqt-image-view*
 sudo apt install -y ros-humble-image-*
 
 # systeam
-sudo apt install -y libuvc-dev libasio-dev python3-serial
+sudo apt install -y libuvc-dev libasio-dev python3-serial libsamplerate0-dev libsndfile1-dev
