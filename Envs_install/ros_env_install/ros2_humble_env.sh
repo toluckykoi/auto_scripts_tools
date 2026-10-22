@@ -36,6 +36,7 @@ sudo apt install -y ros-${ROS_DISTRO}-rviz-visual-tools
 sudo apt install -y ros-${ROS_DISTRO}-tf-transformations
 sudo apt install -y ros-${ROS_DISTRO}-can-msgs
 sudo apt install -y ros-${ROS_DISTRO}-gtsam
+sudo apt install -y ros-${ROS_DISTRO}-radar-msgs
 
 # 图像可视化
 sudo apt install -y ros-humble-rqt-image-view*
