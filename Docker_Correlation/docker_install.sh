@@ -46,7 +46,7 @@ if [ $# -eq 0 ]; then
         server_country=$(curl -s --connect-timeout 5 "https://ipinfo.io/$server_ip/country")
         if [ "$server_country" = "CN" ]; then
             server_region="china"
-            echo "检测到国内 IP ($server_ip)，将使用阿里云镜像加速。"
+            echo "检测到国内 IP ($server_ip)，将使用国内镜像加速。"
         else
             server_region="foreign"
             echo "检测到海外 IP ($server_ip)，将使用 Docker 官方源。"
@@ -91,14 +91,14 @@ if [ "$server_region" = "china" ]; then
         if [ "$ID" == "ubuntu" ]; then
             curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
             sudo chmod a+r /etc/apt/keyrings/docker.gpg
-            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://mirror.nju.edu.cn/docker-ce/linux/ubuntu \
             "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
             sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
         elif [ "$ID" == "debian" ]; then
             curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
             sudo chmod a+r /etc/apt/keyrings/docker.gpg
-            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.aliyun.com/docker-ce/linux/debian \
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://mirror.nju.edu.cn/docker-ce/linux/debian \
             "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
             sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         fi

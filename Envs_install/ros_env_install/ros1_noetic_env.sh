@@ -50,6 +50,7 @@ sudo apt install -y ros-$ROS_DISTRO-robot-pose-ekf
 sudo apt install -y ros-${ROS_DISTRO}-image-view2
 sudo apt install -y ros-${ROS_DISTRO}-rviz-visual-tools
 sudo apt install -y ros-${ROS_DISTRO}-jsk-rviz-plugins
+sudo apt install -y ros-${ROS_DISTRO}-hector-pose-estimation
 
 # systeam
 sudo apt-get install -y portaudio19-dev

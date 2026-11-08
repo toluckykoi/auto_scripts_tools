@@ -19,6 +19,40 @@ check_virtual_memory() {
     fi
 }
 
+# 函数：从 /etc/fstab 中移除所有 swap 条目
+# 按第 3 列（文件系统类型）是否为 swap 判断，兼容以下两种挂载点列写法：
+#   /swapfile      swap  swap  defaults 0 0
+#   /swapfile16G   none  swap  sw       0 0
+# 注释行（首列以 # 开头）保持不变。
+remove_swap_from_fstab() {
+    local fstab="${1:-/etc/fstab}"
+    local tmp
+
+    [ -f "$fstab" ] || { echo "警告：$fstab 不存在，跳过。"; return 0; }
+
+    # 先判断是否真的有 swap 条目，避免无谓改写
+    if ! awk '$1 !~ /^#/ && $3 == "swap" { found = 1 } END { exit !found }' "$fstab"; then
+        return 0
+    fi
+
+    tmp=$(mktemp) || { echo "错误：创建临时文件失败。"; return 1; }
+
+    # 保留原有权限与属主，避免 mv 后 fstab 属性被改掉
+    chmod --reference="$fstab" "$tmp" 2>/dev/null
+    if [ "$(id -u)" -eq 0 ]; then
+        chown --reference="$fstab" "$tmp" 2>/dev/null
+    fi
+
+    if awk '$1 !~ /^#/ && $3 == "swap" { next } { print }' "$fstab" > "$tmp"; then
+        mv -f "$tmp" "$fstab" || { rm -f "$tmp"; echo "错误：写入 $fstab 失败。"; return 1; }
+        echo "已从 $fstab 移除 swap 条目。"
+    else
+        rm -f "$tmp"
+        echo "错误：生成新的 $fstab 内容失败。"
+        return 1
+    fi
+}
+
 # 函数：完全清理所有虚拟内存（活跃的 + 残留文件）
 cleanup_all_swap() {
     echo "正在清理所有虚拟内存..."
@@ -26,8 +60,8 @@ cleanup_all_swap() {
     # 关闭所有活动的 swap
     swapoff -a 2>/dev/null
 
-    # 从 fstab 中精确移除 swap 挂载行（挂载点列含 "swap swap"）
-    sed -i '/[[:space:]]swap[[:space:]][[:space:]]*swap[[:space:]]/d' /etc/fstab
+    # 从 fstab 中移除所有 swap 挂载行（按文件系统类型列判断）
+    remove_swap_from_fstab || return 1
 
     # 删除所有残留的 swap 文件（/swapfile、/swapfile16G、/swapfile32G 等）
     rm -f /swapfile /swapfile* 2>/dev/null
@@ -57,8 +91,9 @@ create_virtual_memory() {
         return 1
     fi
 
-    echo "正在创建 $size GB 的虚拟内存..."
-    dd if=/dev/zero of="$swapfile" bs=1M count=$((size * 1024)) status=progress
+    echo "正在创建 $size GB（十进制，$((size * 1000)) MB）的虚拟内存..."
+    # 注意：bs=10MB 是十进制 10,000,000 字节，保证文件大小严格等于 size×10^9 字节
+    dd if=/dev/zero of="$swapfile" bs=10MB count=$((size * 100)) status=progress
     chmod 0600 "$swapfile"
     mkswap "$swapfile"
     swapon "$swapfile"
@@ -79,7 +114,7 @@ disable_virtual_memory_temporarily() {
 disable_virtual_memory_permanently() {
     echo "正在永久关闭虚拟内存..."
     swapoff -a
-    sed -i '/[[:space:]]swap[[:space:]][[:space:]]*swap[[:space:]]/d' /etc/fstab
+    remove_swap_from_fstab || return 1
     rm -f /swapfile /swapfile* 2>/dev/null
     echo "虚拟内存已永久关闭。"
     free -h

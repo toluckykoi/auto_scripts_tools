@@ -305,6 +305,7 @@ menu_basic_tools() {
         print_sub_menu_item "12" "编程字体安装 (CascadiaCode / JetBrainsMono)"
         print_sub_menu_item "13" "Windows 兼容字体安装"
         print_sub_menu_item "14" "WPS Office 符号字体修复"
+        print_sub_menu_item "15" "Go 语言安装 (官方二进制包)"
         draw_footer
 
         read -ep "请输入序号: " choice
@@ -323,6 +324,7 @@ menu_basic_tools() {
             12) run_script "Linux_auto_scripts/Shell_Scripts_Correlation/linux_fonts" "linux_fonts_install.sh" "sh" ;;
             13) run_script "Linux_auto_scripts/Shell_Scripts_Correlation/linux_fonts" "windows_fonts_install.sh" "sh" ;;
             14) run_script "Linux_auto_scripts/Shell_Scripts_Correlation/linux_fonts" "wps_fonts_repair.sh" "sh" ;;
+            15) run_script "Linux_auto_scripts/Linux_software_install" "go_install.sh" "sh" ;;
             [bB]|0) return ;;
             [qQ]) safe_exit ;;
             *) ;;
