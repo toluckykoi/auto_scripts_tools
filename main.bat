@@ -245,6 +245,9 @@ echo %C_CYAN%╠═════════════════════�
 echo %C_CYAN%║%C_NC% 编号 ^| 功能说明                                                         %C_CYAN%║%C_NC%
 echo %C_CYAN%╠═════════════════════════════════════════════════════════════════════════╣%C_NC%
 echo %C_CYAN%║%C_NC% 1   ^| 安装 MinGW-w64 (C/C++ 编译环境) [需管理员]                        %C_CYAN%║%C_NC%
+echo %C_CYAN%║%C_NC% 2   ^| 安装 Go 语言环境 (Go 官方二进制包) [需管理员]                     %C_CYAN%║%C_NC%
+echo %C_CYAN%║%C_NC% 3   ^| 安装 Rust 语言环境 (rustup 官方工具链)                            %C_CYAN%║%C_NC%
+echo %C_CYAN%║%C_NC% 4   ^| 安装 Flutter SDK (官方二进制包) [需管理员]                        %C_CYAN%║%C_NC%
 echo %C_CYAN%╠═════════════════════════════════════════════════════════════════════════╣%C_NC%
 echo %C_CYAN%║%C_NC% 0 / b = 返回上级     q = 退出程序                                       %C_CYAN%║%C_NC%
 echo %C_CYAN%╚═════════════════════════════════════════════════════════════════════════╝%C_NC%
@@ -252,6 +255,12 @@ echo.
 call :read_choice "请输入序号: "
 if "!choice!"=="1" (
     call :invoke_script "Windows_platform" "MinGW-w64-Builds.ps1" "admin"
+) else if "!choice!"=="2" (
+    call :invoke_script "Windows_platform" "go_install.ps1" "admin"
+) else if "!choice!"=="3" (
+    call :invoke_script "Windows_platform" "rust_install.ps1" "ps1"
+) else if "!choice!"=="4" (
+    call :invoke_script "Windows_platform" "flutter_install.ps1" "admin"
 ) else if "!choice!"=="q" (
     call :exit_safe
     exit /b 0
@@ -322,7 +331,7 @@ echo %C_CYAN%╠═════════════════════�
 echo %C_CYAN%║%C_NC% 1   ^| 系统信息查询                                                      %C_CYAN%║%C_NC%
 echo %C_CYAN%║%C_NC%         └── 查看系统综合信息 (硬件/软件/网络)                           %C_CYAN%║%C_NC%
 echo %C_CYAN%║%C_NC% 2   ^| 开发环境管理                                                      %C_CYAN%║%C_NC%
-echo %C_CYAN%║%C_NC%         └── C/C++ 编译环境 (MinGW-w64) 安装                             %C_CYAN%║%C_NC%
+echo %C_CYAN%║%C_NC%         └── MinGW-w64、Go、Rust、Flutter 语言环境安装                   %C_CYAN%║%C_NC%
 echo %C_CYAN%║%C_NC% 3   ^| 实用工具箱                                                        %C_CYAN%║%C_NC%
 echo %C_CYAN%║%C_NC%         └── PowerShell 环境测试、脚本文件模板管理                       %C_CYAN%║%C_NC%
 echo %C_CYAN%╠═════════════════════════════════════════════════════════════════════════╣%C_NC%

@@ -443,11 +443,17 @@ function Show-DevEnvMenu {
     while ($true) {
         Show-SectionHeader "[2] 开发环境管理"
         Write-SubMenuItem "1" "安装 MinGW-w64 (C/C++ 编译环境) [需管理员]"
+        Write-SubMenuItem "2" "安装 Go 语言环境 (Go 官方二进制包) [需管理员]"
+        Write-SubMenuItem "3" "安装 Rust 语言环境 (rustup 官方工具链)"
+        Write-SubMenuItem "4" "安装 Flutter SDK (官方二进制包) [需管理员]"
         Write-Footer
 
         $choice = Read-MenuChoice
         switch ($choice) {
             "1" { Invoke-Script "Windows_platform" "MinGW-w64-Builds.ps1" "admin" }
+            "2" { Invoke-Script "Windows_platform" "go_install.ps1" "admin" }
+            "3" { Invoke-Script "Windows_platform" "rust_install.ps1" "ps1" }
+            "4" { Invoke-Script "Windows_platform" "flutter_install.ps1" "admin" }
             { $_ -eq "b" -or $_ -eq "0" } { return }
             "q" { Exit-Safe }
             default {}
@@ -497,7 +503,7 @@ function Show-MainMenu {
     while ($true) {
         Show-MainHeader
         Write-MenuItem "1" "系统信息查询"     "查看系统综合信息 (硬件/软件/网络)"
-        Write-MenuItem "2" "开发环境管理"     "C/C++ 编译环境 (MinGW-w64) 安装"
+        Write-MenuItem "2" "开发环境管理"     "MinGW-w64、Go、Rust、Flutter 语言环境安装"
         Write-MenuItem "3" "实用工具箱"       "PowerShell 环境测试、脚本文件模板管理"
         Write-BoxSep
         Write-BoxLine @( (New-Seg "  "), (New-Seg "q" $C_RED), (New-Seg "   | "), (New-Seg "退出程序" $C_RED) )
