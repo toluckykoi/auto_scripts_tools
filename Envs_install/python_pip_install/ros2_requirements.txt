@@ -1,0 +1,12 @@
+-i https://mirrors.huaweicloud.com/repository/pypi/simple
+
+# Ros
+catkin_pkg
+lark
+empy==3.3.4
+
+numpy==1.26.4
+opencv-python<5
+opencv-contrib-python<5
+
+pyproj
