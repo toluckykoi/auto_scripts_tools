@@ -26,7 +26,7 @@ DOWNLOAD_DIR="/tmp/flutter_install_$$"
 # 下载源配置（默认官方源，可切换镜像源）
 FLUTTER_MIRROR="${FLUTTER_MIRROR:-official}"     # official / mirror_cn
 OFFICIAL_BASE_URL="https://storage.googleapis.com/flutter_infra_release/releases"
-MIRROR_BASE_URL="https://storage.flutter-io.cn/releases"
+MIRROR_BASE_URL="https://storage.flutter-io.cn/flutter_infra_release/releases"
 
 # 日志函数
 log_info() { echo -e "${BLUE}[INFO]${NC} $*"; }
@@ -156,9 +156,20 @@ preflight_check() {
     log_info "开始预检查..."
 
     # 检查是否为 root 或有 sudo 权限 (dry-run 模式跳过)
-    if [[ "$DRY_RUN" != "true" ]] && [[ $EUID -ne 0 ]] && ! sudo -n true 2>/dev/null; then
-        log_error "需要 sudo 权限来安装到 $INSTALL_DIR"
-        exit 1
+    # 注意：不能用 sudo -n 判定，普通用户的 sudo 需要密码，-n 会直接失败
+    if [[ "$DRY_RUN" != "true" ]] && [[ $EUID -ne 0 ]]; then
+        if ! command -v sudo &>/dev/null; then
+            log_error "需要 root 权限或 sudo 才能安装到 $INSTALL_DIR"
+            exit 1
+        fi
+        # 已有 sudo 凭据缓存则直接通过，否则交互式验证一次（会提示输入密码）
+        if ! sudo -n true 2>/dev/null; then
+            log_info "安装到 $INSTALL_DIR 需要 sudo 权限"
+            if ! sudo -v; then
+                log_error "未获得 sudo 权限，无法安装到 $INSTALL_DIR"
+                exit 1
+            fi
+        fi
     fi
 
     # 检查必要工具
@@ -232,7 +243,11 @@ download_flutter() {
 
     if ! wget -q --show-progress "$BUILD_URL" -O "$BUILD_TARBALL"; then
         log_error "下载失败，请检查版本号和网络连接"
-        log_error "可尝试使用 --no-mirror 参数切换下载源"
+        if [[ "$FLUTTER_MIRROR" == "mirror_cn" ]]; then
+            log_error "可尝试切换回官方源: -m official"
+        else
+            log_error "可尝试切换国内镜像源: -m mirror_cn"
+        fi
         exit 1
     fi
 
