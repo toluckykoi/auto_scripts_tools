@@ -218,6 +218,7 @@ menu_sys_info() {
         draw_section_header "[1] 系统信息查询"
         print_sub_menu_item "1" "查看系统综合信息 (system_info)"
         print_sub_menu_item "2" "快速获取系统基本信息 (common_info)"
+        print_sub_menu_item "3" "实时性能监控 (performance_monitor)"
         box_sep
         print_sub_menu_item "s" "快速显示 neofetch 系统信息"
         draw_footer
@@ -226,6 +227,7 @@ menu_sys_info() {
         case "$choice" in
             1) run_script "Linux_auto_scripts/Shell_Scripts_Correlation" "system_info.sh" "sh" ;;
             2) run_script "Linux_auto_scripts" "common_info_acquisition.sh" "sh" ;;
+            3) run_script "Linux_auto_scripts/Shell_Scripts_Correlation" "performance_monitor.sh" "sh" ;;
             [sS]) clear; neofetch 2>/dev/null || echo -e "${YELLOW}neofetch 未安装，请先安装 neofetch${NC}"; press_any_key ;;
             [bB]|0) return ;;
             [qQ]) safe_exit ;;
@@ -646,7 +648,7 @@ menu_ssh_workspace() {
 main_menu() {
     while true; do
         draw_main_header
-        print_menu_item "1" "系统信息查询"       "查看系统综合信息、快速基本信息"
+        print_menu_item "1" "系统信息查询"       "系统综合信息、实时性能监控、快速基本信息"
         print_menu_item "2" "系统管理工具"       "一键初始化、磁盘挂载、虚拟内存、网络、环境部署等工具"
         print_menu_item "3" "基础工具管理"       "Node.js / Python / Jupyter / Nginx / 内网穿透等工具"
         print_menu_item "4" "Docker 管理专栏"    "Docker 安装 / Compose / Dockerfile / GPU Toolkit 等工具"
