@@ -76,7 +76,7 @@ else
 fi
 
 # 安装 nvm
-curl -o- http://github.808066.xyz:38000/https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
 if [ $? -eq 0 ]; then
     sleep 3
     echo '' >> ~/.bashrc
